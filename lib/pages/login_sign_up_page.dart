@@ -1,3 +1,4 @@
+import 'package:fam_story_frontend/services/api_service.dart';
 import 'package:fam_story_frontend/style.dart';
 import 'package:flutter/material.dart';
 
@@ -12,12 +13,12 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
   bool isSignUpScreen = false;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  String userEmail = '';
-  String userName = '';
-  String userNickname = '';
-  String userPassword = '';
-  int userAge = 0;
-  String userGender = '';
+  String email = '';
+  String username = '';
+  String nickname = '';
+  String password = '';
+  int age = -1;
+  int gender = -1;
 
   String? _selectedGender;
   final List<String> _genders = ['Male', 'Female'];
@@ -41,9 +42,6 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
             // 상단 텍스트
             Positioned(
               left: 20,
-              top: 0,
-              right: 0,
-              bottom: 0,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -62,18 +60,15 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
             AnimatedPositioned(
               duration: const Duration(milliseconds: 300),
               curve: Curves.easeIn,
-              left: 0,
               top: 160,
-              right: 0,
-              bottom: isSignUpScreen ? 160 : 320,
               child: AnimatedContainer(
                 duration: const Duration(microseconds: 300),
+                curve: Curves.easeIn,
                 padding: const EdgeInsets.all(20),
-                height: 420,
+                height: isSignUpScreen ? 390 : 210,
                 width: MediaQuery.of(context).size.width - 40,
                 margin: const EdgeInsets.symmetric(
                   horizontal: 20,
-                  vertical: 20,
                 ),
                 decoration: BoxDecoration(
                   color: AppColor.objectColor,
@@ -87,7 +82,7 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
                   ],
                 ),
                 child: SingleChildScrollView(
-                  padding: const EdgeInsets.only(bottom: 40),
+                  padding: const EdgeInsets.only(bottom: 20),
                   child: Column(
                     children: [
                       Row(
@@ -184,7 +179,7 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
                                     return null;
                                   },
                                   onSaved: (value) {
-                                    userEmail = value!;
+                                    email = value!;
                                   },
                                 ),
                                 const SizedBox(height: 10),
@@ -217,7 +212,7 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
                                     return null;
                                   },
                                   onSaved: (value) {
-                                    userPassword = value!;
+                                    password = value!;
                                   },
                                 ),
                                 const SizedBox(height: 10),
@@ -253,7 +248,7 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
                                           return null;
                                         },
                                         onSaved: (value) {
-                                          userName = value!;
+                                          username = value!;
                                         },
                                       ),
                                       const SizedBox(height: 10),
@@ -280,7 +275,7 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
                                           contentPadding: const EdgeInsets.all(10),
                                         ),
                                         onSaved: (value) {
-                                          userNickname = value!;
+                                          nickname = value!;
                                         },
                                       ),
                                       const SizedBox(height: 10),
@@ -322,7 +317,7 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
                                                 return null;
                                               },
                                               onSaved: (value) {
-                                                userAge = int.tryParse(value!)!;
+                                                age = int.tryParse(value!)!;
                                               },
                                             ),
                                           ),
@@ -361,7 +356,7 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
                                                 return null;
                                               },
                                               onSaved: (value) {
-                                                userGender = value!;
+                                                gender = (value! == 'Male' ? 0 : 1);
                                               },
                                             ),
                                           ),
@@ -379,12 +374,11 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
             ),
             // 하단 리턴 버튼
             AnimatedPositioned(
-              duration: const Duration(milliseconds: 300),
+              duration: const Duration(milliseconds: 200),
               curve: Curves.easeIn,
               left: 0,
-              top: isSignUpScreen ? 390 : 60,
+              top: isSignUpScreen ? 520 : 340,
               right: 0,
-              bottom: 0,
               child: Center(
                 child: Container(
                   padding: const EdgeInsets.all(15),
@@ -392,17 +386,26 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
                   height: 90,
                   decoration: BoxDecoration(color: AppColor.objectColor, borderRadius: BorderRadius.circular(50)),
                   child: GestureDetector(
-                    onTap: () {
+                    onTap: () async {
                       if (_formKey.currentState!.validate()) {
                         _formKey.currentState!.save();
-                        // TODO: api_call
-                        print(userEmail);
-                        print(userPassword);
                         if (isSignUpScreen) {
-                          print(userName);
-                          print(userNickname);
-                          print(userAge);
-                          print(userGender);
+                          // 회원 가입
+                          try {
+                            bool isCreated = await ApiService.createUser(email, username, password, nickname, age, gender);
+                            print('ok');
+                          } catch (e) {
+                            print(e.toString());
+                          }
+                        } else {
+                          // 로그인
+                          try {
+                            int isBelongedToFamily = await ApiService.postUserLogin(email, password);
+                            print(isBelongedToFamily);
+                            print('ok');
+                          } catch (e) {
+                            print(e.toString());
+                          }
                         }
                       } else {
                         print('Validation Fault');
