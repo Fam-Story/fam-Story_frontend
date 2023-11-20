@@ -2,10 +2,12 @@ import 'dart:convert' as convert;
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
 class ApiService {
   static const String baseUrl = 'https://famstory.thisiswandol.com';
+  static const storage = FlutterSecureStorage();
 
   // /user 유저 생성
   static Future<bool> createUser(String email, String username, String password, String? nickname, int age, int gender) async {
@@ -26,7 +28,7 @@ class ApiService {
   }
 
   // /user/login 유저 로그인
-  static Future<bool> postUserLogin(String email, String username, String password, String nickname, int age, int gender) async {
+  static Future<int> postUserLogin(String email, String password) async {
     final url = Uri.parse('$baseUrl/user/login');
 
     final response = await http.post(
@@ -38,10 +40,13 @@ class ApiService {
     );
 
     if (response.statusCode == 201) {
-      final Map<String, dynamic> data = jsonDecode(response.body)['data'];
-      final String token = data['token'];
-      bool isBelongedToFamily = data['isBelongedToFamily'];
+      Map<String, dynamic> data = jsonDecode(response.body)['data'];
 
+      String token = data['token'];
+      int isBelongedToFamily = data['isBelongedToFamily'];
+
+      var loginValue = jsonEncode({"token": token, "email": email});
+      await storage.write(key: 'login', value: loginValue);
       return isBelongedToFamily;
     }
     throw ErrorDescription('Something wrong to login');

@@ -16,7 +16,7 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
   String email = '';
   String username = '';
   String nickname = '';
-  String userPassword = '';
+  String password = '';
   int age = -1;
   int gender = -1;
 
@@ -42,9 +42,6 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
             // 상단 텍스트
             Positioned(
               left: 20,
-              top: 0,
-              right: 0,
-              bottom: 0,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -63,18 +60,15 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
             AnimatedPositioned(
               duration: const Duration(milliseconds: 300),
               curve: Curves.easeIn,
-              left: 0,
               top: 160,
-              right: 0,
-              bottom: isSignUpScreen ? 160 : 320,
               child: AnimatedContainer(
                 duration: const Duration(microseconds: 300),
+                curve: Curves.easeIn,
                 padding: const EdgeInsets.all(20),
-                height: 420,
+                height: isSignUpScreen ? 390 : 210,
                 width: MediaQuery.of(context).size.width - 40,
                 margin: const EdgeInsets.symmetric(
                   horizontal: 20,
-                  vertical: 20,
                 ),
                 decoration: BoxDecoration(
                   color: AppColor.objectColor,
@@ -88,7 +82,7 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
                   ],
                 ),
                 child: SingleChildScrollView(
-                  padding: const EdgeInsets.only(bottom: 40),
+                  padding: const EdgeInsets.only(bottom: 20),
                   child: Column(
                     children: [
                       Row(
@@ -218,7 +212,7 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
                                     return null;
                                   },
                                   onSaved: (value) {
-                                    userPassword = value!;
+                                    password = value!;
                                   },
                                 ),
                                 const SizedBox(height: 10),
@@ -380,12 +374,11 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
             ),
             // 하단 리턴 버튼
             AnimatedPositioned(
-              duration: const Duration(milliseconds: 300),
+              duration: const Duration(milliseconds: 200),
               curve: Curves.easeIn,
               left: 0,
-              top: isSignUpScreen ? 390 : 60,
+              top: isSignUpScreen ? 520 : 340,
               right: 0,
-              bottom: 0,
               child: Center(
                 child: Container(
                   padding: const EdgeInsets.all(15),
@@ -399,7 +392,16 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
                         if (isSignUpScreen) {
                           // 회원 가입
                           try {
-                            bool isCreated = await ApiService.createUser(email, username, userPassword, nickname, age, gender);
+                            bool isCreated = await ApiService.createUser(email, username, password, nickname, age, gender);
+                            print('ok');
+                          } catch (e) {
+                            print(e.toString());
+                          }
+                        } else {
+                          // 로그인
+                          try {
+                            int isBelongedToFamily = await ApiService.postUserLogin(email, password);
+                            print(isBelongedToFamily);
                             print('ok');
                           } catch (e) {
                             print(e.toString());
