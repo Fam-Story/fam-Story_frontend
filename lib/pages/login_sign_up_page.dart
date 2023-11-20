@@ -1,3 +1,4 @@
+import 'package:fam_story_frontend/services/api_service.dart';
 import 'package:fam_story_frontend/style.dart';
 import 'package:flutter/material.dart';
 
@@ -12,12 +13,12 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
   bool isSignUpScreen = false;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  String userEmail = '';
-  String userName = '';
-  String userNickname = '';
+  String email = '';
+  String username = '';
+  String nickname = '';
   String userPassword = '';
-  int userAge = 0;
-  String userGender = '';
+  int age = -1;
+  int gender = -1;
 
   String? _selectedGender;
   final List<String> _genders = ['Male', 'Female'];
@@ -184,7 +185,7 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
                                     return null;
                                   },
                                   onSaved: (value) {
-                                    userEmail = value!;
+                                    email = value!;
                                   },
                                 ),
                                 const SizedBox(height: 10),
@@ -253,7 +254,7 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
                                           return null;
                                         },
                                         onSaved: (value) {
-                                          userName = value!;
+                                          username = value!;
                                         },
                                       ),
                                       const SizedBox(height: 10),
@@ -280,7 +281,7 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
                                           contentPadding: const EdgeInsets.all(10),
                                         ),
                                         onSaved: (value) {
-                                          userNickname = value!;
+                                          nickname = value!;
                                         },
                                       ),
                                       const SizedBox(height: 10),
@@ -322,7 +323,7 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
                                                 return null;
                                               },
                                               onSaved: (value) {
-                                                userAge = int.tryParse(value!)!;
+                                                age = int.tryParse(value!)!;
                                               },
                                             ),
                                           ),
@@ -361,7 +362,7 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
                                                 return null;
                                               },
                                               onSaved: (value) {
-                                                userGender = value!;
+                                                gender = (value! == 'Male' ? 0 : 1);
                                               },
                                             ),
                                           ),
@@ -392,17 +393,17 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
                   height: 90,
                   decoration: BoxDecoration(color: AppColor.objectColor, borderRadius: BorderRadius.circular(50)),
                   child: GestureDetector(
-                    onTap: () {
+                    onTap: () async {
                       if (_formKey.currentState!.validate()) {
                         _formKey.currentState!.save();
-                        // TODO: api_call
-                        print(userEmail);
-                        print(userPassword);
                         if (isSignUpScreen) {
-                          print(userName);
-                          print(userNickname);
-                          print(userAge);
-                          print(userGender);
+                          // 회원 가입
+                          try {
+                            bool isCreated = await ApiService.createUser(email, username, userPassword, nickname, age, gender);
+                            print('ok');
+                          } catch (e) {
+                            print(e.toString());
+                          }
                         }
                       } else {
                         print('Validation Fault');
