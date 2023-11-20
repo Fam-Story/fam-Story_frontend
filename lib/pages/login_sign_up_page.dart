@@ -69,7 +69,6 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
               child: AnimatedContainer(
                 duration: const Duration(microseconds: 300),
                 padding: const EdgeInsets.all(20),
-                // height: isSignUpScreen ? 380 : 290,
                 height: 420,
                 width: MediaQuery.of(context).size.width - 40,
                 margin: const EdgeInsets.symmetric(
@@ -222,10 +221,10 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
                                   },
                                 ),
                                 const SizedBox(height: 10),
-                                // Name
                                 if (isSignUpScreen)
                                   Column(
                                     children: [
+                                      // Name
                                       TextFormField(
                                         decoration: InputDecoration(
                                           prefixIcon: const Icon(
@@ -396,6 +395,7 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
                     onTap: () {
                       if (_formKey.currentState!.validate()) {
                         _formKey.currentState!.save();
+                        // TODO: api_call
                         print(userEmail);
                         print(userPassword);
                         if (isSignUpScreen) {
