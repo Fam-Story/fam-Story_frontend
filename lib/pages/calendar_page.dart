@@ -1,9 +1,13 @@
+// TODO: 달 바뀔 때마다 일정 받아오기
+
+import 'package:fam_story_frontend/models/family_schedule_list_model.dart';
+import 'package:fam_story_frontend/style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:intl/intl.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
 // import 'package:flutter_calendar_carousel/classes/event_list.dart';
+import 'package:fam_story_frontend/models/family_schedule_list_model.dart';
 
 class CalendarPage extends StatefulWidget {
   const CalendarPage({super.key});
@@ -14,50 +18,35 @@ class CalendarPage extends StatefulWidget {
 
 class _CalendarPageState extends State<CalendarPage> {
   DateTime _currentDate = DateTime.now();
+  // FamilyScheduleListModel scheduleList =
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Column(
+        const Column(
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Row(
+                Row(
                   children: [
                     SizedBox(
                       width: 30,
                     ),
                     Text(
-                      "돌아보아요",
+                      "Calendar",
                       style: TextStyle(
                           fontFamily: 'AppleSDGothicNeo',
-                          fontWeight: FontWeight.w500,
+                          fontWeight: FontWeight.bold,
+                          color: AppColor.textColor,
                           fontSize: 35),
                     ),
                   ],
                 ),
-                Row(
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30),
-                          color: Colors.grey.shade400.withOpacity(0.8)),
-                      width: 120,
-                      height: 50,
-                      child: const Center(
-                          child: Text(
-                        "consecutive_dates",
-                        style: TextStyle(fontSize: 25),
-                      )),
-                    ),
-                    const SizedBox(width: 30),
-                  ],
-                ),
               ],
             ),
-            const SizedBox(height: 20),
+            SizedBox(height: 20),
           ],
         ),
         Expanded(
@@ -66,8 +55,16 @@ class _CalendarPageState extends State<CalendarPage> {
               children: [
                 Container(
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.grey.shade400.withOpacity(0.8)),
+                    borderRadius: BorderRadius.circular(30),
+                    color: AppColor.objectColor,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1),
+                        blurRadius: 20,
+                        spreadRadius: 5,
+                      ),
+                    ],
+                  ),
                   child: Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: SizedBox(
@@ -79,9 +76,10 @@ class _CalendarPageState extends State<CalendarPage> {
                           // dateChanged = true;
                         },
                         weekendTextStyle: const TextStyle(
-                          color: Colors.white,
+                          color: AppColor.textColor,
                         ),
-                        daysTextStyle: const TextStyle(color: Colors.white),
+                        daysTextStyle:
+                            const TextStyle(color: AppColor.textColor),
                         thisMonthDayBorderColor: Colors.grey,
                         customDayBuilder: (
                           /// you can provide your own build function to make custom day containers
@@ -97,18 +95,19 @@ class _CalendarPageState extends State<CalendarPage> {
                         ) {
                           return null;
                         },
+                        weekdayTextStyle:
+                            const TextStyle(color: AppColor.swatchColor),
                         showWeekDays: true,
                         showHeader: true,
                         weekFormat: false,
                         height: 400.0,
-                        todayButtonColor:
-                            Colors.grey.shade400.withOpacity(0.8),
+                        todayButtonColor: AppColor.swatchColor.withOpacity(0.5),
                         todayTextStyle: const TextStyle(
                             color: Colors.white,
                             fontSize: 18,
                             fontWeight: FontWeight.bold),
                         selectedDateTime: _currentDate,
-                        selectedDayButtonColor: Colors.grey.shade500,
+                        selectedDayButtonColor: AppColor.swatchColor,
                         selectedDayTextStyle: const TextStyle(
                             fontSize: 20, fontWeight: FontWeight.bold),
                         // selectedDayBorderColor: Colors.red,
@@ -128,43 +127,24 @@ class _CalendarPageState extends State<CalendarPage> {
                           });
                         },
                         staticSixWeekFormat: true,
-                        headerText: DateFormat('yyy년 MM월')
-                            .format(_currentDate)
-                            .toString(),
                         headerTextStyle: const TextStyle(
-                            color: Colors.black,
+                            color: AppColor.swatchColor,
                             fontSize: 23,
                             fontWeight: FontWeight.bold),
-                        leftButtonIcon:
-                            const Icon(CupertinoIcons.left_chevron),
-                        rightButtonIcon:
-                            const Icon(CupertinoIcons.right_chevron),
-                        customWeekDayBuilder: (weekday, weekdayName) {
-                          final koreanDaysOfWeek = [
-                            '일',
-                            '월',
-                            '화',
-                            '수',
-                            '목',
-                            '금',
-                            '토'
-                          ];
-                          return Container(
-                            margin:
-                                const EdgeInsets.symmetric(horizontal: 16.0),
-                            child: Text(
-                              koreanDaysOfWeek[weekday],
-                              style: const TextStyle(
-                                color: Colors.black,
-                              ),
-                            ),
-                          );
-                        },
+                        leftButtonIcon: const Icon(
+                          CupertinoIcons.left_chevron,
+                          color: AppColor.swatchColor,
+                        ),
+                        rightButtonIcon: const Icon(
+                          CupertinoIcons.right_chevron,
+                          color: AppColor.swatchColor,
+                        ),
                       ),
                     ),
                   ),
                 ),
                 // event 표시
+                // FutureBuilder(future: future, builder: builder)
               ],
             ),
           ),
