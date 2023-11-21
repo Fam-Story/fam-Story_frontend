@@ -1,5 +1,7 @@
 import 'package:fam_story_frontend/pages/login_sign_up_page.dart';
 import 'package:fam_story_frontend/root_page.dart';
+import 'package:fam_story_frontend/screens/family_join_create_screen.dart';
+
 import 'package:flutter/material.dart';
 
 void main() {
@@ -16,7 +18,7 @@ class FamStory extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
       ),
-      home: const LoginSignUpPage(),
+      home: const FamilyJoinCreateScreen(),
     );
   }
 }
