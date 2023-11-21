@@ -13,16 +13,14 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       
-      - uses: dart-lang/setup-dart@9a04e6d73cca37bd455e0608d7e5092f881fd603
-
-      - name: Install dependencies
-        run: dart pub get
-
-      - name: Analyze project source
-        run: dart analyze
-        
-      - name: Run tests
-        run: dart test
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'main'
+          
+      - run: flutter --version
+      - run: flutter pub get
+      - run: flutter test
 
       - name: SonarQube Scan
         uses: kitabisa/sonarqube-action@v1.2.1
