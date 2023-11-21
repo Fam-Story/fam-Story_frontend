@@ -24,6 +24,7 @@ class ApiService {
     if (response.statusCode == 201) {
       return true;
     }
+    // TODO: 에러 코드 추가
     throw ErrorDescription('Something wrong to create User ID');
   }
 
