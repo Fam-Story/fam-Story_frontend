@@ -18,7 +18,7 @@ class FamStory extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
       ),
-      // 초기 라우트를 LoadingScreen으로 설정합니다.
+      // 초기 라우트를 LoadingScreen.
       initialRoute: '/',
       routes: {
         '/': (context) => const LoadingScreen(), // LoadingScreen이 첫 화면

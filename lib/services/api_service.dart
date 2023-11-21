@@ -56,6 +56,7 @@ class ApiService {
       var loginValue = autoLogin ? jsonEncode({"token": token, "email": email, "password": password}) : jsonEncode({"token": token});
       await storage.write(key: 'login', value: loginValue);
 
+      print('token updated');
       return isBelongedToFamily;
     }
     throw ErrorDescription('Something wrong to login');

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:fam_story_frontend/services/api_service.dart';
 import 'package:fam_story_frontend/widgets/loading_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -26,7 +27,13 @@ class _LoadingScreenState extends State<LoadingScreen> {
     if (userInfoString != null) {
       Map<String, dynamic> userInfo = json.decode(userInfoString);
       if (userInfo['email'] != null) {
-        // 자동 로그인 상태
+        // 자동 로그인 상태; 토큰 정보 자동으로 다시 받아오기
+        try {
+          ApiService.postUserLogin(userInfo['email'], userInfo['password'], true);
+        } catch (e) {
+          // TODO: 에러 팝업 추가
+          print(e.toString());
+        }
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const RootPage()));
       } else {
         // 자동 로그인 X

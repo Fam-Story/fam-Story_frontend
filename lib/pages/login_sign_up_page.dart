@@ -1,3 +1,5 @@
+import 'package:fam_story_frontend/pages/family_join_create_page.dart';
+import 'package:fam_story_frontend/root_page.dart';
 import 'package:fam_story_frontend/services/api_service.dart';
 import 'package:fam_story_frontend/style.dart';
 import 'package:flutter/material.dart';
@@ -47,7 +49,7 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    'FamStory',
+                    'fam\'Story',
                     style: TextStyle(color: AppColor.textColor, fontSize: 40, fontWeight: FontWeight.bold),
                   ),
                   Text(
@@ -417,9 +419,8 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
                           try {
                             bool isCreated = await ApiService.createUser(email, username, password, nickname, age, gender);
                             if (isCreated) {
-                              // TODO: 회원가입 완료 메시지
-                            } else {
-                              // TODO: Error 메시지
+                              // TODO: 회원가입 완료 팝업 띄우기
+                              print('sign up ok');
                             }
                           } catch (e) {
                             // TODO: 에러 내용 알려주기
@@ -431,13 +432,13 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
                             int isBelongedToFamily = await ApiService.postUserLogin(email, password, autoLogin);
 
                             if (isBelongedToFamily == 0) {
-                              // TODO: 생성 페이지로 이동
+                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const FamilyJoinCreatePage()));
                             } else {
-                              // TODO: 루트 페이지로 이동
+                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const RootPage()));
                             }
                           } catch (e) {
                             // TODO: 에러 내용 알려주기
-                            // print(e.toString());
+                            print(e.toString());
                           }
                         }
                       } else {

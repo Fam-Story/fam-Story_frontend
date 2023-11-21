@@ -37,7 +37,7 @@ class _FamilyJoinCreatePageState extends State<FamilyJoinCreatePage> {
                     style: TextStyle(color: AppColor.textColor, fontSize: 40, fontWeight: FontWeight.bold),
                   ),
                   Text(
-                    'Hang With Your Family!',
+                    'Hang With Your Family !',
                     style: TextStyle(color: AppColor.textColor, fontSize: 20, fontWeight: FontWeight.bold),
                   )
                 ],
