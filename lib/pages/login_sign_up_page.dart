@@ -416,21 +416,32 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
                           // 회원 가입
                           try {
                             bool isCreated = await ApiService.createUser(email, username, password, nickname, age, gender);
-                            print('ok');
+                            if (isCreated) {
+                              // TODO: 회원가입 완료 메시지
+                            } else {
+                              // TODO: Error 메시지
+                            }
                           } catch (e) {
-                            print(e.toString());
+                            // TODO: 에러 내용 알려주기
+                            // print(e.toString());
                           }
                         } else {
                           // 로그인
                           try {
-                            int isBelongedToFamily = await ApiService.postUserLogin(email, password);
-                            print(isBelongedToFamily);
-                            print('ok');
+                            int isBelongedToFamily = await ApiService.postUserLogin(email, password, autoLogin);
+
+                            if (isBelongedToFamily == 0) {
+                              // TODO: 생성 페이지로 이동
+                            } else {
+                              // TODO: 루트 페이지로 이동
+                            }
                           } catch (e) {
-                            print(e.toString());
+                            // TODO: 에러 내용 알려주기
+                            // print(e.toString());
                           }
                         }
                       } else {
+                        // TODO: 굳이 뭐 할 필요 x
                         print('Validation Fault');
                       }
                     },
