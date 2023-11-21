@@ -8,7 +8,6 @@ import 'package:http/http.dart' as http;
 // TODO: 에러 코드 추가
 class ApiService {
   static const String baseUrl = 'https://famstory.thisiswandol.com';
-  static const storage = FlutterSecureStorage();
 
   // /user 유저 생성
   static Future<bool> createUser(String email, String username, String password, String? nickname, int age, int gender) async {
@@ -31,6 +30,7 @@ class ApiService {
   // /user/login 유저 로그인
   static Future<int> postUserLogin(String email, String password, bool autoLogin) async {
     final url = Uri.parse('$baseUrl/user/login');
+    const storage = FlutterSecureStorage();
 
     final response = await http.post(
       url,
@@ -56,6 +56,7 @@ class ApiService {
       var loginValue = autoLogin ? jsonEncode({"token": token, "email": email, "password": password}) : jsonEncode({"token": token});
       await storage.write(key: 'login', value: loginValue);
 
+      print('token updated');
       return isBelongedToFamily;
     }
     throw ErrorDescription('Something wrong to login');
