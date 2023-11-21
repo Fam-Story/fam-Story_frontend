@@ -19,6 +19,7 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
   String password = '';
   int age = -1;
   int gender = -1;
+  bool autoLogin = false;
 
   String? _selectedGender;
   final List<String> _genders = ['Male', 'Female'];
@@ -65,7 +66,7 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
                 duration: const Duration(microseconds: 300),
                 curve: Curves.easeIn,
                 padding: const EdgeInsets.all(20),
-                height: isSignUpScreen ? 390 : 210,
+                height: isSignUpScreen ? 390 : 240,
                 width: MediaQuery.of(context).size.width - 40,
                 margin: const EdgeInsets.symmetric(
                   horizontal: 20,
@@ -216,6 +217,28 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
                                   },
                                 ),
                                 const SizedBox(height: 10),
+                                if (!isSignUpScreen)
+                                  // 추가될 위치
+                                  Row(
+                                    children: <Widget>[
+                                      Checkbox(
+                                        value: autoLogin,
+                                        onChanged: (bool? newValue) {
+                                          setState(() {
+                                            autoLogin = newValue ?? false;
+                                          });
+                                        },
+                                        activeColor: AppColor.swatchColor, // 체크박스 활성 색상
+                                      ),
+                                      Text(
+                                        'Auto-Login',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.grey.withOpacity(0.7),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 if (isSignUpScreen)
                                   Column(
                                     children: [
@@ -377,7 +400,7 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
               duration: const Duration(milliseconds: 200),
               curve: Curves.easeIn,
               left: 0,
-              top: isSignUpScreen ? 520 : 340,
+              top: isSignUpScreen ? 520 : 370,
               right: 0,
               child: Center(
                 child: Container(
@@ -393,21 +416,32 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
                           // 회원 가입
                           try {
                             bool isCreated = await ApiService.createUser(email, username, password, nickname, age, gender);
-                            print('ok');
+                            if (isCreated) {
+                              // TODO: 회원가입 완료 메시지
+                            } else {
+                              // TODO: Error 메시지
+                            }
                           } catch (e) {
-                            print(e.toString());
+                            // TODO: 에러 내용 알려주기
+                            // print(e.toString());
                           }
                         } else {
                           // 로그인
                           try {
-                            int isBelongedToFamily = await ApiService.postUserLogin(email, password);
-                            print(isBelongedToFamily);
-                            print('ok');
+                            int isBelongedToFamily = await ApiService.postUserLogin(email, password, autoLogin);
+
+                            if (isBelongedToFamily == 0) {
+                              // TODO: 생성 페이지로 이동
+                            } else {
+                              // TODO: 루트 페이지로 이동
+                            }
                           } catch (e) {
-                            print(e.toString());
+                            // TODO: 에러 내용 알려주기
+                            // print(e.toString());
                           }
                         }
                       } else {
+                        // TODO: 굳이 뭐 할 필요 x
                         print('Validation Fault');
                       }
                     },
