@@ -28,6 +28,10 @@ class _RootPageState extends State<RootPage> {
       backgroundColor: AppColor.backgroudColor,
       body: _pages[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: AppColor.objectColor,
+        selectedItemColor: AppColor.swatchColor,
+        unselectedItemColor: Colors.grey.withOpacity(0.7),
+        selectedLabelStyle: const TextStyle(color: AppColor.textColor),
         currentIndex: _selectedIndex,
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home_rounded), label: 'Home'),
