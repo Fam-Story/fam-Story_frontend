@@ -2,14 +2,14 @@ import 'package:fam_story_frontend/services/api_service.dart';
 import 'package:fam_story_frontend/style.dart';
 import 'package:flutter/material.dart';
 
-class FamilyJoinCreateScreen extends StatefulWidget {
-  const FamilyJoinCreateScreen({super.key});
+class FamilyJoinCreatePage extends StatefulWidget {
+  const FamilyJoinCreatePage({super.key});
 
   @override
-  State<FamilyJoinCreateScreen> createState() => _FamilyJoinCreateScreenState();
+  State<FamilyJoinCreatePage> createState() => _FamilyJoinCreatePageState();
 }
 
-class _FamilyJoinCreateScreenState extends State<FamilyJoinCreateScreen> {
+class _FamilyJoinCreatePageState extends State<FamilyJoinCreatePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -108,7 +108,6 @@ class _FamilyJoinCreateScreenState extends State<FamilyJoinCreateScreen> {
                 ]),
               ),
             ),
-            // 하단 생성 버튼
           ],
         ),
       ),
