@@ -1,6 +1,7 @@
 import 'package:fam_story_frontend/pages/calendar_page.dart';
 import 'package:fam_story_frontend/pages/home_page.dart';
 import 'package:fam_story_frontend/pages/post_page.dart';
+import 'package:fam_story_frontend/style.dart';
 import 'package:flutter/material.dart';
 import 'style.dart';
 
@@ -32,6 +33,10 @@ class _RootPageState extends State<RootPage> {
       backgroundColor: AppColor.backgroudColor,
       body: _pages[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: AppColor.objectColor,
+        selectedItemColor: AppColor.swatchColor,
+        unselectedItemColor: Colors.grey.withOpacity(0.7),
+        selectedLabelStyle: const TextStyle(color: AppColor.textColor),
         currentIndex: _selectedIndex,
         items: const [
           BottomNavigationBarItem(
