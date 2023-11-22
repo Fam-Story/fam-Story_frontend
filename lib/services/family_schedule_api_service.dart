@@ -16,6 +16,11 @@ class FamilyScheduleApiService {
   static const requestScheduleYear = 'scheduleYear=';
   static const requestScheduleMonth = 'scheduleMonth=';
   static const requestScheduleDay = 'scheduleDay=';
+  static const requestScheduleId = 'scheduleId=';
+
+  //TODO: 변경 필
+  static const token =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OSwiZW1haWwiOiJkamFja3NkbjFAaWNsb3VkLmNvbSIsInVzZXJuYW1lIjoiZW9tY2hhbnUiLCJpYXQiOjE3MDA2NTQzNzYsImV4cCI6MTcwMDY1Nzk3Nn0.DIaoVLhzceXZ6oKx0ajQ68eR0XN43EfMnUObkJiSVDA';
 
   // Calendar Page
   // 월 단위로 가족 일정 불러오기
@@ -27,20 +32,15 @@ class FamilyScheduleApiService {
     final response = await http.get(url, headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
-      'Authorization':
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5₩cCI6IkpXVCJ9.eyJpZCI6OCwiZW1haWwiOiJ0ZXN0SnVuZ0BnbWFpbC5jb20iLCJ1c2VybmFtZSI6InRlc3RKdW5nIiwiaWF0IjoxNzAwNTY5NTM3LCJleHAiOjE3MDA1NzMxMzd9.OAzw7I5Nk_KYoToRH2iK5A3SJjBWnO6Pku3HfKNfjS8'
+      'Authorization': 'Bearer $token'
     });
 
-    print("hi");
-    print(url);
-    print(response.statusCode);
     if (response.statusCode == 200) {
-      print("testing in controller");
-      print(jsonDecode(response.body));
       List<dynamic> list = jsonDecode(response.body)['data'];
       for (var data in list) {
         scheduleList.add(FamilyScheduleModel.fromJson(data));
       }
+      print("call api");
       return scheduleList;
     } else {
       print(response.statusCode);
@@ -49,16 +49,14 @@ class FamilyScheduleApiService {
   }
 
   // 일정 등록
-  // TODO: 인자들 encode 후 json으로 body에 넣어 post
-  static void postFamilySchedule(String scheduleName, int familyId,
+  static Future<bool> postFamilySchedule(String scheduleName, int familyId,
       int scheduleYear, int scheduleMonth, int scheduleDay) async {
     final url = Uri.parse("$baseUrl/$familySchedule");
     final response = await http.post(url,
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
-          'Authorization':
-              'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiZW1haWwiOiJ0ZXN0SnVuZ0BnbWFpbC5jb20iLCJ1c2VybmFtZSI6InRlc3RKdW5nIiwiaWF0IjoxNzAwNTY5NTM3LCJleHAiOjE3MDA1NzMxMzd9.OAzw7I5Nk_KYoToRH2iK5A3SJjBWnO6Pku3HfKNfjS8'
+          'Authorization': 'Bearer $token'
         },
         body: jsonEncode({
           "scheduleName": scheduleName,
@@ -70,8 +68,32 @@ class FamilyScheduleApiService {
 
     if (response.statusCode == 201) {
       print("post success!");
+      return true;
     } else {
-      print("fail!");
+      print("fail! post");
+      print(response.statusCode);
+    }
+    throw Error();
+  }
+
+  // 일정 삭제
+  static Future<bool> deleteFamilySchedule(int scheduleId) async {
+    final url =
+        Uri.parse("$baseUrl/$familySchedule?$requestScheduleId$scheduleId");
+    final response = await http.delete(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token'
+      },
+    );
+
+    if (response.statusCode == 200) {
+      print("delete success!");
+      return true;
+    } else {
+      print("fail! delete");
       print(response.statusCode);
     }
     throw Error();

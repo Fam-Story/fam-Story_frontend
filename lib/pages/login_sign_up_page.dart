@@ -50,11 +50,17 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
                 children: [
                   const Text(
                     'fam\'Story',
-                    style: TextStyle(color: AppColor.textColor, fontSize: 40, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                        color: AppColor.textColor,
+                        fontSize: 40,
+                        fontWeight: FontWeight.bold),
                   ),
                   Text(
                     isSignUpScreen ? 'Enjoy Your Home :)' : 'Welcome, Home :)',
-                    style: const TextStyle(color: AppColor.textColor, fontSize: 20, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                        color: AppColor.textColor,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold),
                   )
                 ],
               ),
@@ -104,7 +110,9 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
                                   style: TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
-                                    color: !isSignUpScreen ? AppColor.swatchColor : Colors.grey.withOpacity(0.7),
+                                    color: !isSignUpScreen
+                                        ? AppColor.swatchColor
+                                        : Colors.grey.withOpacity(0.7),
                                   ),
                                 ),
                                 Container(
@@ -129,7 +137,9 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
                                   style: TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
-                                    color: isSignUpScreen ? AppColor.swatchColor : Colors.grey.withOpacity(0.7),
+                                    color: isSignUpScreen
+                                        ? AppColor.swatchColor
+                                        : Colors.grey.withOpacity(0.7),
                                   ),
                                 ),
                                 Container(
@@ -157,12 +167,16 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
                                       color: AppColor.subColor,
                                     ),
                                     enabledBorder: const OutlineInputBorder(
-                                      borderSide: BorderSide(color: AppColor.subColor),
-                                      borderRadius: BorderRadius.all(Radius.circular(35)),
+                                      borderSide:
+                                          BorderSide(color: AppColor.subColor),
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(35)),
                                     ),
                                     focusedBorder: const OutlineInputBorder(
-                                      borderSide: BorderSide(color: AppColor.swatchColor),
-                                      borderRadius: BorderRadius.all(Radius.circular(35)),
+                                      borderSide: BorderSide(
+                                          color: AppColor.swatchColor),
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(35)),
                                     ),
                                     hintText: 'E-mail',
                                     hintStyle: TextStyle(
@@ -176,7 +190,8 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
                                       return 'Please enter an email';
                                     }
                                     // Email 형식 검사 추가
-                                    if (!RegExp(r'\S+@\S+\.\S+').hasMatch(value)) {
+                                    if (!RegExp(r'\S+@\S+\.\S+')
+                                        .hasMatch(value)) {
                                       return 'Please enter a valid email address';
                                     }
                                     return null;
@@ -194,12 +209,16 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
                                       color: AppColor.subColor,
                                     ),
                                     enabledBorder: const OutlineInputBorder(
-                                      borderSide: BorderSide(color: AppColor.subColor),
-                                      borderRadius: BorderRadius.all(Radius.circular(35)),
+                                      borderSide:
+                                          BorderSide(color: AppColor.subColor),
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(35)),
                                     ),
                                     focusedBorder: const OutlineInputBorder(
-                                      borderSide: BorderSide(color: AppColor.swatchColor),
-                                      borderRadius: BorderRadius.all(Radius.circular(35)),
+                                      borderSide: BorderSide(
+                                          color: AppColor.swatchColor),
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(35)),
                                     ),
                                     hintText: 'Password',
                                     hintStyle: TextStyle(
@@ -230,7 +249,8 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
                                             autoLogin = newValue ?? false;
                                           });
                                         },
-                                        activeColor: AppColor.swatchColor, // 체크박스 활성 색상
+                                        activeColor:
+                                            AppColor.swatchColor, // 체크박스 활성 색상
                                       ),
                                       Text(
                                         'Auto-Login',
@@ -251,20 +271,27 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
                                             Icons.person,
                                             color: AppColor.subColor,
                                           ),
-                                          enabledBorder: const OutlineInputBorder(
-                                            borderSide: BorderSide(color: AppColor.subColor),
-                                            borderRadius: BorderRadius.all(Radius.circular(35)),
+                                          enabledBorder:
+                                              const OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: AppColor.subColor),
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(35)),
                                           ),
-                                          focusedBorder: const OutlineInputBorder(
-                                            borderSide: BorderSide(color: AppColor.swatchColor),
-                                            borderRadius: BorderRadius.all(Radius.circular(35)),
+                                          focusedBorder:
+                                              const OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: AppColor.swatchColor),
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(35)),
                                           ),
                                           hintText: 'Name',
                                           hintStyle: TextStyle(
                                             fontSize: 14,
                                             color: Colors.grey.withOpacity(0.7),
                                           ),
-                                          contentPadding: const EdgeInsets.all(10),
+                                          contentPadding:
+                                              const EdgeInsets.all(10),
                                         ),
                                         validator: (value) {
                                           if (value == null || value.isEmpty) {
@@ -284,20 +311,27 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
                                             Icons.person_add_alt_1,
                                             color: AppColor.subColor,
                                           ),
-                                          enabledBorder: const OutlineInputBorder(
-                                            borderSide: BorderSide(color: AppColor.subColor),
-                                            borderRadius: BorderRadius.all(Radius.circular(35)),
+                                          enabledBorder:
+                                              const OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: AppColor.subColor),
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(35)),
                                           ),
-                                          focusedBorder: const OutlineInputBorder(
-                                            borderSide: BorderSide(color: AppColor.swatchColor),
-                                            borderRadius: BorderRadius.all(Radius.circular(35)),
+                                          focusedBorder:
+                                              const OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: AppColor.swatchColor),
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(35)),
                                           ),
                                           hintText: 'Nickname',
                                           hintStyle: TextStyle(
                                             fontSize: 14,
                                             color: Colors.grey.withOpacity(0.7),
                                           ),
-                                          contentPadding: const EdgeInsets.all(10),
+                                          contentPadding:
+                                              const EdgeInsets.all(10),
                                         ),
                                         onSaved: (value) {
                                           nickname = value!;
@@ -305,38 +339,53 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
                                       ),
                                       const SizedBox(height: 10),
                                       Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
                                         children: [
                                           // Age
                                           SizedBox(
                                             width: 120,
                                             child: TextFormField(
-                                              keyboardType: TextInputType.number,
+                                              keyboardType:
+                                                  TextInputType.number,
                                               decoration: InputDecoration(
                                                 prefixIcon: const Icon(
                                                   Icons.numbers,
                                                   color: AppColor.subColor,
                                                 ),
-                                                enabledBorder: const OutlineInputBorder(
-                                                  borderSide: BorderSide(color: AppColor.subColor),
-                                                  borderRadius: BorderRadius.all(Radius.circular(35)),
+                                                enabledBorder:
+                                                    const OutlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                      color: AppColor.subColor),
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(35)),
                                                 ),
-                                                focusedBorder: const OutlineInputBorder(
-                                                  borderSide: BorderSide(color: AppColor.swatchColor),
-                                                  borderRadius: BorderRadius.all(Radius.circular(35)),
+                                                focusedBorder:
+                                                    const OutlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                      color:
+                                                          AppColor.swatchColor),
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(35)),
                                                 ),
                                                 hintText: 'Age',
                                                 hintStyle: TextStyle(
                                                   fontSize: 14,
-                                                  color: Colors.grey.withOpacity(0.7),
+                                                  color: Colors.grey
+                                                      .withOpacity(0.7),
                                                 ),
-                                                contentPadding: const EdgeInsets.all(10),
+                                                contentPadding:
+                                                    const EdgeInsets.all(10),
                                               ),
                                               validator: (value) {
-                                                if (value == null || value.isEmpty) {
+                                                if (value == null ||
+                                                    value.isEmpty) {
                                                   return 'Please enter your age';
                                                 }
-                                                if (int.tryParse(value) == null) {
+                                                if (int.tryParse(value) ==
+                                                    null) {
                                                   return 'Age must be a number';
                                                 }
                                                 return null;
@@ -350,8 +399,11 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
                                           // Gender
                                           SizedBox(
                                             width: 150,
-                                            child: DropdownButtonFormField<String>(
-                                              padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
+                                            child:
+                                                DropdownButtonFormField<String>(
+                                              padding:
+                                                  const EdgeInsets.fromLTRB(
+                                                      0, 0, 20, 0),
                                               value: _selectedGender,
                                               hint: const Text(
                                                 'Select Gender',
@@ -365,23 +417,28 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
                                                   _selectedGender = newValue;
                                                 });
                                               },
-                                              items: _genders.map<DropdownMenuItem<String>>((String value) {
+                                              items: _genders.map<
+                                                      DropdownMenuItem<String>>(
+                                                  (String value) {
                                                 return DropdownMenuItem<String>(
                                                   value: value,
                                                   child: Text(
                                                     value,
-                                                    style: const TextStyle(fontSize: 14),
+                                                    style: const TextStyle(
+                                                        fontSize: 14),
                                                   ),
                                                 );
                                               }).toList(),
                                               validator: (value) {
-                                                if (value == null || value.isEmpty) {
+                                                if (value == null ||
+                                                    value.isEmpty) {
                                                   return 'please choose your gender';
                                                 }
                                                 return null;
                                               },
                                               onSaved: (value) {
-                                                gender = (value! == 'Male' ? 0 : 1);
+                                                gender =
+                                                    (value! == 'Male' ? 0 : 1);
                                               },
                                             ),
                                           ),
@@ -409,7 +466,9 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
                   padding: const EdgeInsets.all(15),
                   width: 90,
                   height: 90,
-                  decoration: BoxDecoration(color: AppColor.objectColor, borderRadius: BorderRadius.circular(50)),
+                  decoration: BoxDecoration(
+                      color: AppColor.objectColor,
+                      borderRadius: BorderRadius.circular(50)),
                   child: GestureDetector(
                     onTap: () async {
                       if (_formKey.currentState!.validate()) {
@@ -417,24 +476,34 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
                         if (isSignUpScreen) {
                           // 회원 가입
                           try {
-                            bool isCreated = await ApiService.createUser(email, username, password, nickname, age, gender);
+                            bool isCreated = await ApiService.createUser(email,
+                                username, password, nickname, age, gender);
                             if (isCreated) {
                               // TODO: 회원가입 완료 팝업 띄우기
                               print('sign up ok');
                             }
                           } catch (e) {
                             // TODO: 에러 내용 알려주기
-                            // print(e.toString());
+                            print(e.toString());
                           }
                         } else {
                           // 로그인
                           try {
-                            int isBelongedToFamily = await ApiService.postUserLogin(email, password, autoLogin);
+                            int isBelongedToFamily =
+                                await ApiService.postUserLogin(
+                                    email, password, autoLogin);
 
                             if (isBelongedToFamily == 0) {
-                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const FamilyJoinCreatePage()));
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const FamilyJoinCreatePage()));
                             } else {
-                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const RootPage()));
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const RootPage()));
                             }
                           } catch (e) {
                             // TODO: 에러 내용 알려주기

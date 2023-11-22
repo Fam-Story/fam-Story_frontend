@@ -1,4 +1,5 @@
 import 'package:fam_story_frontend/models/family_schedule_list_model.dart';
+import 'package:fam_story_frontend/services/api_service.dart';
 import 'package:fam_story_frontend/services/family_schedule_api_service.dart';
 import 'package:fam_story_frontend/style.dart';
 import 'package:flutter/material.dart';
@@ -17,14 +18,13 @@ class CalendarPage extends StatefulWidget {
 
 class _CalendarPageState extends State<CalendarPage> {
   DateTime _currentDate = DateTime.now();
-  // TODO: familyId 수정
-  Future<List<FamilyScheduleModel>> scheduleList =
-      FamilyScheduleApiService.getFamilyScheduleList(
-          3, DateTime.now().year, DateTime.now().month);
+  final EventList<Event> _markdeDateMap = EventList<Event>(events: {});
+  late Future<List<FamilyScheduleModel>> scheduleList;
 
   @override
   void initState() {
     super.initState();
+    _updateCalendar(DateTime.now());
   }
 
   @override
@@ -55,7 +55,7 @@ class _CalendarPageState extends State<CalendarPage> {
                   children: [
                     IconButton(
                       onPressed: () {
-                        showAddingScheduleDialog(context);
+                        _showAddingScheduleDialog(context);
                       },
                       icon: const Icon(CupertinoIcons.add_circled_solid),
                       color: AppColor.swatchColor,
@@ -75,27 +75,81 @@ class _CalendarPageState extends State<CalendarPage> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                calendarContainer(),
+                _calendarContainer(),
                 const SizedBox(height: 20),
                 // event 표시
                 FutureBuilder(
                     future: scheduleList,
                     builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        print("waiting");
-                      }
-                      if (snapshot.connectionState == ConnectionState.done) {
-                        print("done");
-                      }
                       if (snapshot.hasData) {
-                        return Column(
-                          children: snapshot.data!
-                              .map((e) => Text(e.scheduleName))
-                              .toList(),
-                          // children: [Text('${snapshot.data![0]}')],
+                        List<FamilyScheduleModel> todaySchedule = snapshot.data!
+                            .where((e) => e.scheduleDay == _currentDate.day)
+                            .toList();
+                        int scheduleNum = todaySchedule.length;
+                        if (scheduleNum == 0) {
+                          // TODO: 일정 추가 유도 멘트
+                          return const Text("");
+                        }
+                        return ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: scheduleNum,
+                          itemBuilder: (context, idx) {
+                            final schedule = todaySchedule[idx];
+                            return Dismissible(
+                                key: UniqueKey(),
+                                onDismissed: (direction) {
+                                  Future<bool> flag;
+                                  todaySchedule.removeWhere((item) =>
+                                      item.scheduleId == schedule.scheduleId);
+                                  try {
+                                    flag = FamilyScheduleApiService
+                                        .deleteFamilySchedule(
+                                            schedule.scheduleId);
+                                    flag.then((value) {
+                                      if (value) {
+                                        setState(() {
+                                          _updateCalendar(_currentDate);
+                                        });
+                                      }
+                                    });
+                                  } catch (e) {
+                                    print(e.toString());
+                                  }
+                                },
+                                child: Column(
+                                  children: [
+                                    ListTile(
+                                        leading: Container(
+                                          width: 5,
+                                          height: 20,
+                                          decoration: BoxDecoration(
+                                              color: AppColor.swatchColor,
+                                              borderRadius:
+                                                  BorderRadius.circular(10)),
+                                        ),
+                                        title: Text(
+                                          todaySchedule[idx].scheduleName,
+                                          style: const TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold),
+                                        )),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 20.0),
+                                      child: Container(
+                                        color: AppColor.subColor,
+                                        height: 1,
+                                      ),
+                                    )
+                                  ],
+                                ));
+                          },
                         );
                       } else {
-                        return const Text("fail");
+                        return const Padding(
+                          padding: EdgeInsets.all(20.0),
+                          child: Center(child: CircularProgressIndicator()),
+                        );
                       }
                     })
               ],
@@ -106,7 +160,7 @@ class _CalendarPageState extends State<CalendarPage> {
     );
   }
 
-  Future<dynamic> showAddingScheduleDialog(BuildContext context) {
+  Future<dynamic> _showAddingScheduleDialog(BuildContext context) {
     TextEditingController textController = TextEditingController();
     return showDialog(
       context: context,
@@ -178,13 +232,26 @@ class _CalendarPageState extends State<CalendarPage> {
                       ElevatedButton(
                           onPressed: () {
                             // post
+                            Future<bool> flag;
                             print(textController.text);
-                            FamilyScheduleApiService.postFamilySchedule(
-                                textController.text,
-                                3,
-                                _currentDate.year,
-                                _currentDate.month,
-                                _currentDate.day);
+                            try {
+                              flag =
+                                  FamilyScheduleApiService.postFamilySchedule(
+                                      textController.text,
+                                      3,
+                                      _currentDate.year,
+                                      _currentDate.month,
+                                      _currentDate.day);
+                              flag.then((value) {
+                                if (value) {
+                                  setState(() {
+                                    _updateCalendar(_currentDate);
+                                  });
+                                }
+                              });
+                            } catch (e) {
+                              print(e.toString());
+                            }
                             Navigator.of(context).pop();
                           },
                           style: const ButtonStyle(
@@ -217,7 +284,7 @@ class _CalendarPageState extends State<CalendarPage> {
     );
   }
 
-  Container calendarContainer() {
+  Container _calendarContainer() {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(30),
@@ -239,9 +306,8 @@ class _CalendarPageState extends State<CalendarPage> {
             onDayPressed: (DateTime date, List<Event> events) {
               setState(() {
                 _currentDate = date;
-                // scheduleList = ApiService.getFamilyScheduleList(
-                //     3, _currentDate.year, _currentDate.month);
               });
+              // _updateCalendar(date);
             },
             weekendTextStyle: const TextStyle(
               color: AppColor.textColor,
@@ -277,9 +343,9 @@ class _CalendarPageState extends State<CalendarPage> {
             selectedDayTextStyle:
                 const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
             // selectedDayBorderColor: Colors.red,
-            // markedDateCustomTextStyle: const TextStyle(
-            //     color: Colors.white, fontWeight: FontWeight.bold),
-            // markedDatesMap: _markdeDateMap,
+            markedDateCustomTextStyle: const TextStyle(
+                color: Colors.white, fontWeight: FontWeight.bold),
+            markedDatesMap: _markdeDateMap,
             markedDateShowIcon: true,
             markedDateIconMaxShown: 1,
             markedDateIconBuilder: (event) {
@@ -288,11 +354,11 @@ class _CalendarPageState extends State<CalendarPage> {
             showIconBehindDayText: true,
             // daysHaveCircularBorder: true,
             onCalendarChanged: (DateTime date) {
-              setState(() {
-                _currentDate = date;
-                // TODO: familyId 수정
-                scheduleList = FamilyScheduleApiService.getFamilyScheduleList(
-                    3, _currentDate.year, _currentDate.month);
+              _updateCalendar(date);
+              Future.delayed(const Duration(milliseconds: 200), () {
+                setState(() {
+                  _currentDate = date;
+                });
               });
             },
             staticSixWeekFormat: true,
@@ -311,6 +377,60 @@ class _CalendarPageState extends State<CalendarPage> {
           ),
         ),
       ),
+    );
+  }
+
+  // 일정 새로 받아오고 그리기; 달 바뀔 때마다 호출
+  void _updateCalendar(DateTime date) {
+    setState(() {
+      try {
+        // TODO: familyId 변경
+        scheduleList = FamilyScheduleApiService.getFamilyScheduleList(
+            3, date.year, date.month);
+        print("updateCalendar");
+        scheduleList.then((value) {
+          setState(() {
+            _drawSchedule();
+          });
+        });
+      } catch (e) {
+        print(e.toString());
+      }
+    });
+  }
+
+  Future<void> _drawSchedule() async {
+    _markdeDateMap.clear();
+    print("drawSchedule");
+    List<FamilyScheduleModel> list = await scheduleList;
+    for (var schedule in list) {
+      _markdeDateMap.add(
+          DateTime(schedule.scheduleYear, schedule.scheduleMonth,
+              schedule.scheduleDay),
+          Event(
+              date: DateTime(schedule.scheduleYear, schedule.scheduleMonth,
+                  schedule.scheduleDay),
+              title: schedule.scheduleName,
+              icon: (_iconWidget(
+                schedule.scheduleDay.toString(),
+              ))));
+    }
+  }
+
+  // icon builder
+  static Widget _iconWidget(String day) {
+    return Container(
+      decoration: BoxDecoration(
+        // color: AppColor.swatchColor,
+        color: AppColor.subColor,
+        borderRadius: BorderRadius.circular(100),
+      ),
+      // child: Center(
+      //   child: Text(
+      //     day,
+      //     style: const TextStyle(color: Colors.white),
+      //   ),
+      // ),
     );
   }
 }
