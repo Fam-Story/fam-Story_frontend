@@ -1,6 +1,8 @@
+import 'package:fam_story_frontend/pages/role_page.dart';
 import 'package:fam_story_frontend/style.dart';
 import 'package:flutter/material.dart';
 
+// 적절한 다트파일을 import 해주세요!
 class FamilyCreatePage extends StatefulWidget {
   const FamilyCreatePage({Key? key}) : super(key: key);
 
@@ -49,7 +51,7 @@ class _FamilyCreatePageState extends State<FamilyCreatePage> with TickerProvider
             ),
             // 중단의 집 아이콘
             Positioned(
-              top: 130,
+              top: 140,
               left: 0,
               right: 0,
               child: Center(
@@ -152,16 +154,18 @@ class _FamilyCreatePageState extends State<FamilyCreatePage> with TickerProvider
               left: 0,
               right: 0,
               child: Center(
-                // TODO: 클릭할 시 페이지 라우트 추가
                 child: ElevatedButton(
                   onPressed: () {
                     setState(() {
                       if (_familyNameController.text.isEmpty) {
                         // 텍스트 필드에 값이 없으면 에러 메시지를 설정
-                        _errorText = 'Family name cannot be empty';
+                        _errorText = 'Family Name cannot be empty';
                       } else {
                         // TODO: API 호출 및 가족 생성
                         // 생성 완료 시 완료 팝업 띄우고 롤 페이지로 이동
+                        String familyName = _familyNameController.text;
+                        Navigator.pushReplacementNamed(context, '/rolePage', arguments: familyName);
+                        // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const RolePage()));
 
                         _errorText = null;
                         _isCreateButtonPressed = true;
