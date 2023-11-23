@@ -23,7 +23,9 @@ class FamStory extends StatelessWidget {
       // 초기 라우트를 LoadingScreen.
       initialRoute: '/',
       routes: {
-        '/': (context) => const LoadingScreen(),
+        // '/': (context) => const LoadingScreen(),
+        '/': (context) => const FamilyJoinCreatePage(),
+
         '/rootPage': (context) => const RootPage(),
         '/loginSignUpPage': (context) => const LoginSignUpPage(),
         '/familyJoinCreatePage': (context) => const FamilyJoinCreatePage(),
