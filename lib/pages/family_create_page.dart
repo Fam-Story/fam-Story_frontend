@@ -162,9 +162,8 @@ class _FamilyCreatePageState extends State<FamilyCreatePage> with TickerProvider
                       setState(() {});
 
                       try {
-                        print('hi');
                         int familyId = await FamilyApiService.postFamily(familyName!);
-                        print(familyId);
+                        print('familyId: $familyId');
                         Navigator.pushReplacementNamed(context, '/rolePage', arguments: {'familyName': familyName, 'familyId': familyId});
                       } catch (e) {
                         print(e.toString());

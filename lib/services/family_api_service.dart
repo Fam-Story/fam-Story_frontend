@@ -15,7 +15,6 @@ class FamilyApiService {
     const storage = FlutterSecureStorage();
 
     // 로그인 토큰 불러오기
-    print('ok?');
     String? userInfoString = await storage.read(key: 'login');
 
     if (userInfoString == null) {
@@ -23,7 +22,6 @@ class FamilyApiService {
     }
     Map<String, dynamic> userInfo = json.decode(userInfoString);
     String loginToken = userInfo['token'];
-    print(loginToken);
 
     final response = await http.post(
       url,
