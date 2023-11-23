@@ -1,4 +1,3 @@
-import 'dart:convert' as convert;
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -35,6 +34,7 @@ class FamilyApiService {
 
     // 가족 생성 완료
     if (response.statusCode == 201) {
+      print(jsonDecode(response.body)['message']);
       int familyId = jsonDecode(response.body)['data'];
       return familyId;
     }
