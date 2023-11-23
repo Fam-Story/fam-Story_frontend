@@ -18,7 +18,7 @@ class CalendarPage extends StatefulWidget {
 
 class _CalendarPageState extends State<CalendarPage> {
   DateTime _currentDate = DateTime.now();
-  final EventList<Event> _markdeDateMap = EventList<Event>(events: {});
+  final EventList<Event> _markedDateMap = EventList<Event>(events: {});
   late Future<List<FamilyScheduleModel>> scheduleList;
 
   @override
@@ -75,9 +75,10 @@ class _CalendarPageState extends State<CalendarPage> {
           child: SingleChildScrollView(
             child: Column(
               children: [
+                // 달력
                 _calendarContainer(),
                 const SizedBox(height: 20),
-                // event 표시
+                // 해당일 일정 표시
                 FutureBuilder(
                     future: scheduleList,
                     builder: (context, snapshot) {
@@ -98,9 +99,13 @@ class _CalendarPageState extends State<CalendarPage> {
                             return Dismissible(
                                 key: UniqueKey(),
                                 onDismissed: (direction) {
+                                  setState(() {
+                                    todaySchedule.removeWhere((item) =>
+                                        item.scheduleId == schedule.scheduleId);
+                                    snapshot.data!.removeWhere((item) =>
+                                        item.scheduleId == schedule.scheduleId);
+                                  });
                                   Future<bool> flag;
-                                  todaySchedule.removeWhere((item) =>
-                                      item.scheduleId == schedule.scheduleId);
                                   try {
                                     flag = FamilyScheduleApiService
                                         .deleteFamilySchedule(
@@ -108,7 +113,14 @@ class _CalendarPageState extends State<CalendarPage> {
                                     flag.then((value) {
                                       if (value) {
                                         setState(() {
-                                          _updateCalendar(_currentDate);
+                                          _markedDateMap.remove(
+                                              _currentDate,
+                                              _markedDateMap
+                                                  .getEvents(_currentDate)
+                                                  .where((e) =>
+                                                      e.id ==
+                                                      schedule.scheduleId)
+                                                  .first);
                                         });
                                       }
                                     });
@@ -232,22 +244,19 @@ class _CalendarPageState extends State<CalendarPage> {
                       ElevatedButton(
                           onPressed: () {
                             // post
-                            Future<bool> flag;
-                            print(textController.text);
+                            Future<int> scheduleId;
                             try {
-                              flag =
+                              scheduleId =
                                   FamilyScheduleApiService.postFamilySchedule(
                                       textController.text,
                                       3,
                                       _currentDate.year,
                                       _currentDate.month,
                                       _currentDate.day);
-                              flag.then((value) {
-                                if (value) {
-                                  setState(() {
-                                    _updateCalendar(_currentDate);
-                                  });
-                                }
+                              scheduleId.then((value) {
+                                setState(() {
+                                  _updateCalendar(_currentDate);
+                                });
                               });
                             } catch (e) {
                               print(e.toString());
@@ -345,7 +354,7 @@ class _CalendarPageState extends State<CalendarPage> {
             // selectedDayBorderColor: Colors.red,
             markedDateCustomTextStyle: const TextStyle(
                 color: Colors.white, fontWeight: FontWeight.bold),
-            markedDatesMap: _markdeDateMap,
+            markedDatesMap: _markedDateMap,
             markedDateShowIcon: true,
             markedDateIconMaxShown: 1,
             markedDateIconBuilder: (event) {
@@ -355,7 +364,7 @@ class _CalendarPageState extends State<CalendarPage> {
             // daysHaveCircularBorder: true,
             onCalendarChanged: (DateTime date) {
               _updateCalendar(date);
-              Future.delayed(const Duration(milliseconds: 200), () {
+              Future.delayed(const Duration(milliseconds: 100), () {
                 setState(() {
                   _currentDate = date;
                 });
@@ -390,7 +399,7 @@ class _CalendarPageState extends State<CalendarPage> {
         print("updateCalendar");
         scheduleList.then((value) {
           setState(() {
-            _drawSchedule();
+            _drawSchedule(value);
           });
         });
       } catch (e) {
@@ -399,12 +408,11 @@ class _CalendarPageState extends State<CalendarPage> {
     });
   }
 
-  Future<void> _drawSchedule() async {
-    _markdeDateMap.clear();
+  void _drawSchedule(List<FamilyScheduleModel> list) {
+    _markedDateMap.clear();
     print("drawSchedule");
-    List<FamilyScheduleModel> list = await scheduleList;
     for (var schedule in list) {
-      _markdeDateMap.add(
+      _markedDateMap.add(
           DateTime(schedule.scheduleYear, schedule.scheduleMonth,
               schedule.scheduleDay),
           Event(
@@ -413,7 +421,8 @@ class _CalendarPageState extends State<CalendarPage> {
               title: schedule.scheduleName,
               icon: (_iconWidget(
                 schedule.scheduleDay.toString(),
-              ))));
+              )),
+              id: schedule.scheduleId));
     }
   }
 

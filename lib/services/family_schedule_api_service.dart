@@ -20,7 +20,7 @@ class FamilyScheduleApiService {
 
   //TODO: 변경 필
   static const token =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OSwiZW1haWwiOiJkamFja3NkbjFAaWNsb3VkLmNvbSIsInVzZXJuYW1lIjoiZW9tY2hhbnUiLCJpYXQiOjE3MDA2NTQzNzYsImV4cCI6MTcwMDY1Nzk3Nn0.DIaoVLhzceXZ6oKx0ajQ68eR0XN43EfMnUObkJiSVDA';
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OSwiZW1haWwiOiJkamFja3NkbjFAaWNsb3VkLmNvbSIsInVzZXJuYW1lIjoiZW9tY2hhbnUiLCJpYXQiOjE3MDA3MDAzNjQsImV4cCI6MTcwMDcwMzk2NH0.Jlv9SESNO3ZSXHkOPowRGjBJz01cWmYseUQnCpEeGzk';
 
   // Calendar Page
   // 월 단위로 가족 일정 불러오기
@@ -49,7 +49,7 @@ class FamilyScheduleApiService {
   }
 
   // 일정 등록
-  static Future<bool> postFamilySchedule(String scheduleName, int familyId,
+  static Future<int> postFamilySchedule(String scheduleName, int familyId,
       int scheduleYear, int scheduleMonth, int scheduleDay) async {
     final url = Uri.parse("$baseUrl/$familySchedule");
     final response = await http.post(url,
@@ -68,7 +68,7 @@ class FamilyScheduleApiService {
 
     if (response.statusCode == 201) {
       print("post success!");
-      return true;
+      return jsonDecode(response.body)['data'];
     } else {
       print("fail! post");
       print(response.statusCode);
