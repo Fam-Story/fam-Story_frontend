@@ -1,3 +1,5 @@
+import 'package:fam_story_frontend/root_page.dart';
+import 'package:fam_story_frontend/services/family_member_api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:fam_story_frontend/style.dart';
 
@@ -178,9 +180,18 @@ class _SelectRolePageState extends State<RolePage> with TickerProviderStateMixin
             child: Center(
               child: ElevatedButton(
                 onPressed: selectedRole != null
-                    ? () {
+                    ? () async {
                         // TODO: API 연결, 가족 멤버 생성, 가족 ID 가져 오기
                         print(roleDescriptions[selectedRole!]);
+                        try {
+                          int familyMemberId = await FamilyMemberApiService.postFamilyMember(familyId, selectedRole!);
+                        } catch (e) {
+                          print(e.toString());
+                        }
+                        // 만약 생성이 잘 되었으면 생성 잘 되었다는 팝업 띄우고 Enjoy로 바뀜. RootPage로 이동
+                        setState(() {
+                          buttonText = 'Enjoy';
+                        });
                         showDialog(
                             context: context,
                             builder: (BuildContext buildContext) {
@@ -198,7 +209,9 @@ class _SelectRolePageState extends State<RolePage> with TickerProviderStateMixin
                                 actions: [
                                   Center(
                                     child: TextButton(
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const RootPage()));
+                                      },
                                       style: TextButton.styleFrom(
                                         foregroundColor: AppColor.objectColor, // 텍스트 색상
                                         padding: const EdgeInsets.fromLTRB(40, 10, 40, 10), // 버튼 패딩 조정
@@ -217,12 +230,6 @@ class _SelectRolePageState extends State<RolePage> with TickerProviderStateMixin
                                 ],
                               );
                             });
-
-                        // 만약 생성이 잘 되었으면 생성 잘 되었다는 팝업 띄우고 Enjoy로 바뀜. RootPage로 이동
-                        setState(() {
-                          buttonText = 'Enjoy';
-                        });
-                        // 페이지 라우트, 가서 정보 불러오기
                       }
                     : null, // selectedRole이 null이면 onPressed를 null로 설정하여 버튼 비활성화
                 style: ElevatedButton.styleFrom(
