@@ -30,7 +30,9 @@ class _SelectRolePageState extends State<RolePage> with TickerProviderStateMixin
 
   @override
   Widget build(BuildContext context) {
-    final familyName = ModalRoute.of(context)?.settings.arguments as String;
+    final args = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
+    final familyName = args['familyName'] as String;
+    final familyId = args['familyId'] as int;
 
     return Scaffold(
       appBar: PreferredSize(

@@ -29,7 +29,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
       if (userInfo['email'] != null) {
         // 자동 로그인 상태; 토큰 정보 자동으로 다시 받아오기
         try {
-          ApiService.postUserLogin(userInfo['email'], userInfo['password'], true);
+          UserApiService.postUserLogin(userInfo['email'], userInfo['password'], true);
         } catch (e) {
           // TODO: 에러 팝업 추가
           print(e.toString());

@@ -6,7 +6,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
 // TODO: 에러 코드 추가
-class ApiService {
+class UserApiService {
   static const String baseUrl = 'https://famstory.thisiswandol.com/api';
 
   // /user 유저 생성

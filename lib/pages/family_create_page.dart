@@ -1,4 +1,5 @@
 import 'package:fam_story_frontend/pages/role_page.dart';
+import 'package:fam_story_frontend/services/family_api_service.dart';
 import 'package:fam_story_frontend/style.dart';
 import 'package:flutter/material.dart';
 
@@ -12,8 +13,8 @@ class FamilyCreatePage extends StatefulWidget {
 
 class _FamilyCreatePageState extends State<FamilyCreatePage> with TickerProviderStateMixin {
   final _familyNameController = TextEditingController();
+  String? familyName;
   String? _errorText;
-  bool _isCreateButtonPressed = false;
 
   @override
   Widget build(BuildContext context) {
@@ -155,22 +156,25 @@ class _FamilyCreatePageState extends State<FamilyCreatePage> with TickerProvider
               right: 0,
               child: Center(
                 child: ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      if (_familyNameController.text.isEmpty) {
-                        // 텍스트 필드에 값이 없으면 에러 메시지를 설정
-                        _errorText = 'Family Name cannot be empty';
-                      } else {
-                        // TODO: API 호출 및 가족 생성
-                        // 생성 완료 시 완료 팝업 띄우고 롤 페이지로 이동
-                        String familyName = _familyNameController.text;
-                        Navigator.pushReplacementNamed(context, '/rolePage', arguments: familyName);
-                        // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const RolePage()));
+                  onPressed: () async {
+                    familyName = _familyNameController.text;
+                    if (familyName!.isNotEmpty) {
+                      setState(() {});
 
-                        _errorText = null;
-                        _isCreateButtonPressed = true;
+                      try {
+                        print('hi');
+                        int familyId = await FamilyApiService.postFamily(familyName!);
+                        print(familyId);
+                        Navigator.pushReplacementNamed(context, '/rolePage', arguments: {'familyName': familyName, 'familyId': familyId});
+                      } catch (e) {
+                        print(e.toString());
                       }
-                    });
+                    } else {
+                      // 필요한 경우 여기서 오류 메시지를 설정할 수 있습니다.
+                      setState(() {
+                        _errorText = "Family Name cannot be empty";
+                      });
+                    }
                   },
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
