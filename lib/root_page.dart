@@ -3,6 +3,7 @@ import 'package:fam_story_frontend/pages/home_page.dart';
 import 'package:fam_story_frontend/pages/post_page.dart';
 import 'package:fam_story_frontend/style.dart';
 import 'package:flutter/material.dart';
+import 'style.dart';
 
 class RootPage extends StatefulWidget {
   const RootPage({super.key});
@@ -14,7 +15,11 @@ class RootPage extends StatefulWidget {
 class _RootPageState extends State<RootPage> {
   int _selectedIndex = 0;
 
-  final List<Widget> _pages = [const HomePage(), const PostPage(), const CalendarPage()];
+  final List<Widget> _pages = [
+    const HomePage(),
+    const PostPage(),
+    const CalendarPage()
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -34,9 +39,12 @@ class _RootPageState extends State<RootPage> {
         selectedLabelStyle: const TextStyle(color: AppColor.textColor),
         currentIndex: _selectedIndex,
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home_rounded), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.chat_bubble_outline_rounded), label: 'Post'),
-          BottomNavigationBarItem(icon: Icon(Icons.calendar_today_rounded), label: 'Calendar'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.home_rounded), label: 'Home'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.chat_bubble_outline_rounded), label: 'Post'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.calendar_today_rounded), label: 'Calendar'),
         ],
         onTap: (index) {
           setState(() {
