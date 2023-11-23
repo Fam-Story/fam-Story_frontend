@@ -1,5 +1,5 @@
 import 'package:fam_story_frontend/models/family_schedule_list_model.dart';
-import 'package:fam_story_frontend/services/api_service.dart';
+import 'package:fam_story_frontend/services/user_api_service.dart';
 import 'package:fam_story_frontend/services/family_schedule_api_service.dart';
 import 'package:fam_story_frontend/style.dart';
 import 'package:flutter/material.dart';
@@ -43,11 +43,7 @@ class _CalendarPageState extends State<CalendarPage> {
                     ),
                     Text(
                       "Calendar",
-                      style: TextStyle(
-                          fontFamily: 'AppleSDGothicNeo',
-                          fontWeight: FontWeight.bold,
-                          color: AppColor.textColor,
-                          fontSize: 35),
+                      style: TextStyle(fontFamily: 'AppleSDGothicNeo', fontWeight: FontWeight.bold, color: AppColor.textColor, fontSize: 35),
                     ),
                   ],
                 ),
@@ -83,9 +79,7 @@ class _CalendarPageState extends State<CalendarPage> {
                     future: scheduleList,
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
-                        List<FamilyScheduleModel> todaySchedule = snapshot.data!
-                            .where((e) => e.scheduleDay == _currentDate.day)
-                            .toList();
+                        List<FamilyScheduleModel> todaySchedule = snapshot.data!.where((e) => e.scheduleDay == _currentDate.day).toList();
                         int scheduleNum = todaySchedule.length;
                         if (scheduleNum == 0) {
                           // TODO: 일정 추가 유도 멘트
@@ -100,27 +94,16 @@ class _CalendarPageState extends State<CalendarPage> {
                                 key: UniqueKey(),
                                 onDismissed: (direction) {
                                   setState(() {
-                                    todaySchedule.removeWhere((item) =>
-                                        item.scheduleId == schedule.scheduleId);
-                                    snapshot.data!.removeWhere((item) =>
-                                        item.scheduleId == schedule.scheduleId);
+                                    todaySchedule.removeWhere((item) => item.scheduleId == schedule.scheduleId);
+                                    snapshot.data!.removeWhere((item) => item.scheduleId == schedule.scheduleId);
                                   });
                                   Future<bool> flag;
                                   try {
-                                    flag = FamilyScheduleApiService
-                                        .deleteFamilySchedule(
-                                            schedule.scheduleId);
+                                    flag = FamilyScheduleApiService.deleteFamilySchedule(schedule.scheduleId);
                                     flag.then((value) {
                                       if (value) {
                                         setState(() {
-                                          _markedDateMap.remove(
-                                              _currentDate,
-                                              _markedDateMap
-                                                  .getEvents(_currentDate)
-                                                  .where((e) =>
-                                                      e.id ==
-                                                      schedule.scheduleId)
-                                                  .first);
+                                          _markedDateMap.remove(_currentDate, _markedDateMap.getEvents(_currentDate).where((e) => e.id == schedule.scheduleId).first);
                                         });
                                       }
                                     });
@@ -134,20 +117,14 @@ class _CalendarPageState extends State<CalendarPage> {
                                         leading: Container(
                                           width: 5,
                                           height: 20,
-                                          decoration: BoxDecoration(
-                                              color: AppColor.swatchColor,
-                                              borderRadius:
-                                                  BorderRadius.circular(10)),
+                                          decoration: BoxDecoration(color: AppColor.swatchColor, borderRadius: BorderRadius.circular(10)),
                                         ),
                                         title: Text(
                                           todaySchedule[idx].scheduleName,
-                                          style: const TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold),
+                                          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                                         )),
                                     Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 20.0),
+                                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
                                       child: Container(
                                         color: AppColor.subColor,
                                         height: 1,
@@ -178,8 +155,7 @@ class _CalendarPageState extends State<CalendarPage> {
       context: context,
       builder: (BuildContext context) {
         return Dialog(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
           child: Container(
             width: 350,
             height: 300,
@@ -205,17 +181,11 @@ class _CalendarPageState extends State<CalendarPage> {
                     children: [
                       Text(
                         _currentDate.toString().split(' ')[0],
-                        style: const TextStyle(
-                            fontSize: 26,
-                            fontWeight: FontWeight.bold,
-                            color: AppColor.swatchColor),
+                        style: const TextStyle(fontSize: 26, fontWeight: FontWeight.bold, color: AppColor.swatchColor),
                       ),
                       const Text(
                         'Tell your schedule to family!',
-                        style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: AppColor.textColor),
+                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColor.textColor),
                       ),
                     ],
                   ),
@@ -224,14 +194,10 @@ class _CalendarPageState extends State<CalendarPage> {
                     child: TextField(
                       controller: textController,
                       decoration: InputDecoration(
-                        focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15),
-                            borderSide:
-                                const BorderSide(color: AppColor.swatchColor)),
+                        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(15), borderSide: const BorderSide(color: AppColor.swatchColor)),
                         isDense: true,
                         hintText: "Title",
-                        hintStyle:
-                            TextStyle(color: Colors.black.withOpacity(0.4)),
+                        hintStyle: TextStyle(color: Colors.black.withOpacity(0.4)),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(15),
                         ),
@@ -246,13 +212,7 @@ class _CalendarPageState extends State<CalendarPage> {
                             // post
                             Future<int> scheduleId;
                             try {
-                              scheduleId =
-                                  FamilyScheduleApiService.postFamilySchedule(
-                                      textController.text,
-                                      3,
-                                      _currentDate.year,
-                                      _currentDate.month,
-                                      _currentDate.day);
+                              scheduleId = FamilyScheduleApiService.postFamilySchedule(textController.text, 3, _currentDate.year, _currentDate.month, _currentDate.day);
                               scheduleId.then((value) {
                                 setState(() {
                                   _updateCalendar(_currentDate);
@@ -263,9 +223,7 @@ class _CalendarPageState extends State<CalendarPage> {
                             }
                             Navigator.of(context).pop();
                           },
-                          style: const ButtonStyle(
-                              backgroundColor: MaterialStatePropertyAll(
-                                  AppColor.swatchColor)),
+                          style: const ButtonStyle(backgroundColor: MaterialStatePropertyAll(AppColor.swatchColor)),
                           child: const Text(
                             "OK",
                             style: TextStyle(color: Colors.white),
@@ -275,9 +233,7 @@ class _CalendarPageState extends State<CalendarPage> {
                             setState(() {});
                             Navigator.of(context).pop();
                           },
-                          style: ButtonStyle(
-                              backgroundColor: MaterialStatePropertyAll(
-                                  AppColor.swatchColor.withOpacity(0.5))),
+                          style: ButtonStyle(backgroundColor: MaterialStatePropertyAll(AppColor.swatchColor.withOpacity(0.5))),
                           child: const Text(
                             "Cancel",
                             style: TextStyle(color: Colors.white),
@@ -343,17 +299,12 @@ class _CalendarPageState extends State<CalendarPage> {
             weekFormat: false,
             height: 400.0,
             todayButtonColor: AppColor.objectColor,
-            todayTextStyle: const TextStyle(
-                color: AppColor.textColor,
-                fontSize: 18,
-                fontWeight: FontWeight.bold),
+            todayTextStyle: const TextStyle(color: AppColor.textColor, fontSize: 18, fontWeight: FontWeight.bold),
             selectedDateTime: _currentDate,
             selectedDayButtonColor: AppColor.swatchColor.withOpacity(0.6),
-            selectedDayTextStyle:
-                const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+            selectedDayTextStyle: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
             // selectedDayBorderColor: Colors.red,
-            markedDateCustomTextStyle: const TextStyle(
-                color: Colors.white, fontWeight: FontWeight.bold),
+            markedDateCustomTextStyle: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
             markedDatesMap: _markedDateMap,
             markedDateShowIcon: true,
             markedDateIconMaxShown: 1,
@@ -371,10 +322,7 @@ class _CalendarPageState extends State<CalendarPage> {
               });
             },
             staticSixWeekFormat: true,
-            headerTextStyle: const TextStyle(
-                color: AppColor.swatchColor,
-                fontSize: 23,
-                fontWeight: FontWeight.bold),
+            headerTextStyle: const TextStyle(color: AppColor.swatchColor, fontSize: 23, fontWeight: FontWeight.bold),
             leftButtonIcon: const Icon(
               CupertinoIcons.left_chevron,
               color: AppColor.swatchColor,
@@ -394,8 +342,7 @@ class _CalendarPageState extends State<CalendarPage> {
     setState(() {
       try {
         // TODO: familyId 변경
-        scheduleList = FamilyScheduleApiService.getFamilyScheduleList(
-            3, date.year, date.month);
+        scheduleList = FamilyScheduleApiService.getFamilyScheduleList(3, date.year, date.month);
         print("updateCalendar");
         scheduleList.then((value) {
           setState(() {
@@ -413,11 +360,9 @@ class _CalendarPageState extends State<CalendarPage> {
     print("drawSchedule");
     for (var schedule in list) {
       _markedDateMap.add(
-          DateTime(schedule.scheduleYear, schedule.scheduleMonth,
-              schedule.scheduleDay),
+          DateTime(schedule.scheduleYear, schedule.scheduleMonth, schedule.scheduleDay),
           Event(
-              date: DateTime(schedule.scheduleYear, schedule.scheduleMonth,
-                  schedule.scheduleDay),
+              date: DateTime(schedule.scheduleYear, schedule.scheduleMonth, schedule.scheduleDay),
               title: schedule.scheduleName,
               icon: (_iconWidget(
                 schedule.scheduleDay.toString(),
