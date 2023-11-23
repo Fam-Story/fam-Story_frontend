@@ -1,3 +1,4 @@
+import 'package:fam_story_frontend/pages/family_create_page.dart';
 import 'package:fam_story_frontend/services/api_service.dart';
 import 'package:fam_story_frontend/style.dart';
 import 'package:flutter/material.dart';
@@ -51,29 +52,34 @@ class _FamilyJoinCreatePageState extends State<FamilyJoinCreatePage> {
               child: Center(
                 child: Column(children: [
                   // 생성
-                  Container(
-                    padding: const EdgeInsets.all(20),
-                    height: (MediaQuery.of(context).size.height - 320) / 2,
-                    width: MediaQuery.of(context).size.width - 40,
-                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(30), color: AppColor.swatchColor),
-                    child: const Center(
-                      child: Column(
-                        children: [
-                          SizedBox(height: 30),
-                          Text(
-                            'Create',
-                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 46, color: AppColor.objectColor),
-                          ),
-                          SizedBox(height: 10),
-                          Text(
-                            'Create Your fam\'Story !!',
-                            style: TextStyle(fontSize: 18, color: AppColor.objectColor),
-                          ),
-                          Text(
-                            'And Invite Your Family :)',
-                            style: TextStyle(fontSize: 18, color: AppColor.objectColor),
-                          ),
-                        ],
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const FamilyCreatePage()));
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(20),
+                      height: (MediaQuery.of(context).size.height - 320) / 2,
+                      width: MediaQuery.of(context).size.width - 40,
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(30), color: AppColor.swatchColor),
+                      child: const Center(
+                        child: Column(
+                          children: [
+                            SizedBox(height: 30),
+                            Text(
+                              'Create',
+                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 46, color: AppColor.objectColor),
+                            ),
+                            SizedBox(height: 10),
+                            Text(
+                              'Create Your fam\'Story !!',
+                              style: TextStyle(fontSize: 18, color: AppColor.objectColor),
+                            ),
+                            Text(
+                              'And Invite Your Family :)',
+                              style: TextStyle(fontSize: 18, color: AppColor.objectColor),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
