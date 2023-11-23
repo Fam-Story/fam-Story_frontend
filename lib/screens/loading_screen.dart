@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:fam_story_frontend/services/api_service.dart';
+import 'package:fam_story_frontend/services/user_api_service.dart';
 import 'package:fam_story_frontend/widgets/loading_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
