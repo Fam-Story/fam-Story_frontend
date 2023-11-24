@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:fam_story_frontend/pages/family_join_create_page.dart';
 import 'package:fam_story_frontend/services/user_api_service.dart';
 import 'package:fam_story_frontend/widgets/loading_indicator.dart';
 import 'package:flutter/material.dart';
@@ -23,18 +24,24 @@ class _LoadingScreenState extends State<LoadingScreen> {
     // 로그인 상태 확인
     const storage = FlutterSecureStorage();
     String? userInfoString = await storage.read(key: 'login');
-
+    int? isBelongedFamily;
     if (userInfoString != null) {
       Map<String, dynamic> userInfo = json.decode(userInfoString);
       if (userInfo['email'] != null) {
         // 자동 로그인 상태; 토큰 정보 자동으로 다시 받아오기
         try {
-          UserApiService.postUserLogin(userInfo['email'], userInfo['password'], true);
+          isBelongedFamily = await UserApiService.postUserLogin(userInfo['email'], userInfo['password'], true);
         } catch (e) {
           // TODO: 에러 팝업 추가
           print(e.toString());
         }
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const RootPage()));
+        if (isBelongedFamily == 1) {
+          // 가족이 있는 경우
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const RootPage()));
+        } else if (isBelongedFamily == 0) {
+          // 가족이 없는 경우
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const FamilyJoinCreatePage()));
+        }
       } else {
         // 자동 로그인 X
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LoginSignUpPage()));
