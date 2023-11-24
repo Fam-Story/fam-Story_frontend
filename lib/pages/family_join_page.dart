@@ -1,3 +1,4 @@
+import 'package:fam_story_frontend/models/family_model.dart';
 import 'package:fam_story_frontend/services/family_api_service.dart';
 import 'package:fam_story_frontend/style.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,7 @@ class FamilyJoinPage extends StatefulWidget {
 class _FamilyJoinPageState extends State<FamilyJoinPage> with TickerProviderStateMixin {
   final _familyKeyCodeController = TextEditingController();
   String? familyKeyCode;
+
   String? _errorText;
 
   @override
@@ -154,11 +156,49 @@ class _FamilyJoinPageState extends State<FamilyJoinPage> with TickerProviderStat
                     familyKeyCode = _familyKeyCodeController.text;
                     if (familyKeyCode!.isNotEmpty) {
                       setState(() {});
-
                       try {
-                        int familyId = await FamilyApiService.postFamily(familyKeyCode!);
-                        print('familyId: $familyId');
-                        Navigator.pushReplacementNamed(context, '/rolePage', arguments: {'familyKeyCode': familyKeyCode, 'familyId': familyId});
+                        FamilyModel familyInfo = await FamilyApiService.getFamilyJoin(familyKeyCode!);
+                        String familyName = familyInfo.familyName;
+                        int familyId = familyInfo.familyId;
+
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext buildContext) {
+                              return AlertDialog(
+                                backgroundColor: AppColor.objectColor, // 배경색 변경
+                                content: Text(
+                                  'Welcome $familyName! !!',
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                    fontSize: 20, // 글씨 크기 변경
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColor.swatchColor, // 글씨 색상 변경
+                                  ),
+                                ),
+                                actions: [
+                                  Center(
+                                    child: TextButton(
+                                      onPressed: () {
+                                        Navigator.pushReplacementNamed(context, '/rolePage', arguments: {'familyName': familyName, 'familyId': familyId});
+                                      },
+                                      style: TextButton.styleFrom(
+                                        foregroundColor: AppColor.objectColor, // 텍스트 색상
+                                        padding: const EdgeInsets.fromLTRB(40, 10, 40, 10), // 버튼 패딩 조정
+                                        minimumSize: const Size(100, 40),
+                                        backgroundColor: AppColor.textColor, // 버튼 배경색
+                                      ),
+                                      child: const Text(
+                                        'Let\'s Join Home',
+                                        style: TextStyle(
+                                          fontSize: 18, // 버튼 글씨 크기
+                                          color: AppColor.objectColor, // 버튼 글씨 색상
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            });
                       } catch (e) {
                         print(e.toString());
                       }

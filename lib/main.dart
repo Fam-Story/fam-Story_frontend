@@ -26,11 +26,11 @@ class FamStory extends StatelessWidget {
         // TODO: 로딩에서 가족 여부 체크
         // '/': (context) => const LoadingScreen(),
 
-        '/': (context) => const FamilyJoinPage(),
+        // '/': (context) => const FamilyJoinPage(),
 
         // 그페이지 TEST 하고 싶으면 밑처럼 그걸 메인 라우트로 지정하기~
         // '/': (context) => const FamilyJoinCreatePage(),
-        // '/': (context) => const LoginSignUpPage(),
+        '/': (context) => const LoginSignUpPage(),
 
         '/rootPage': (context) => const RootPage(),
         '/loginSignUpPage': (context) => const LoginSignUpPage(),
