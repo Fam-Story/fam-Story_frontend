@@ -1,5 +1,6 @@
 import 'package:fam_story_frontend/pages/family_create_page.dart';
-import 'package:fam_story_frontend/services/api_service.dart';
+import 'package:fam_story_frontend/pages/family_join_page.dart';
+import 'package:fam_story_frontend/services/user_api_service.dart';
 import 'package:fam_story_frontend/style.dart';
 import 'package:flutter/material.dart';
 
@@ -85,29 +86,34 @@ class _FamilyJoinCreatePageState extends State<FamilyJoinCreatePage> {
                   ),
                   const SizedBox(height: 40),
                   // 참가
-                  Container(
-                    padding: const EdgeInsets.all(20),
-                    height: (MediaQuery.of(context).size.height - 320) / 2,
-                    width: MediaQuery.of(context).size.width - 40,
-                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(30), color: AppColor.objectColor),
-                    child: const Center(
-                      child: Column(
-                        children: [
-                          SizedBox(height: 30),
-                          Text(
-                            'Join',
-                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 46, color: AppColor.swatchColor),
-                          ),
-                          SizedBox(height: 10),
-                          Text(
-                            'Join Your fam\'Story !!',
-                            style: TextStyle(fontSize: 18, color: AppColor.swatchColor),
-                          ),
-                          Text(
-                            'With Your Invitation Code :)',
-                            style: TextStyle(fontSize: 18, color: AppColor.swatchColor),
-                          ),
-                        ],
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const FamilyJoinPage()));
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(20),
+                      height: (MediaQuery.of(context).size.height - 320) / 2,
+                      width: MediaQuery.of(context).size.width - 40,
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(30), color: AppColor.objectColor),
+                      child: const Center(
+                        child: Column(
+                          children: [
+                            SizedBox(height: 30),
+                            Text(
+                              'Join',
+                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 46, color: AppColor.swatchColor),
+                            ),
+                            SizedBox(height: 10),
+                            Text(
+                              'Join Your fam\'Story !!',
+                              style: TextStyle(fontSize: 18, color: AppColor.swatchColor),
+                            ),
+                            Text(
+                              'With Your Invitation Code :)',
+                              style: TextStyle(fontSize: 18, color: AppColor.swatchColor),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
