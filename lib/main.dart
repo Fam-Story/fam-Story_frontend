@@ -21,17 +21,18 @@ class FamStory extends StatelessWidget {
         useMaterial3: true,
       ),
       // 초기 라우트를 LoadingScreen.
-      initialRoute: '/',
-      routes: {
-        '/': (context) => const LoadingScreen(),
-        '/rootPage': (context) => const RootPage(),
-        '/loginSignUpPage': (context) => const LoginSignUpPage(),
-        '/familyJoinCreatePage': (context) => const FamilyJoinCreatePage(),
-        // '/familyJoinPage': (context) => const FamilyJoinPage(),
-        '/familyCreatePage': (context) => const FamilyCreatePage(),
-        '/rolePage': (context) => const RolePage(), // 인자 필요함
-        // TODO: 각자 추가 라우트가 필요하면 여기에 추가하세용.
-      },
+      home: const RootPage(),
+      // initialRoute: '/',
+      // routes: {
+      //   '/': (context) => const LoadingScreen(),
+      //   '/rootPage': (context) => const RootPage(),
+      //   '/loginSignUpPage': (context) => const LoginSignUpPage(),
+      //   '/familyJoinCreatePage': (context) => const FamilyJoinCreatePage(),
+      //   // '/familyJoinPage': (context) => const FamilyJoinPage(),
+      //   '/familyCreatePage': (context) => const FamilyCreatePage(),
+      //   '/rolePage': (context) => const RolePage(), // 인자 필요함
+      //   // TODO: 각자 추가 라우트가 필요하면 여기에 추가하세용.
+      // },
     );
   }
 }
