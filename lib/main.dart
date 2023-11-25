@@ -28,6 +28,8 @@ class FamStory extends StatelessWidget {
 
         // '/': (context) => const FamilyJoinPage(),
 
+        // '/': (context) => const RootPage(),
+
         // 그페이지 TEST 하고 싶으면 밑처럼 그걸 메인 라우트로 지정하기~
         // '/': (context) => const FamilyJoinCreatePage(),
         '/': (context) => const LoginSignUpPage(),
