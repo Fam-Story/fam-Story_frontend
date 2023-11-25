@@ -30,6 +30,8 @@ class HomeBody extends StatefulWidget {
 class _HomeBodyState extends State<HomeBody> {
   @override
   Widget build(BuildContext context) {
+    int familyMember = 5;
+
     return SafeArea(
       child: Center(
         child: Column(
@@ -53,34 +55,125 @@ class _HomeBodyState extends State<HomeBody> {
                   color: AppColor.swatchColor,
                 ),
                 //FamilyMemberButton
-                Positioned(
+                if (familyMember == 5) ...[
+                  Positioned(
                     top: -120,
                     left: 170,
                     child: SizedBox(
                       child: FamilyMemberButton(
-                          size: 0.28, onTap: () {}, child: const Text("엄마")),
-                    )),
-                Positioned(
+                        size: 0.28,
+                        onTap: () {},
+                        child: const Text("엄마"),
+                      ),
+                    ),
+                  ),
+                  Positioned(
                     top: -120,
                     left: 30,
                     child: SizedBox(
                       child: FamilyMemberButton(
-                          size: 0.28, onTap: () {}, child: const Text("아빠")),
-                    )),
-                Positioned(
+                        size: 0.28,
+                        onTap: () {},
+                        child: const Text("아빠"),
+                      ),
+                    ),
+                  ),
+                  Positioned(
                     top: 10,
                     left: -40,
                     child: SizedBox(
                       child: FamilyMemberButton(
-                          size: 0.28, onTap: () {}, child: const Text("누나")),
-                    )),
-                Positioned(
+                        size: 0.28,
+                        onTap: () {},
+                        child: const Text("누나"),
+                      ),
+                    ),
+                  ),
+                  Positioned(
                     top: 150,
                     left: -40,
                     child: SizedBox(
                       child: FamilyMemberButton(
-                          size: 0.28, onTap: () {}, child: const Text("동생")),
-                    )),
+                        size: 0.28,
+                        onTap: () {},
+                        child: const Text("동생"),
+                      ),
+                    ),
+                  ),
+                ]
+                  else if (familyMember == 4) ...[
+                  Positioned(
+                    top: -120,
+                    left: 170,
+                    child: SizedBox(
+                      child: FamilyMemberButton(
+                        size: 0.32,
+                        onTap: () {},
+                        child: const Text("엄마"),
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    top: -120,
+                    left: 20,
+                    child: SizedBox(
+                      child: FamilyMemberButton(
+                        size: 0.32,
+                        onTap: () {},
+                        child: const Text("아빠"),
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    top: 40,
+                    left: -40,
+                    child: SizedBox(
+                      child: FamilyMemberButton(
+                        size: 0.32,
+                        onTap: () {},
+                        child: const Text("누나"),
+                      ),
+                    ),
+                  ),
+                ]
+                  else if (familyMember == 3) ...[
+                  Positioned(
+                    top: -120,
+                    left: 100,
+                    child: SizedBox(
+                      child: FamilyMemberButton(
+                        size: 0.36,
+                        onTap: () {},
+                        child: const Text("엄마"),
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    top: 10,
+                    left: -40,
+                    child: SizedBox(
+                      child: FamilyMemberButton(
+                        size: 0.36,
+                        onTap: () {},
+                        child: const Text("누나"),
+                      ),
+                    ),
+                  ),
+                ]
+                  else if (familyMember == 2) ...[
+                  Positioned(
+                    top: -120,
+                    left: -20,
+                    child: SizedBox(
+                      child: FamilyMemberButton(
+                        size: 0.40,
+                        onTap: () {},
+                        child: const Text("엄마"),
+                      ),
+                    ),
+                  ),
+                ]
+                  else ...[],
                 Positioned(
                     top: 100,
                     left: 180,
