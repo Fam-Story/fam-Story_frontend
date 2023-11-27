@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 class UserModel {
   final int userId, age, gender;
   final String email, username, nickname;
