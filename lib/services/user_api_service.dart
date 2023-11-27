@@ -1,4 +1,3 @@
-import 'dart:convert' as convert;
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -9,8 +8,26 @@ import 'package:http/http.dart' as http;
 class UserApiService {
   static const String baseUrl = 'https://famstory.thisiswandol.com/api';
 
-  // /user 유저 생성
-  static Future<bool> createUser(String email, String username, String password, String? nickname, int age, int gender) async {
+  // POST: /user [회원가입] 회원 가입
+  static Future<bool> postUser(String email, String username, String password, String? nickname, int age, int gender) async {
+    final url = Uri.parse('$baseUrl/user');
+
+    final response = await http.post(
+      url,
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode({"email": email, "username": username, "password": password, "nickname": nickname, "age": age, "gender": gender}),
+    );
+
+    if (response.statusCode == 201) {
+      return true;
+    }
+    throw ErrorDescription('Something wrong to create User ID');
+  }
+
+  // PUT: /user [프로필] 회원 정보 수정
+  static Future<bool> putUser(String email, String username, String password, String? nickname, int age, int gender) async {
     final url = Uri.parse('$baseUrl/user');
 
     final response = await http.post(

@@ -417,7 +417,7 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
                         if (isSignUpScreen) {
                           // 회원 가입
                           try {
-                            bool isCreated = await UserApiService.createUser(email, username, password, nickname, age, gender);
+                            bool isCreated = await UserApiService.postUser(email, username, password, nickname, age, gender);
                             if (isCreated) {
                               // TODO: 회원가입 완료 팝업 띄우기
                               print('sign up ok');
