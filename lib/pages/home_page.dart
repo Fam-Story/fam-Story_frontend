@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fam_story_frontend/style.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -182,48 +183,68 @@ class _HomeBodyState extends State<HomeBody> {
                           size: 0.4, onTap: () {}, child: const Text("나")),
                     )),
 
-                //Communication button
+                //Interaction button
+
                 Positioned(
-                  top: 85,
-                  left: 235,
-                  child: SizedBox(
-                    height: 60,
-                    width: 60,
-                    child: InteractionButton(
-                      onTap: () {},
-                      child: Container(
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          image: DecorationImage(
-                            image: AssetImage('assets/images/pointing.png'),
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
+                  top: 100,
+                  left: 230,
+                  child: GestureDetector(
+                    onTap: () {
+                      // 이미지를 탭했을 때의 동작을 여기에 추가
+                    },
+                    child: Image.asset(
+                      'assets/images/poke.png',
+                      fit: BoxFit.fill,
+                      width: 70, // 원하는 너비로 조절
+                      height: 70, // 원하는 높이로 조절
                     ),
                   ),
                 ),
                 Positioned(
-                    top: 98,
-                    left: 173,
-                    child: SizedBox(
-                      child: InteractionButton(
-                          onTap: () {}, child: const Text("나")),
-                    )),
+                  top: 125,
+                  left: 175,
+                  child: GestureDetector(
+                    onTap: () {
+                      // 이미지를 탭했을 때의 동작을 여기에 추가
+                    },
+                    child: Image.asset(
+                      'assets/images/heart.png',
+                      fit: BoxFit.fill,
+                      width: 55, // 원하는 너비로 조절
+                      height: 55, // 원하는 높이로 조절
+                    ),
+                  ),
+                ),
                 Positioned(
-                    top: 142,
-                    left: 125,
-                    child: SizedBox(
-                      child: InteractionButton(
-                          onTap: () {}, child: const Text("나")),
-                    )),
+                  top: 170,
+                  left: 125,
+                  child: GestureDetector(
+                    onTap: () {
+                      // 이미지를 탭했을 때의 동작을 여기에 추가
+                    },
+                    child: Image.asset(
+                      'assets/images/thumbup.png',
+                      fit: BoxFit.fill,
+                      width: 55, // 원하는 너비로 조절
+                      height: 55, // 원하는 높이로 조절
+                    ),
+                  ),
+                ),
                 Positioned(
-                    top: 205,
-                    left: 115,
-                    child: SizedBox(
-                      child: InteractionButton(
-                          onTap: () {}, child: const Text("나")),
-                    )),
+                  top: 235,
+                  left: 115,
+                  child: GestureDetector(
+                    onTap: () {
+                      // 이미지를 탭했을 때의 동작을 여기에 추가
+                    },
+                    child: Image.asset(
+                      'assets/images/thumbdown.png',
+                      fit: BoxFit.fill,
+                      width: 55, // 원하는 너비로 조절
+                      height: 55, // 원하는 높이로 조절
+                    ),
+                  ),
+                ),
 
                 //SpeechBubble
                 Positioned(
