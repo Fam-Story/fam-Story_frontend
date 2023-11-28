@@ -30,7 +30,8 @@ class HomeBody extends StatefulWidget {
 class _HomeBodyState extends State<HomeBody> {
   @override
   Widget build(BuildContext context) {
-    int familyMember = 4;
+    // family 수를 여기에 저장
+    int familyMember = 5;
 
     return SafeArea(
       child: Center(
@@ -54,7 +55,8 @@ class _HomeBodyState extends State<HomeBody> {
                   height: 300,
                   color: AppColor.swatchColor,
                 ),
-                //FamilyMemberButton
+                
+                //FamilyMember round
                 if (familyMember == 5) ...[
                   Positioned(
                     top: -120,
@@ -170,6 +172,8 @@ class _HomeBodyState extends State<HomeBody> {
                     ),
                   ),
                 ] else ...[],
+
+                //Me round
                 Positioned(
                     top: 100,
                     left: 180,
@@ -177,6 +181,8 @@ class _HomeBodyState extends State<HomeBody> {
                       child: FamilyMemberButton(
                           size: 0.4, onTap: () {}, child: const Text("나")),
                     )),
+
+                //Communication button
                 Positioned(
                   top: 85,
                   left: 235,
@@ -218,6 +224,7 @@ class _HomeBodyState extends State<HomeBody> {
                       child: InteractionButton(
                           onTap: () {}, child: const Text("나")),
                     )),
+
                 //SpeechBubble
                 Positioned(
                   top: 310,

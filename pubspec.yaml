@@ -39,6 +39,7 @@ dependencies:
   flutter_secure_storage: ^9.0.0
   flutter_calendar_carousel: ^2.4.2
   intl: ^0.18.1
+  font_awesome_flutter: ^9.1.0
 
 dev_dependencies:
   flutter_test:
