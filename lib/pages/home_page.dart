@@ -30,7 +30,7 @@ class HomeBody extends StatefulWidget {
 class _HomeBodyState extends State<HomeBody> {
   @override
   Widget build(BuildContext context) {
-    int familyMember = 5;
+    int familyMember = 4;
 
     return SafeArea(
       child: Center(
@@ -100,8 +100,7 @@ class _HomeBodyState extends State<HomeBody> {
                       ),
                     ),
                   ),
-                ]
-                  else if (familyMember == 4) ...[
+                ] else if (familyMember == 4) ...[
                   Positioned(
                     top: -120,
                     left: 170,
@@ -135,8 +134,7 @@ class _HomeBodyState extends State<HomeBody> {
                       ),
                     ),
                   ),
-                ]
-                  else if (familyMember == 3) ...[
+                ] else if (familyMember == 3) ...[
                   Positioned(
                     top: -120,
                     left: 100,
@@ -159,8 +157,7 @@ class _HomeBodyState extends State<HomeBody> {
                       ),
                     ),
                   ),
-                ]
-                  else if (familyMember == 2) ...[
+                ] else if (familyMember == 2) ...[
                   Positioned(
                     top: -120,
                     left: -20,
@@ -172,8 +169,7 @@ class _HomeBodyState extends State<HomeBody> {
                       ),
                     ),
                   ),
-                ]
-                  else ...[],
+                ] else ...[],
                 Positioned(
                     top: 100,
                     left: 180,
@@ -181,14 +177,26 @@ class _HomeBodyState extends State<HomeBody> {
                       child: FamilyMemberButton(
                           size: 0.4, onTap: () {}, child: const Text("나")),
                     )),
-                //InteractionButton
                 Positioned(
-                    top: 85,
-                    left: 235,
-                    child: SizedBox(
-                      child: InteractionButton(
-                          onTap: () {}, child: const Text("나")),
-                    )),
+                  top: 85,
+                  left: 235,
+                  child: SizedBox(
+                    height: 60,
+                    width: 60,
+                    child: InteractionButton(
+                      onTap: () {},
+                      child: Container(
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                            image: AssetImage('assets/images/pointing.png'),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
                 Positioned(
                     top: 98,
                     left: 173,
