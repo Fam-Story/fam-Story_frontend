@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "532555653782",
+    "project_id": "fam-story-frontend",
+    "storage_bucket": "fam-story-frontend.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:532555653782:android:005c681244099506b398b7",
+        "android_client_info": {
+          "package_name": "com.example.fam_story_frontend"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDjFcFgH76pBJNB3PWXMapmKCqvjQXwCEA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
