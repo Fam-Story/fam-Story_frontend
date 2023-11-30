@@ -57,14 +57,14 @@ class PostPage extends StatelessWidget {
             PostWidget(
               title: '',
               member: 'member',
-              createdDate: '2023-11-06',
+              createdDate: '2023-11-06 13:08',
               context: '밥 묵고 학교 가라 아들들 ~ 냉장고 안에 넣어뒀단다',
               role: 1,
             ),
             PostWidget(
               title: 'title',
               member: 'member',
-              createdDate: '2023-11-09',
+              createdDate: '2023-11-09 19:02',
               context: '안녕하세요',
               role: 1,
             ),
