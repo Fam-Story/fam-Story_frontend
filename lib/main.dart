@@ -70,15 +70,17 @@ class FamStory extends StatelessWidget {
       initialRoute: '/',
       routes: {
         // TODO: 로딩에서 가족 여부 체크
-        '/': (context) => const LoadingScreen(),
-        '/': (context) => const FamilyJoinPage(),
 
-        '/': (context) => const LoginSignUpPage(),
+        // '/': (context) => const FamilyJoinPage(),
+
+        // '/': (context) => const RootPage(),
 
         // 그페이지 TEST 하고 싶으면 밑처럼 그걸 메인 라우트로 지정하기~
         '/': (context) => const FamilyJoinCreatePage(),
         '/': (context) => const LoginSignUpPage(),
 
+        '/': (context) => const LoadingScreen(),
+        
         '/rootPage': (context) => const RootPage(),
         '/loginSignUpPage': (context) => const LoginSignUpPage(),
         '/familyJoinCreatePage': (context) => const FamilyJoinCreatePage(),

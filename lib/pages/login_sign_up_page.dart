@@ -208,6 +208,7 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
                                     ),
                                     contentPadding: const EdgeInsets.all(10),
                                   ),
+                                  obscureText: isSignUpScreen ? false : true,
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
                                       return 'Please enter your password';
