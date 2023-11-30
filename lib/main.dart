@@ -1,5 +1,6 @@
 import 'package:fam_story_frontend/pages/family_create_page.dart';
 import 'package:fam_story_frontend/pages/family_join_page.dart';
+import 'package:fam_story_frontend/pages/home_page.dart';
 import 'package:fam_story_frontend/pages/role_page.dart';
 import 'package:flutter/material.dart';
 import 'package:fam_story_frontend/screens/loading_screen.dart';
