@@ -53,6 +53,7 @@ class PostPage extends StatelessWidget {
         ),
         const Row(
           children: [
+            // TODO: ListView.builder로 변경
             PostWidget(
               title: '',
               member: 'member',
@@ -83,8 +84,10 @@ class PostPage extends StatelessWidget {
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
           child: Container(
             width: 350,
+            height: 300,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(30),
+              borderRadius:
+                  const BorderRadius.only(bottomLeft: Radius.circular(20)),
               color: AppColor.objectColor,
               boxShadow: [
                 BoxShadow(
@@ -98,34 +101,28 @@ class PostPage extends StatelessWidget {
               padding: const EdgeInsets.all(15.0),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'Put your post-it!',
-                    style: TextStyle(
-                        fontSize: 26,
-                        fontWeight: FontWeight.bold,
-                        color: AppColor.swatchColor),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
+                  // const SizedBox(
+                  //   height: 10,
+                  // ),
                   TextField(
                     maxLines: null,
                     controller: textController,
                     decoration: InputDecoration(
-                      focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                          borderSide:
-                              const BorderSide(color: AppColor.swatchColor)),
+                      border: InputBorder.none,
+                      // focusedBorder: OutlineInputBorder(
+                      //     borderRadius: BorderRadius.circular(15),
+                      //     borderSide:
+                      //         const BorderSide(color: AppColor.swatchColor)),
                       isDense: true,
-                      hintText: "Text",
+                      hintText: "Leave your message!",
                       hintStyle:
                           TextStyle(color: Colors.black.withOpacity(0.4)),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15),
-                      ),
+                      // border: OutlineInputBorder(
+                      //   borderRadius: BorderRadius.circular(15),
+                      // ),
                     ),
                   ),
                   const SizedBox(
@@ -143,18 +140,7 @@ class PostPage extends StatelessWidget {
                               backgroundColor: MaterialStatePropertyAll(
                                   AppColor.swatchColor)),
                           child: const Text(
-                            "OK",
-                            style: TextStyle(color: Colors.white),
-                          )),
-                      ElevatedButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          style: ButtonStyle(
-                              backgroundColor: MaterialStatePropertyAll(
-                                  AppColor.swatchColor.withOpacity(0.5))),
-                          child: const Text(
-                            "Cancel",
+                            "Attach",
                             style: TextStyle(color: Colors.white),
                           )),
                     ],
