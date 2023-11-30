@@ -299,6 +299,12 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
                                           ),
                                           contentPadding: const EdgeInsets.all(10),
                                         ),
+                                        validator: (value) {
+                                          if (value == null || value.isEmpty) {
+                                            return 'Please enter your nickname';
+                                          }
+                                          return null;
+                                        },
                                         onSaved: (value) {
                                           nickname = value!;
                                         },
