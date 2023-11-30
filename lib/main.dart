@@ -28,19 +28,19 @@ class FamStory extends StatelessWidget {
 
         // '/': (context) => const FamilyJoinPage(),
 
-        // '/': (context) => const RootPage(),
+        '/': (context) => const RootPage(),
 
         // 그페이지 TEST 하고 싶으면 밑처럼 그걸 메인 라우트로 지정하기~
         // '/': (context) => const FamilyJoinCreatePage(),
-        '/': (context) => const LoginSignUpPage(),
+        // '/': (context) => const LoginSignUpPage(),
 
-        '/rootPage': (context) => const RootPage(),
-        '/loginSignUpPage': (context) => const LoginSignUpPage(),
-        '/familyJoinCreatePage': (context) => const FamilyJoinCreatePage(),
-        '/familyJoinPage': (context) => const FamilyJoinPage(),
-        '/familyCreatePage': (context) => const FamilyCreatePage(),
-        '/rolePage': (context) => const RolePage(), // 인자 필요함
-        // TODO: 각자 추가 라우트가 필요하면 여기에 추가하세용.
+        // '/rootPage': (context) => const RootPage(),
+        // '/loginSignUpPage': (context) => const LoginSignUpPage(),
+        // '/familyJoinCreatePage': (context) => const FamilyJoinCreatePage(),
+        // '/familyJoinPage': (context) => const FamilyJoinPage(),
+        // '/familyCreatePage': (context) => const FamilyCreatePage(),
+        // '/rolePage': (context) => const RolePage(), // 인자 필요함
+        // // TODO: 각자 추가 라우트가 필요하면 여기에 추가하세용.
       },
     );
   }
