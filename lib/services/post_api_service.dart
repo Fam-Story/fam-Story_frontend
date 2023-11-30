@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:fam_story_frontend/models/post_model.dart';
 
 class PostApiService {
   static const String baseUrl = 'https://famstory.thisiswandol.com/api';
@@ -12,7 +13,7 @@ class PostApiService {
 
   // 게시글 post
   static Future<int> postPost(
-      int srcMemberId, String context, String createdDate) async {
+      int srcMemberId, int familyId, String context, String createdDate) async {
     final url = Uri.parse('$baseUrl/post');
 
     final response = await http.post(
@@ -24,6 +25,7 @@ class PostApiService {
       },
       body: jsonEncode({
         "srcMemberId": srcMemberId,
+        "familyId": familyId,
         "title": "",
         "context": context,
         "createdDate": createdDate
@@ -84,5 +86,28 @@ class PostApiService {
     throw ErrorDescription('Something wrong to delete post!');
   }
 
-  
+  // // 가족 게시글 전부 받아오기
+  // static Future<List<PostModel>> getPostList(
+  //     int familyId, int year, int targetMonth) async {
+  //   List<FamilyScheduleModel> scheduleList = [];
+  //   final url = Uri.parse(
+  //       "$baseUrl/$familyScheduleList?$requestFamilyId$familyId&$requestYear$year&$requestTargetMonth$targetMonth");
+  //   final response = await http.get(url, headers: {
+  //     'Content-Type': 'application/json',
+  //     'Accept': 'application/json',
+  //     'Authorization': 'Bearer $token'
+  //   });
+
+  //   if (response.statusCode == 200) {
+  //     List<dynamic> list = jsonDecode(response.body)['data'];
+  //     for (var data in list) {
+  //       scheduleList.add(FamilyScheduleModel.fromJson(data));
+  //     }
+  //     print("call api");
+  //     return scheduleList;
+  //   } else {
+  //     print(response.statusCode);
+  //   }
+  //   throw Error();
+  // }
 }
