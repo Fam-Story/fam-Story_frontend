@@ -9,7 +9,7 @@ class UserApiService {
   static const String baseUrl = 'https://famstory.thisiswandol.com/api';
 
   /// POST: /user [회원가입] 회원 가입
-  static Future<bool> postUser(String email, String username, String password, String? nickname, int age, int gender) async {
+  static Future<bool> postUser(String email, String username, String password, String nickname, int age, int gender) async {
     final url = Uri.parse('$baseUrl/user');
 
     final response = await http.post(
@@ -42,6 +42,7 @@ class UserApiService {
     Map<String, dynamic> userInfo = json.decode(userInfoString);
     String loginToken = userInfo['token'];
 
+    // TODO: 회원 정보 수정 창에서 null 체크 하기
     Map<String, dynamic> data = {};
     if (email != null) {
       data.putIfAbsent("email", () => email);
