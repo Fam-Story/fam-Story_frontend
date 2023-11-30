@@ -17,24 +17,15 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
         return android;
       case TargetPlatform.iOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for ios - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return ios;
       case TargetPlatform.macOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for macos - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return macos;
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
@@ -52,11 +43,39 @@ class DefaultFirebaseOptions {
     }
   }
 
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyAa19FyldC63Z90tvFp95omK6_OhxDDm-Q',
+    appId: '1:114322835741:web:6a1b99bd04aca854a639f4',
+    messagingSenderId: '114322835741',
+    projectId: 'famstory-1e19a',
+    authDomain: 'famstory-1e19a.firebaseapp.com',
+    storageBucket: 'famstory-1e19a.appspot.com',
+    measurementId: 'G-VPMR54RBYT',
+  );
+
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDjFcFgH76pBJNB3PWXMapmKCqvjQXwCEA',
-    appId: '1:532555653782:android:005c681244099506b398b7',
-    messagingSenderId: '532555653782',
-    projectId: 'fam-story-frontend',
-    storageBucket: 'fam-story-frontend.appspot.com',
+    apiKey: 'AIzaSyDcC2KvrcwUkrtHdd6nAwODFLF5YfKhb-s',
+    appId: '1:114322835741:android:f660d3c7e24e56eda639f4',
+    messagingSenderId: '114322835741',
+    projectId: 'famstory-1e19a',
+    storageBucket: 'famstory-1e19a.appspot.com',
+  );
+
+  static const FirebaseOptions ios = FirebaseOptions(
+    apiKey: 'AIzaSyB4Vpxyf9RkR60-ld-Ap32NTDvqL256Fgk',
+    appId: '1:114322835741:ios:b6dc078d9029da11a639f4',
+    messagingSenderId: '114322835741',
+    projectId: 'famstory-1e19a',
+    storageBucket: 'famstory-1e19a.appspot.com',
+    iosBundleId: 'com.example.famStoryFrontend',
+  );
+
+  static const FirebaseOptions macos = FirebaseOptions(
+    apiKey: 'AIzaSyB4Vpxyf9RkR60-ld-Ap32NTDvqL256Fgk',
+    appId: '1:114322835741:ios:cf5e5f09723562f3a639f4',
+    messagingSenderId: '114322835741',
+    projectId: 'famstory-1e19a',
+    storageBucket: 'famstory-1e19a.appspot.com',
+    iosBundleId: 'com.example.famStoryFrontend.RunnerTests',
   );
 }
