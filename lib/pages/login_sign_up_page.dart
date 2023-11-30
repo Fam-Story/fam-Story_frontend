@@ -427,6 +427,7 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
                             bool isCreated = await UserApiService.postUser(email, username, password, nickname, age, gender);
                             if (isCreated) {
                               // TODO: 회원가입 완료 팝업 띄우기
+
                               print('sign up ok');
                             }
                           } catch (e) {
@@ -472,4 +473,83 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
       ),
     );
   }
+
+  // Future<dynamic> _showSignUpCompleteDialog(BuildContext context) {
+  //   return showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return Dialog(
+  //         shape:
+  //             RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+  //         child: Container(
+  //           width: 350,
+  //           height: 300,
+  //           decoration: BoxDecoration(
+  //             borderRadius:
+  //                 const BorderRadius.only(bottomLeft: Radius.circular(20)),
+  //             color: AppColor.objectColor,
+  //             boxShadow: [
+  //               BoxShadow(
+  //                 color: Colors.black.withOpacity(0.1),
+  //                 blurRadius: 20,
+  //                 spreadRadius: 5,
+  //               ),
+  //             ],
+  //           ),
+  //           child: Padding(
+  //             padding: const EdgeInsets.all(15.0),
+  //             child: Column(
+  //               mainAxisSize: MainAxisSize.min,
+  //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //               crossAxisAlignment: CrossAxisAlignment.start,
+  //               children: [
+  //                 // const SizedBox(
+  //                 //   height: 10,
+  //                 // ),
+  //                 TextField(
+  //                   maxLines: null,
+  //                   controller: textController,
+  //                   decoration: InputDecoration(
+  //                     border: InputBorder.none,
+  //                     // focusedBorder: OutlineInputBorder(
+  //                     //     borderRadius: BorderRadius.circular(15),
+  //                     //     borderSide:
+  //                     //         const BorderSide(color: AppColor.swatchColor)),
+  //                     isDense: true,
+  //                     hintText: "Leave your message!",
+  //                     hintStyle:
+  //                         TextStyle(color: Colors.black.withOpacity(0.4)),
+  //                     // border: OutlineInputBorder(
+  //                     //   borderRadius: BorderRadius.circular(15),
+  //                     // ),
+  //                   ),
+  //                 ),
+  //                 const SizedBox(
+  //                   height: 20,
+  //                 ),
+  //                 Row(
+  //                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //                   children: [
+  //                     ElevatedButton(
+  //                         onPressed: () {
+  //                           // post
+  //                           Navigator.of(context).pop();
+  //                         },
+  //                         style: const ButtonStyle(
+  //                             backgroundColor: MaterialStatePropertyAll(
+  //                                 AppColor.swatchColor)),
+  //                         child: const Text(
+  //                           "Attach",
+  //                           style: TextStyle(color: Colors.white),
+  //                         )),
+  //                   ],
+  //                 ),
+  //               ],
+  //             ),
+  //           ),
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
 }
