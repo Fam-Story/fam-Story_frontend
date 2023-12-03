@@ -5,55 +5,14 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 enum Interaction { thumbUp, thumbDown, heart, poke }
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColor.backgroudColor,
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(50),
-        child: AppBar(
-          backgroundColor: AppColor.backgroudColor,
-          title: const Padding(
-            padding: EdgeInsets.all(12.0),
-            child: Text(
-              "My Home",
-              style: TextStyle(
-                  fontFamily: 'AppleSDGothicNeo',
-                  fontWeight: FontWeight.bold,
-                  color: AppColor.textColor,
-                  fontSize: 35),
-            ),
-          ),
-          actions: [
-            IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.alarm_on),
-                color: AppColor.swatchColor,
-                iconSize: 30),
-            IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.settings),
-                color: AppColor.swatchColor,
-                iconSize: 30)
-          ],
-        ),
-      ),
-      body: const SafeArea(child: HomeBody()),
-    );
-  }
+  State<HomePage> createState() => _HomePageState();
 }
 
-class HomeBody extends StatefulWidget {
-  const HomeBody({super.key});
-
-  @override
-  State<HomeBody> createState() => _HomeBodyState();
-}
-
-class _HomeBodyState extends State<HomeBody> {
+class _HomePageState extends State<HomePage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _textEditingController = TextEditingController();
   String myState = '';
@@ -160,6 +119,44 @@ class _HomeBodyState extends State<HomeBody> {
       child: Center(
         child: Column(
           children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Row(
+                  children: [
+                    SizedBox(
+                      width: 30,
+                    ),
+                    Text(
+                      //TODO: 패밀리 이름으로 변경
+                      "Living Room",
+                      style: TextStyle(
+                          fontFamily: 'AppleSDGothicNeo',
+                          fontWeight: FontWeight.bold,
+                          color: AppColor.textColor,
+                          fontSize: 35),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    IconButton(
+                        onPressed: () {},
+                        icon: const Icon(Icons.alarm_on),
+                        color: AppColor.swatchColor,
+                        iconSize: 35),
+                    IconButton(
+                        onPressed: () {},
+                        icon: const Icon(Icons.settings),
+                        color: AppColor.swatchColor,
+                        iconSize: 35),
+                    const SizedBox(
+                      width: 20,
+                    ),
+                  ],
+                )
+              ],
+            ),
             const SizedBox(
               height: 140,
             ),
