@@ -210,7 +210,10 @@ class _SelectRolePageState extends State<RolePage> with TickerProviderStateMixin
                                   Center(
                                     child: TextButton(
                                       onPressed: () {
-                                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const RootPage()));
+                                        Navigator.of(context).pop(); // 현재 라우트 팝
+                                        Navigator.of(context).pushReplacement(
+                                          MaterialPageRoute(builder: (context) => const RootPage()),
+                                        );
                                       },
                                       style: TextButton.styleFrom(
                                         foregroundColor: AppColor.objectColor, // 텍스트 색상
