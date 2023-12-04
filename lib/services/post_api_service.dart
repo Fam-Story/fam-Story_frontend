@@ -9,11 +9,18 @@ class PostApiService {
 
   //TODO: 변경 필
   static const token =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OSwiZW1haWwiOiJkamFja3NkbjFAaWNsb3VkLmNvbSIsInVzZXJuYW1lIjoiZW9tY2hhbnUiLCJpYXQiOjE3MDA3MDAzNjQsImV4cCI6MTcwMDcwMzk2NH0.Jlv9SESNO3ZSXHkOPowRGjBJz01cWmYseUQnCpEeGzk';
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUsImVtYWlsIjoiZGphY2tzZG4xQGljbG91ZC5jb20iLCJ1c2VybmFtZSI6ImVvbWNoYW53b28iLCJpYXQiOjE3MDE2NzM3MTQsImV4cCI6MTcwMTY3NzMxNH0.rDvmMkQjny5z_YLi74U2aFvGezc2K9qEJDe-GPdc7jo';
 
   // 게시글 post
   static Future<int> postPost(
-      int srcMemberId, int familyId, String context, int createdYear, int createdMonth, int createdDay, int createdHour, int createdMinute) async {
+      int srcMemberId,
+      int familyId,
+      String context,
+      int createdYear,
+      int createdMonth,
+      int createdDay,
+      int createdHour,
+      int createdMinute) async {
     final url = Uri.parse('$baseUrl/post');
 
     final response = await http.post(
@@ -46,7 +53,13 @@ class PostApiService {
 
   // 게시글 수정
   static Future<int> putPost(
-      int srcMemberId, String context, int createdYear, int createdMonth, int createdDay, int createdHour, int createdMinute) async {
+      int srcMemberId,
+      String context,
+      int createdYear,
+      int createdMonth,
+      int createdDay,
+      int createdHour,
+      int createdMinute) async {
     final url = Uri.parse('$baseUrl/post');
 
     final response = await http.put(
@@ -95,17 +108,16 @@ class PostApiService {
   }
 
   // 가족 게시글 전부 받아오기
-  static Future<List<PostModel>> getPostList(
-      int familyId) async {
+  static Future<List<PostModel>> getPostList(int familyId) async {
     List<PostModel> postList = [];
-    final url = Uri.parse(
-        "$baseUrl/post?familyId=$familyId");
+    final url = Uri.parse("$baseUrl/post?familyId=$familyId");
     final response = await http.get(url, headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
       'Authorization': 'Bearer $token'
     });
 
+    String errorMsg = 'Something wrong to get posts..';
     if (response.statusCode == 200) {
       List<dynamic> list = jsonDecode(response.body)['data'];
       for (var data in list) {
@@ -114,7 +126,8 @@ class PostApiService {
       return postList;
     } else {
       print(response.statusCode);
+      errorMsg = jsonDecode(response.body)['message'];
     }
-    throw ErrorDescription('Something wrong to get posts!');
+    throw ErrorDescription(errorMsg);
   }
 }
