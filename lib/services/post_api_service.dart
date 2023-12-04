@@ -13,7 +13,7 @@ class PostApiService {
 
   // 게시글 post
   static Future<int> postPost(
-      int srcMemberId, int familyId, String context, String createdDate) async {
+      int srcMemberId, int familyId, String context, int createdYear, int createdMonth, int createdDay, int createdHour, int createdMinute) async {
     final url = Uri.parse('$baseUrl/post');
 
     final response = await http.post(
@@ -28,7 +28,11 @@ class PostApiService {
         "familyId": familyId,
         "title": "",
         "context": context,
-        "createdDate": createdDate
+        "createdYear": createdYear,
+        "createdMonth": createdMonth,
+        "createdDay": createdDay,
+        "createdHour": createdHour,
+        "createdMinute": createdMinute,
       }),
     );
 
@@ -42,7 +46,7 @@ class PostApiService {
 
   // 게시글 수정
   static Future<int> putPost(
-      int srcMemberId, String context, String createdDate) async {
+      int srcMemberId, String context, int createdYear, int createdMonth, int createdDay, int createdHour, int createdMinute) async {
     final url = Uri.parse('$baseUrl/post');
 
     final response = await http.put(
@@ -56,7 +60,11 @@ class PostApiService {
         "srcMemberId": srcMemberId,
         "title": "",
         "context": context,
-        "createdDate": createdDate
+        "createdYear": createdYear,
+        "createdMonth": createdMonth,
+        "createdDay": createdDay,
+        "createdHour": createdHour,
+        "createdMinute": createdMinute,
       }),
     );
 
@@ -86,28 +94,27 @@ class PostApiService {
     throw ErrorDescription('Something wrong to delete post!');
   }
 
-  // // 가족 게시글 전부 받아오기
-  // static Future<List<PostModel>> getPostList(
-  //     int familyId, int year, int targetMonth) async {
-  //   List<FamilyScheduleModel> scheduleList = [];
-  //   final url = Uri.parse(
-  //       "$baseUrl/$familyScheduleList?$requestFamilyId$familyId&$requestYear$year&$requestTargetMonth$targetMonth");
-  //   final response = await http.get(url, headers: {
-  //     'Content-Type': 'application/json',
-  //     'Accept': 'application/json',
-  //     'Authorization': 'Bearer $token'
-  //   });
+  // 가족 게시글 전부 받아오기
+  static Future<List<PostModel>> getPostList(
+      int familyId) async {
+    List<PostModel> postList = [];
+    final url = Uri.parse(
+        "$baseUrl/post?familyId=$familyId");
+    final response = await http.get(url, headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token'
+    });
 
-  //   if (response.statusCode == 200) {
-  //     List<dynamic> list = jsonDecode(response.body)['data'];
-  //     for (var data in list) {
-  //       scheduleList.add(FamilyScheduleModel.fromJson(data));
-  //     }
-  //     print("call api");
-  //     return scheduleList;
-  //   } else {
-  //     print(response.statusCode);
-  //   }
-  //   throw Error();
-  // }
+    if (response.statusCode == 200) {
+      List<dynamic> list = jsonDecode(response.body)['data'];
+      for (var data in list) {
+        postList.add(PostModel.fromJson(data));
+      }
+      return postList;
+    } else {
+      print(response.statusCode);
+    }
+    throw ErrorDescription('Something wrong to get posts!');
+  }
 }
