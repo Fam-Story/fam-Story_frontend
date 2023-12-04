@@ -22,7 +22,7 @@ class _ChatTestPageState extends State<ChatTestPage> {
     super.initState();
     _chatController.connectToServer().then((_) {
       _chatController.listenToMessages();
-      // _loadChatHistory(); // 필요한 경우 활성화
+      _loadChatHistory(); // 필요한 경우 활성화
     }).catchError((e) {
       _showErrorDialog("Failed to link web socket server: $e");
     });
@@ -30,12 +30,13 @@ class _ChatTestPageState extends State<ChatTestPage> {
 
   void _loadChatHistory() async {
     try {
-      var history = await ChatApiService.getChatHistory(1);
+      var history = await ChatApiService.getChat(8);
       setState(() {
         chatHistory = history;
+        // 스크롤을 맨 아래로 이동
+        _scrollToBottom();
       });
     } catch (e) {
-      // 에러 핸들링: 채팅 히스토리 로딩 실패
       _showErrorDialog("Failed to load chat history: $e");
     }
   }
@@ -98,21 +99,26 @@ class _ChatTestPageState extends State<ChatTestPage> {
               stream: _chatController.messages,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  // 여기서 새 메시지를 리스트에 추가
-                  return ListView.builder(
-                    controller: _scrollController,
-                    itemCount: 1, // 현재 스냅샷에 있는 하나의 메시지만 표시
-                    itemBuilder: (context, index) {
-                      return ListTile(
-                        title: Text(snapshot.data!.message),
-                        subtitle: Text("From: ${snapshot.data!.familyId}"),
-                      );
-                    },
-                  );
+                  // 새 메시지를 리스트의 끝(아래쪽)에 추가
+                  chatHistory.add(snapshot.data!);
                 } else if (snapshot.hasError) {
                   return Text('Error: ${snapshot.error}');
                 }
-                return const Center(child: CircularProgressIndicator());
+
+                // ListView를 역순으로 설정하여 최신 메시지가 아래에 표시되도록 함
+                return ListView.builder(
+                  controller: _scrollController,
+                  reverse: true, // 리스트를 역순으로 표시
+                  itemCount: chatHistory.length,
+                  itemBuilder: (context, index) {
+                    // 역순 리스트에서의 인덱스 처리
+                    final item = chatHistory[chatHistory.length - 1 - index];
+                    return ListTile(
+                      title: Text(item.message),
+                      subtitle: Text("From: ${item.familyId}"),
+                    );
+                  },
+                );
               },
             ),
           ),
