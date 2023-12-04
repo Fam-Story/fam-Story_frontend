@@ -43,7 +43,7 @@ class _ChatTestPageState extends State<ChatTestPage> {
   void _sendChatMessage() {
     if (_messageController.text.isNotEmpty) {
       final chat = ChatModel(
-        //TODO: 프로바이더로 수신
+        //TODO: 프로바이더 Provider로 수신
         familyId: 8,
         familyMemberId: 6,
         message: _messageController.text,

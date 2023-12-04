@@ -7,8 +7,8 @@ import 'dart:convert';
 class ChatApiService {
   static const String baseUrl = 'https://famstory.thisiswandol.com/api';
 
-  static Future<List<ChatModel>> getChatHistory(int familyId) async {
-    final url = Uri.parse('$baseUrl/chat/history?familyId=$familyId');
+  static Future<List<ChatModel>> getChat(int familyId) async {
+    final url = Uri.parse('$baseUrl/chat?familyId=$familyId');
     const storage = FlutterSecureStorage();
 
     // 로그인 토큰 불러오기
