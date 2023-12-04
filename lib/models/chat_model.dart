@@ -1,20 +1,25 @@
 class ChatModel {
-  int familyId;
-  int familyMemberId;
+  int? familyId;
+  int? familyMemberId;
   String message;
+  String? date;
+  String? role;
+  String? nickname;
   ChatModel({required this.familyId, required this.familyMemberId, required this.message});
 
   // http 통신으로 받을 때
   ChatModel.fromJson(Map<String, dynamic> json)
-      : familyId = json['familyId'],
-        familyMemberId = json['familyMemberId'],
-        message = json['message'];
+      : nickname = json['nickname'],
+        role = json['role'],
+        message = json['message'],
+        date = json['date'];
 
   // 소켓에서 받을 때
   ChatModel.fromChatDto(Map<String, dynamic> chatDto)
-      : familyId = 8,
-        familyMemberId = int.parse(chatDto['familyMemberId']),
-        message = chatDto['message'];
+      : nickname = chatDto['nickname'],
+        role = chatDto['role'],
+        message = chatDto['message'],
+        date = chatDto['date'];
 
   // 소켓으로 보낼 때
   Map<String, dynamic> toChatDto() {
