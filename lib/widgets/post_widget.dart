@@ -1,37 +1,24 @@
+import 'package:fam_story_frontend/models/post_model.dart';
+import 'package:fam_story_frontend/services/post_api_service.dart';
 import 'package:fam_story_frontend/style.dart';
 import 'package:flutter/material.dart';
 
 class PostWidget extends StatefulWidget {
-  final String title, context, createdDate, member;
-  final int role;
+  final PostModel post;
 
-  const PostWidget(
-      {super.key,
-      required this.title,
-      required this.context,
-      required this.createdDate,
-      required this.member,
-      required this.role});
+  const PostWidget({super.key, required this.post});
 
   @override
   State<PostWidget> createState() => _PostWidgetState();
 }
 
 class _PostWidgetState extends State<PostWidget> {
-  String title = '';
-  String text = '';
-  String createdDate = '';
-  String member = '';
-  int role = 0;
+  late PostModel post;
 
   @override
   void initState() {
     super.initState();
-    title = widget.title;
-    text = widget.context;
-    createdDate = widget.createdDate;
-    member = widget.member;
-    role = widget.role;
+    post = widget.post;
   }
 
   @override
@@ -49,6 +36,7 @@ class _PostWidgetState extends State<PostWidget> {
                 GestureDetector(
                   onLongPressEnd: (details) {
                     // TODO: delete
+                    PostApiService.deletePost(post.postId);
                   },
                   onTap: () {
                     _showPostDialog(context);
@@ -78,7 +66,7 @@ class _PostWidgetState extends State<PostWidget> {
                           children: [
                             Text(
                                 // overflow: TextOverflow.ellipsis,
-                                text,
+                                post.context,
                                 style: const TextStyle(
                                     color: AppColor.swatchColor, fontSize: 20))
                           ],
@@ -90,7 +78,7 @@ class _PostWidgetState extends State<PostWidget> {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(0, 3, 3, 0),
                   child: Text(
-                    createdDate,
+                    '${post.createdYear}-${post.createdMonth}-${post.createdDay} ${post.createdHour}:${post.createdMinute}',
                     style: TextStyle(color: Colors.grey.shade700),
                   ),
                 ),
@@ -102,7 +90,6 @@ class _PostWidgetState extends State<PostWidget> {
     );
   }
 
-  // TODO: postModel 인자로
   Future<dynamic> _showPostDialog(BuildContext context) {
     return showDialog(
       context: context,
@@ -133,9 +120,11 @@ class _PostWidgetState extends State<PostWidget> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(text,
-                        style: const TextStyle(
-                            color: AppColor.swatchColor, fontSize: 20))
+                    Center(
+                      child: Text(post.context,
+                          style: const TextStyle(
+                              color: AppColor.swatchColor, fontSize: 20)),
+                    )
                   ],
                 ),
               ]),

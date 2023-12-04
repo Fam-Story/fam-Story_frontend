@@ -4,7 +4,7 @@ import 'package:fam_story_frontend/models/family_schedule_model.dart';
 import 'package:http/http.dart' as http;
 
 class FamilyScheduleApiService {
-  static const baseUrl = 'https://famstory.thisiswandol.com';
+  static const baseUrl = 'https://famstory.thisiswandol.com/api';
 
   static const familySchedule = 'family-schedule';
   static const familyScheduleList = 'family-schedule/list';
@@ -20,7 +20,7 @@ class FamilyScheduleApiService {
 
   //TODO: 변경 필
   static const token =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OSwiZW1haWwiOiJkamFja3NkbjFAaWNsb3VkLmNvbSIsInVzZXJuYW1lIjoiZW9tY2hhbnUiLCJpYXQiOjE3MDA3MDAzNjQsImV4cCI6MTcwMDcwMzk2NH0.Jlv9SESNO3ZSXHkOPowRGjBJz01cWmYseUQnCpEeGzk';
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUsImVtYWlsIjoiZGphY2tzZG4xQGljbG91ZC5jb20iLCJ1c2VybmFtZSI6ImVvbWNoYW53b28iLCJpYXQiOjE3MDE2NzM3MTQsImV4cCI6MTcwMTY3NzMxNH0.rDvmMkQjny5z_YLi74U2aFvGezc2K9qEJDe-GPdc7jo';
 
   // Calendar Page
   // 월 단위로 가족 일정 불러오기
@@ -44,6 +44,7 @@ class FamilyScheduleApiService {
       return scheduleList;
     } else {
       print(response.statusCode);
+      print('error: ${jsonDecode(response.body)['message']}');
     }
     throw Error();
   }
@@ -72,6 +73,7 @@ class FamilyScheduleApiService {
     } else {
       print("fail! post");
       print(response.statusCode);
+      print('error: ${jsonDecode(response.body)['message']}');
     }
     throw Error();
   }
@@ -95,6 +97,7 @@ class FamilyScheduleApiService {
     } else {
       print("fail! delete");
       print(response.statusCode);
+      print('error: ${jsonDecode(response.body)['message']}');
     }
     throw Error();
   }

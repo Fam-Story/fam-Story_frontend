@@ -1,12 +1,12 @@
 class PostModel {
-  final int postId, familyMemberId, familyId;
-  final String context,
-      title,
+  final int postId, familyMemberId, familyId,
       createdYear,
       createdMonth,
       createdDay,
       createdHour,
       createdMinute;
+  final String context,
+      title;
 
   PostModel.fromJson(Map<String, dynamic> json)
       : postId = json['postId'],

@@ -1,13 +1,31 @@
+import 'dart:convert';
+
+import 'package:fam_story_frontend/models/post_model.dart';
+import 'package:fam_story_frontend/services/post_api_service.dart';
 import 'package:fam_story_frontend/widgets/post_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:fam_story_frontend/style.dart';
 
-class PostPage extends StatelessWidget {
+class PostPage extends StatefulWidget {
   const PostPage({super.key});
 
   @override
+  State<PostPage> createState() => _PostPageState();
+}
+
+class _PostPageState extends State<PostPage> {
+  late Future<List<PostModel>> postList;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    // TODO: id변경
+    postList = PostApiService.getPostList(7);
     return Column(
       children: [
         Column(
@@ -34,7 +52,6 @@ class PostPage extends StatelessWidget {
                   children: [
                     IconButton(
                       onPressed: () {
-                        // TODO: post
                         _showAddingPostDialog(context);
                       },
                       icon: const Icon(CupertinoIcons.add_circled_solid),
@@ -51,25 +68,34 @@ class PostPage extends StatelessWidget {
             const SizedBox(height: 20),
           ],
         ),
-        const Row(
-          children: [
-            // TODO: ListView.builder로 변경
-            PostWidget(
-              title: '',
-              member: 'member',
-              createdDate: '2023-11-06 13:08',
-              context: '밥 묵고 학교 가라 아들들 ~ 냉장고 안에 넣어뒀단다',
-              role: 1,
-            ),
-            PostWidget(
-              title: 'title',
-              member: 'member',
-              createdDate: '2023-11-09 19:02',
-              context: '안녕하세요',
-              role: 1,
-            ),
-          ],
-        ),
+        FutureBuilder(
+            future: postList,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return GridView.builder(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2),
+                    itemBuilder: (BuildContext context, int idx) {
+                      return PostWidget(post: snapshot.data![idx]);
+                    });
+              } else {
+                return Text(snapshot.error.toString());
+              }
+            }),
+        PostWidget(
+            post: PostModel.fromJson({
+          'postId': 200,
+          'familyMemberId': 2,
+          'title': '',
+          'context': 'helloooo',
+          'createdYear': 2023,
+          'createdMonth': 12,
+          'createdDay': 3,
+          'createdHour': 14,
+          'createdMinute': 58,
+          'familyId': 7
+        }))
       ],
     );
   }
@@ -134,6 +160,17 @@ class PostPage extends StatelessWidget {
                       ElevatedButton(
                           onPressed: () {
                             // post
+                            DateTime postedTime = DateTime.now();
+                            // TODO: id변경
+                            PostApiService.postPost(
+                                1,
+                                7,
+                                textController.text,
+                                postedTime.year,
+                                postedTime.month,
+                                postedTime.day,
+                                postedTime.hour,
+                                postedTime.minute);
                             Navigator.of(context).pop();
                           },
                           style: const ButtonStyle(
