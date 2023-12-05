@@ -20,7 +20,7 @@ class FamilyScheduleApiService {
 
   //TODO: 변경 필
   static const token =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUsImVtYWlsIjoiZGphY2tzZG4xQGljbG91ZC5jb20iLCJ1c2VybmFtZSI6ImVvbWNoYW53b28iLCJpYXQiOjE3MDE2NzM3MTQsImV4cCI6MTcwMTY3NzMxNH0.rDvmMkQjny5z_YLi74U2aFvGezc2K9qEJDe-GPdc7jo';
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUsImVtYWlsIjoiZGphY2tzZG4xQGljbG91ZC5jb20iLCJ1c2VybmFtZSI6ImVvbWNoYW53b28iLCJpYXQiOjE3MDE3OTQ0MzUsImV4cCI6MTcwMTc5ODAzNX0.SylTdOt3-oXVXsJ0BIrfA7wUipPusIp1rbrEc2iw6sU';
 
   // Calendar Page
   // 월 단위로 가족 일정 불러오기

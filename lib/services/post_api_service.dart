@@ -9,7 +9,7 @@ class PostApiService {
 
   //TODO: 변경 필
   static const token =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUsImVtYWlsIjoiZGphY2tzZG4xQGljbG91ZC5jb20iLCJ1c2VybmFtZSI6ImVvbWNoYW53b28iLCJpYXQiOjE3MDE2NzM3MTQsImV4cCI6MTcwMTY3NzMxNH0.rDvmMkQjny5z_YLi74U2aFvGezc2K9qEJDe-GPdc7jo';
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUsImVtYWlsIjoiZGphY2tzZG4xQGljbG91ZC5jb20iLCJ1c2VybmFtZSI6ImVvbWNoYW53b28iLCJpYXQiOjE3MDIxMDA5MDEsImV4cCI6MTcwMjEwNDUwMX0.Vmo2LwU8JOsGllHNPKkb-0UXzbYa9qEJtEll3s1xbXQ';
 
   // 게시글 post
   static Future<int> postPost(
@@ -33,7 +33,7 @@ class PostApiService {
       body: jsonEncode({
         "srcMemberId": srcMemberId,
         "familyId": familyId,
-        "title": "",
+        "title": "-",
         "context": context,
         "createdYear": createdYear,
         "createdMonth": createdMonth,
@@ -47,12 +47,14 @@ class PostApiService {
       return jsonDecode(response.body)['data'];
     } else {
       print(response.statusCode);
+      print(jsonDecode(response.body)['message']);
     }
     throw ErrorDescription('Something wrong to post!');
   }
 
   // 게시글 수정
-  static Future<int> putPost(
+  static Future<void> putPost(
+      int id,
       int srcMemberId,
       String context,
       int createdYear,
@@ -70,19 +72,21 @@ class PostApiService {
         'Authorization': 'Bearer $token'
       },
       body: jsonEncode({
-        "srcMemberId": srcMemberId,
-        "title": "",
+        "id": id,
+        // "srcMemberId": srcMemberId,
+        // "title": "-",
         "context": context,
-        "createdYear": createdYear,
-        "createdMonth": createdMonth,
-        "createdDay": createdDay,
-        "createdHour": createdHour,
-        "createdMinute": createdMinute,
+        // "createdYear": createdYear,
+        // "createdMonth": createdMonth,
+        // "createdDay": createdDay,
+        // "createdHour": createdHour,
+        // "createdMinute": createdMinute,
       }),
     );
 
-    if (response.statusCode == 201) {
-      return jsonDecode(response.body)['data'];
+    if (response.statusCode == 200) {
+      // return jsonDecode(response.body)['data'];
+      return;
     } else {
       print(response.statusCode);
     }
@@ -90,8 +94,8 @@ class PostApiService {
   }
 
   // 게시글 삭제
-  static Future<int> deletePost(int postId) async {
-    final url = Uri.parse('$baseUrl/post/post?postId=$postId');
+  static Future<void> deletePost(int postId) async {
+    final url = Uri.parse('$baseUrl/post?postId=$postId');
 
     final response = await http.delete(url, headers: <String, String>{
       'Content-Type': 'application/json',
@@ -99,8 +103,9 @@ class PostApiService {
       'Authorization': 'Bearer $token'
     });
 
-    if (response.statusCode == 201) {
-      return jsonDecode(response.body)['data'];
+    if (response.statusCode == 200) {
+      // return jsonDecode(response.body)['data'];
+      return;
     } else {
       print(response.statusCode);
     }
