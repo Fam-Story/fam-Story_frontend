@@ -45,7 +45,7 @@ class _RootPageState extends State<RootPage> {
           BottomNavigationBarItem(
               icon: Icon(Icons.home_rounded), label: 'Home'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.chat_bubble_outline_rounded), label: 'Chat'),
+              icon: Icon(Icons.question_answer_outlined), label: 'Chat'),
           BottomNavigationBarItem(
               icon: Icon(Icons.sticky_note_2_outlined), label: 'Post'),
           BottomNavigationBarItem(
