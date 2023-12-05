@@ -71,7 +71,7 @@ class FamStory extends StatelessWidget {
       routes: {
         // TODO: 로딩에서 가족 여부 체크
 
-        '/': (context) => const LoadingScreen(),
+        '/': (context) => const RootPage(),
 
         // '/': (context) => const FamilyJoinPage(),
 
