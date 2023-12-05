@@ -1,4 +1,5 @@
 import 'package:fam_story_frontend/pages/calendar_page.dart';
+import 'package:fam_story_frontend/pages/chat_page.dart';
 import 'package:fam_story_frontend/pages/home_page.dart';
 import 'package:fam_story_frontend/pages/post_page.dart';
 import 'package:fam_story_frontend/style.dart';
@@ -17,6 +18,7 @@ class _RootPageState extends State<RootPage> {
 
   final List<Widget> _pages = [
     const HomePage(),
+    const ChatPage(),
     const PostPage(),
     const CalendarPage()
   ];
@@ -33,6 +35,7 @@ class _RootPageState extends State<RootPage> {
       backgroundColor: AppColor.backgroudColor,
       body: _pages[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
         backgroundColor: AppColor.objectColor,
         selectedItemColor: AppColor.swatchColor,
         unselectedItemColor: Colors.grey.withOpacity(0.7),
@@ -42,7 +45,9 @@ class _RootPageState extends State<RootPage> {
           BottomNavigationBarItem(
               icon: Icon(Icons.home_rounded), label: 'Home'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.chat_bubble_outline_rounded), label: 'Post'),
+              icon: Icon(Icons.chat_bubble_outline_rounded), label: 'Chat'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.sticky_note_2_outlined), label: 'Post'),
           BottomNavigationBarItem(
               icon: Icon(Icons.calendar_today_rounded), label: 'Calendar'),
         ],
