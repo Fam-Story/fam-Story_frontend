@@ -10,11 +10,30 @@ class ChatBubbles extends StatelessWidget {
       {Key? key})
       : super(key: key);
 
-  final String role;
+  final int role;
   final String nickname;
   final String message;
   final String date;
   final bool isMe;
+
+  String getRoleImage(int role) {
+    switch (role) {
+      case 1:
+        return 'assets/images/grandfather.png';
+      case 2:
+        return 'assets/images/dad.png';
+      case 3:
+        return 'assets/images/son.png';
+      case 4:
+        return 'assets/images/grandmother.png';
+      case 5:
+        return 'assets/images/mom.png';
+      case 6:
+        return 'assets/images/daughter.png';
+      default:
+        return 'assets/images/son.png';
+    }
+  }
 
   String getImage(String role) {
     //TODO: role 값 확인
@@ -125,7 +144,7 @@ class ChatBubbles extends StatelessWidget {
           child: FamilyMemberButton(
             buttonSize: 0.1,
             imageSize: 25,
-            memberImage: getImage(role),
+            memberImage: getRoleImage(role),
           ),
         ),
       if (!isMe)

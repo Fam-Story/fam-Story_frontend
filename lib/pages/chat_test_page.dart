@@ -30,7 +30,7 @@ class _ChatTestPageState extends State<ChatTestPage> {
 
   void _loadChatHistory() async {
     try {
-      var history = await ChatApiService.getChat(8);
+      var history = await ChatApiService.getChat(13);
       setState(() {
         chatHistory = history;
         // 스크롤을 맨 아래로 이동
@@ -45,8 +45,8 @@ class _ChatTestPageState extends State<ChatTestPage> {
     if (_messageController.text.isNotEmpty) {
       final chat = ChatModel(
         //TODO: 프로바이더 Provider로 수신
-        familyId: 8,
-        familyMemberId: 6,
+        familyId: 13,
+        familyMemberId: 8,
         message: _messageController.text,
       );
       _chatController.sendMessage(chat);

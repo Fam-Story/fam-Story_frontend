@@ -10,10 +10,10 @@ class ChatPage extends StatefulWidget {
   const ChatPage({super.key});
 
   @override
-  State<ChatPage> createState() => _HomeBodyState();
+  State<ChatPage> createState() => _ChatPageState();
 }
 
-class _HomeBodyState extends State<ChatPage> {
+class _ChatPageState extends State<ChatPage> {
   final ChatController _chatController = ChatController();
   final TextEditingController _messageController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
@@ -33,7 +33,8 @@ class _HomeBodyState extends State<ChatPage> {
 
   void _loadChatHistory() async {
     try {
-      var history = await ChatApiService.getChat(8);
+      //TODO: FamilyID 입력
+      var history = await ChatApiService.getChat(13);
       setState(() {
         chatHistory = history;
         // 스크롤을 맨 아래로 이동
@@ -48,8 +49,8 @@ class _HomeBodyState extends State<ChatPage> {
     if (_messageController.text.isNotEmpty) {
       final chat = ChatModel(
         //TODO: 프로바이더 Provider로 수신
-        familyId: 8,
-        familyMemberId: 6,
+        familyId: 13,
+        familyMemberId: 8,
         message: _messageController.text,
       );
       _chatController.sendMessage(chat);
@@ -150,9 +151,15 @@ class _HomeBodyState extends State<ChatPage> {
                       // 역순 리스트에서의 인덱스 처리
                       final item = chatHistory[chatHistory.length - 1 - index];
                       //역할, 별명, 메시지, 시간, 본인 확인
+                      print(item.familyMemberId);
                       // TODO: 해당값 입력
                       return ChatBubbles(
-                          'son', 'jin', item.message, "12:11", true); // 테스트용
+                          item.role ?? 999,
+                          item.nickname ?? 'No Nickname',
+                          item.message,
+                          item.date ?? 'No date',
+                          item.familyMemberId ==
+                              8); // 테스트용//TODO: familymemberID로 구분
                       /*
                       return ChatBubbles(item.role, item.nickname,
                           item.message, item.date, 본인 아이디랑 비교);

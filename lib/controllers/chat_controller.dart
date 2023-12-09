@@ -55,7 +55,7 @@ class ChatController {
 
       socket.onConnect((_) {
         print('Connected');
-        socket.emit('joinFamily', {'familyId': '8'});
+        socket.emit('joinFamily', {'familyId': '13'});
         print('joinFamily!!!!!');
       });
       socket.onDisconnect((_) => print('Disconnected'));
