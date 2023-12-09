@@ -1,3 +1,4 @@
+import 'package:fam_story_frontend/pages/chat_test_page.dart';
 import 'package:fam_story_frontend/pages/family_create_page.dart';
 import 'package:fam_story_frontend/pages/family_join_page.dart';
 import 'package:fam_story_frontend/pages/home_page.dart';
@@ -20,7 +21,7 @@ import 'package:fam_story_frontend/pages/fcm_test_page.dart';
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
-  String? token = await FirebaseMessaging.instance.getToken(vapidKey:"BE46-NFLsOf2G-GidNDD6Bq-gz_ktXKwarsctTAFZFa0E_I081YpdqJVAakadjBDJNNWSKpPX0EIvWS_aS0j1DE");
+  String? token = await FirebaseMessaging.instance.getToken(vapidKey: "BE46-NFLsOf2G-GidNDD6Bq-gz_ktXKwarsctTAFZFa0E_I081YpdqJVAakadjBDJNNWSKpPX0EIvWS_aS0j1DE");
   print('Firebase Messaging Token: $token');
   print('Handling a background message ${message.messageId}');
   print('Message data: ${message.data}');
@@ -32,11 +33,8 @@ void initializeNotification() async {
 
   final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
   await flutterLocalNotificationsPlugin
-      .resolvePlatformSpecificImplementation<
-      AndroidFlutterLocalNotificationsPlugin>()
-      ?.createNotificationChannel(const AndroidNotificationChannel(
-      'high_importance_channel', 'high_importance_notification',
-      importance: Importance.max));
+      .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+      ?.createNotificationChannel(const AndroidNotificationChannel('high_importance_channel', 'high_importance_notification', importance: Importance.max));
 
   await flutterLocalNotificationsPlugin.initialize(const InitializationSettings(
     android: AndroidInitializationSettings("@mipmap/ic_launcher"),
@@ -51,10 +49,12 @@ void initializeNotification() async {
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform,);
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   initializeNotification();
 
-  runApp(FamStory());
+  runApp(const FamStory());
 }
 
 class FamStory extends StatelessWidget {
@@ -70,23 +70,25 @@ class FamStory extends StatelessWidget {
       initialRoute: '/',
       routes: {
         // TODO: 로딩에서 가족 여부 체크
-        // '/': (context) => const LoadingScreen(),
-
-        // '/': (context) => const FamilyJoinPage(),
 
         '/': (context) => const RootPage(),
 
-        // 그페이지 TEST 하고 싶으면 밑처럼 그걸 메인 라우트로 지정하기~
+        // '/': (context) => const FamilyJoinPage(),
+
+        // '/': (context) => const RootPage(),
+        // '/': (context) => const ChatTestPage(),
+
+        // // 그페이지 TEST 하고 싶으면 밑처럼 그걸 메인 라우트로 지정하기~
         // '/': (context) => const FamilyJoinCreatePage(),
         // '/': (context) => const LoginSignUpPage(),
 
-        // '/rootPage': (context) => const RootPage(),
-        // '/loginSignUpPage': (context) => const LoginSignUpPage(),
-        // '/familyJoinCreatePage': (context) => const FamilyJoinCreatePage(),
-        // '/familyJoinPage': (context) => const FamilyJoinPage(),
-        // '/familyCreatePage': (context) => const FamilyCreatePage(),
-        // '/rolePage': (context) => const RolePage(), // 인자 필요함
-        // // TODO: 각자 추가 라우트가 필요하면 여기에 추가하세용.
+        '/rootPage': (context) => const RootPage(),
+        '/loginSignUpPage': (context) => const LoginSignUpPage(),
+        '/familyJoinCreatePage': (context) => const FamilyJoinCreatePage(),
+        '/familyJoinPage': (context) => const FamilyJoinPage(),
+        '/familyCreatePage': (context) => const FamilyCreatePage(),
+        '/rolePage': (context) => const RolePage(), // 인자 필요함
+        // TODO: 각자 추가 라우트가 필요하면 여기에 추가하세용.
       },
     );
   }

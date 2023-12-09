@@ -208,6 +208,7 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
                                     ),
                                     contentPadding: const EdgeInsets.all(10),
                                   ),
+                                  obscureText: isSignUpScreen ? false : true,
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
                                       return 'Please enter your password';
@@ -426,10 +427,15 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
                             bool isCreated = await UserApiService.postUser(email, username, password, nickname, age, gender);
                             if (isCreated) {
                               // TODO: 회원가입 완료 팝업 띄우기
+                              _showSignUpCompleteDialog(context);
+                              setState(() {
+                                isSignUpScreen = false;
+                              });
                               print('sign up ok');
                             }
                           } catch (e) {
                             // TODO: 에러 내용 알려주기
+                            _showSignUpFailDialog(context, e.toString());
                             print(e.toString());
                           }
                         } else {
@@ -469,6 +475,107 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
           ],
         ),
       ),
+    );
+  }
+
+  Future<dynamic> _showSignUpCompleteDialog(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+          child: Container(
+            width: 330,
+            height: 180,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: AppColor.objectColor,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  blurRadius: 20,
+                  spreadRadius: 5,
+                ),
+              ],
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      "Welcome!\nEnjoy fam'Story!",
+                      style: TextStyle(fontSize: 28, color: AppColor.swatchColor, fontWeight: FontWeight.bold),
+                    ),
+                    ElevatedButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        style: const ButtonStyle(backgroundColor: MaterialStatePropertyAll(AppColor.swatchColor)),
+                        child: const Text(
+                          "Login",
+                          style: TextStyle(color: Colors.white),
+                        )),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Future<dynamic> _showSignUpFailDialog(BuildContext context, String errorDescription) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+          child: Container(
+            width: 330,
+            height: 200,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: AppColor.objectColor,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  blurRadius: 20,
+                  spreadRadius: 5,
+                ),
+              ],
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const Text(
+                    "Fail to create account!",
+                    style: TextStyle(fontSize: 25, color: AppColor.swatchColor, fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    errorDescription,
+                    style: const TextStyle(fontSize: 20, color: AppColor.textColor),
+                  ),
+                  ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      style: const ButtonStyle(backgroundColor: MaterialStatePropertyAll(AppColor.swatchColor)),
+                      child: const Text(
+                        "Try again",
+                        style: TextStyle(color: Colors.white),
+                      )),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }
