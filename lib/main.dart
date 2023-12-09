@@ -14,8 +14,9 @@ import 'package:firebase_core/firebase_core.dart'; //firebase fcm 세팅
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'firebase_options.dart';
-
 import 'package:fam_story_frontend/pages/fcm_test_page.dart';
+import 'package:fam_story_frontend/services/family_member_api_service.dart';
+
 
 //백그라운드 메시지
 @pragma('vm:entry-point')

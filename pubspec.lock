@@ -56,7 +56,11 @@ packages:
       sha256: ee67cb0715911d28db6bf4af1026078bd6f0128b07a5f66fb2ed94ec6783c09a
       url: "https://pub.dev"
     source: hosted
+<<<<<<< HEAD
+    version: "1.17.2"
+=======
     version: "1.18.0"
+>>>>>>> 4d58146fc19a321bb714555fda6c79dc4f974168
   crypto:
     dependency: transitive
     description:
@@ -532,7 +536,11 @@ packages:
       sha256: afe077240a270dcfd2aafe77602b4113645af95d0ad31128cc02bce5ac5d5152
       url: "https://pub.dev"
     source: hosted
+<<<<<<< HEAD
+    version: "0.1.4-beta"
+=======
     version: "0.3.0"
+>>>>>>> 4d58146fc19a321bb714555fda6c79dc4f974168
   web_socket_channel:
     dependency: "direct main"
     description:

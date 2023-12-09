@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
@@ -8,8 +10,38 @@ import 'package:http/http.dart' as http;
 class FamilyMemberApiService {
   static const String baseUrl = 'https://famstory.thisiswandol.com/api';
 
-  // TODO: FCM 토큰 생성 필요
-  static const String tempFcmToken = 'seungwonTest';
+  /// FCM 토큰 생성
+  Future<String?> getFCMToken() async {
+    FirebaseMessaging messaging = FirebaseMessaging.instance;
+    const storage = FlutterSecureStorage();
+
+    // FCM token 가져오기
+    await Firebase.initializeApp();
+    String? fcmToken = await FirebaseMessaging.instance.getToken(vapidKey:"BE46-NFLsOf2G-GidNDD6Bq-gz_ktXKwarsctTAFZFa0E_I081YpdqJVAakadjBDJNNWSKpPX0EIvWS_aS0j1DE");
+
+    if (fcmToken != null) {
+      // 기존 'fcm' 키의 값을 읽어옴
+      dynamic userInfo = await storage.read(key: 'fcm');
+
+      // 기존 값이 있으면 삭제
+      if (userInfo != null) {
+        await storage.delete(key: 'fcm');
+      }
+
+      // FCM token만 저장
+      var fcmValue = jsonEncode({"fcmToken": fcmToken});
+
+      // 'fcm' 키에 새로운 값을 저장
+      await storage.write(key: 'fcm', value: fcmValue);
+
+      print(fcmToken);
+      print('FCM token updated');
+
+      return fcmToken; // FCM 토큰 반환
+    }
+
+    return null; // FCM 토큰이 없는 경우 null 반환
+  }
 
   /// POST: /family-member [가족 구성원] 가족 구성원 생성
   static Future<int> postFamilyMember(int familyId, int role) async {
@@ -24,6 +56,8 @@ class FamilyMemberApiService {
     Map<String, dynamic> userInfo = json.decode(userInfoString);
     String loginToken = userInfo['token'];
 
+    String? fcmToken = await FamilyMemberApiService().getFCMToken();
+
     final response = await http.post(
       url,
       headers: <String, String>{
@@ -31,7 +65,7 @@ class FamilyMemberApiService {
         'Accept': 'application/json',
         'Authorization': 'Bearer $loginToken',
       },
-      body: jsonEncode({"familyId": familyId, "role": role, "fcmToken": tempFcmToken}),
+      body: jsonEncode({"familyId": familyId, "role": role, "fcmToken": fcmToken}),
     );
 
     // 가족 생성 완료

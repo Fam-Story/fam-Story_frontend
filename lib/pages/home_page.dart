@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:fam_story_frontend/style.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'setting_page.dart';
+import 'package:fam_story_frontend/models/family_model.dart';
+import 'package:fam_story_frontend/models/user_model.dart';
 
 enum Interaction { thumbUp, thumbDown, heart, poke }
 
@@ -146,7 +149,12 @@ class _HomePageState extends State<HomePage> {
                         color: AppColor.swatchColor,
                         iconSize: 35),
                     IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => SettingPage()),
+                          );
+                        },
                         icon: const Icon(Icons.settings),
                         color: AppColor.swatchColor,
                         iconSize: 35),
