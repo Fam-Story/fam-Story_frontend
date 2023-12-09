@@ -9,7 +9,7 @@ class PostApiService {
 
   //TODO: 변경 필
   static const token =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUsImVtYWlsIjoiZGphY2tzZG4xQGljbG91ZC5jb20iLCJ1c2VybmFtZSI6ImVvbWNoYW53b28iLCJpYXQiOjE3MDIxMDA5MDEsImV4cCI6MTcwMjEwNDUwMX0.Vmo2LwU8JOsGllHNPKkb-0UXzbYa9qEJtEll3s1xbXQ';
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUsImVtYWlsIjoiZGphY2tzZG4xQGljbG91ZC5jb20iLCJ1c2VybmFtZSI6ImVvbWNoYW53b28iLCJpYXQiOjE3MDIxMTE0MTEsImV4cCI6MTcwMjExNTAxMX0.RNCInpnqWrRXAs2Ji5E9KNMEw3Q-WQVSoTFFGzGvIOk';
 
   // 게시글 post
   static Future<int> postPost(

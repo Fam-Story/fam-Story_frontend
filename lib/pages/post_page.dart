@@ -220,83 +220,98 @@ class _PostPageState extends State<PostPage> {
     return showDialog(
       context: context,
       builder: (BuildContext context) {
-        return Dialog(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-          child: Container(
-            width: 350,
-            height: 300,
-            decoration: BoxDecoration(
-              borderRadius:
-                  const BorderRadius.only(bottomLeft: Radius.circular(20)),
-              color: AppColor.objectColor,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
-                  blurRadius: 20,
-                  spreadRadius: 5,
-                ),
-              ],
-            ),
-            child: Stack(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(30, 30, 30, 55),
-                  child: TextField(
-                    maxLines: null,
-                    controller: textController,
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      // focusedBorder: OutlineInputBorder(
-                      //     borderRadius: BorderRadius.circular(15),
-                      //     borderSide:
-                      //         const BorderSide(color: AppColor.swatchColor)),
-                      isDense: true,
-                      // hintText: "Leave your message!",
-                      hintStyle:
-                          TextStyle(color: Colors.black.withOpacity(0.4)),
-                      // border: OutlineInputBorder(
-                      //   borderRadius: BorderRadius.circular(15),
-                      // ),
+        return StatefulBuilder(
+          builder: (context, setState) {
+            textController.addListener(() {
+              setState(() {});
+            });
+            return Dialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0)),
+              child: Container(
+                width: 350,
+                height: 300,
+                decoration: BoxDecoration(
+                  borderRadius:
+                      const BorderRadius.only(bottomLeft: Radius.circular(20)),
+                  color: AppColor.objectColor,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 20,
+                      spreadRadius: 5,
                     ),
-                  ),
+                  ],
                 ),
-                Positioned(
-                  bottom: 10,
-                  left: 110,
-                  right: 110,
-                  child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                        // post
-                        DateTime postedTime = DateTime.now();
-                        // TODO: id변경
-                        PostApiService.putPost(
-                                post.postId,
-                                3,
-                                textController.text,
-                                postedTime.year,
-                                postedTime.month,
-                                postedTime.day,
-                                postedTime.hour,
-                                postedTime.minute)
-                            .then(
-                          (value) {
-                            updatePostList();
+                child: Stack(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(30, 30, 30, 55),
+                      child: TextField(
+                        maxLines: null,
+                        controller: textController,
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          // focusedBorder: OutlineInputBorder(
+                          //     borderRadius: BorderRadius.circular(15),
+                          //     borderSide:
+                          //         const BorderSide(color: AppColor.swatchColor)),
+                          isDense: true,
+                          // hintText: "Leave your message!",
+                          hintStyle:
+                              TextStyle(color: Colors.black.withOpacity(0.4)),
+                          // border: OutlineInputBorder(
+                          //   borderRadius: BorderRadius.circular(15),
+                          // ),
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                        bottom: 20,
+                        right: 30,
+                        child: Text(
+                          '${textController.text.length}/300',
+                          style: const TextStyle(color: Colors.grey),
+                        )),
+                    Positioned(
+                      bottom: 10,
+                      left: 110,
+                      right: 110,
+                      child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                            // post
+                            DateTime postedTime = DateTime.now();
+                            // TODO: id변경
+                            PostApiService.putPost(
+                                    post.postId,
+                                    3,
+                                    textController.text,
+                                    postedTime.year,
+                                    postedTime.month,
+                                    postedTime.day,
+                                    postedTime.hour,
+                                    postedTime.minute)
+                                .then(
+                              (value) {
+                                updatePostList();
+                              },
+                            );
+                            // textController.dispose();
                           },
-                        );
-                      },
-                      style: const ButtonStyle(
-                          backgroundColor:
-                              MaterialStatePropertyAll(AppColor.swatchColor)),
-                      child: const Text(
-                        "Attach",
-                        style: TextStyle(color: Colors.white),
-                      )),
+                          style: const ButtonStyle(
+                              backgroundColor: MaterialStatePropertyAll(
+                                  AppColor.swatchColor)),
+                          child: const Text(
+                            "Attach",
+                            style: TextStyle(color: Colors.white),
+                          )),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ),
+              ),
+            );
+          },
         );
       },
     );
@@ -307,84 +322,96 @@ class _PostPageState extends State<PostPage> {
     return showDialog(
       context: context,
       builder: (BuildContext context) {
-        return Dialog(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-          child: Container(
-            width: 350,
-            height: 300,
-            decoration: BoxDecoration(
-              borderRadius:
-                  const BorderRadius.only(bottomLeft: Radius.circular(20)),
-              color: AppColor.objectColor,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
-                  blurRadius: 20,
-                  spreadRadius: 5,
-                ),
-              ],
-            ),
-            child: Stack(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(30, 30, 30, 55),
-                  child: TextField(
-                    maxLines: null,
-                    controller: textController,
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      // focusedBorder: OutlineInputBorder(
-                      //     borderRadius: BorderRadius.circular(15),
-                      //     borderSide:
-                      //         const BorderSide(color: AppColor.swatchColor)),
-                      isDense: true,
-                      hintText: "Leave your message!",
-                      hintStyle:
-                          TextStyle(color: Colors.black.withOpacity(0.4)),
-                      // border: OutlineInputBorder(
-                      //   borderRadius: BorderRadius.circular(15),
-                      // ),
+        return StatefulBuilder(builder: (context, setState) {
+          textController.addListener(() {
+            setState(() {});
+          });
+          return Dialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0)),
+            child: Container(
+              width: 350,
+              height: 300,
+              decoration: BoxDecoration(
+                borderRadius:
+                    const BorderRadius.only(bottomLeft: Radius.circular(20)),
+                color: AppColor.objectColor,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 20,
+                    spreadRadius: 5,
+                  ),
+                ],
+              ),
+              child: Stack(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(30, 30, 30, 55),
+                    child: TextField(
+                      maxLines: null,
+                      controller: textController,
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        // focusedBorder: OutlineInputBorder(
+                        //     borderRadius: BorderRadius.circular(15),
+                        //     borderSide:
+                        //         const BorderSide(color: AppColor.swatchColor)),
+                        isDense: true,
+                        hintText: "Leave your message!",
+                        hintStyle:
+                            TextStyle(color: Colors.black.withOpacity(0.4)),
+                        // border: OutlineInputBorder(
+                        //   borderRadius: BorderRadius.circular(15),
+                        // ),
+                      ),
                     ),
                   ),
-                ),
-                Positioned(
-                  bottom: 10,
-                  right: 110,
-                  left: 110,
-                  child: ElevatedButton(
-                      onPressed: () {
-                        // post
-                        DateTime postedTime = DateTime.now();
-                        // TODO: id변경
-                        Future<int> id = PostApiService.postPost(
-                            4,
-                            7,
-                            textController.text,
-                            postedTime.year,
-                            postedTime.month,
-                            postedTime.day,
-                            postedTime.hour,
-                            postedTime.minute);
-                        id.then(
-                          (value) {
-                            updatePostList();
-                          },
-                        );
-                        Navigator.of(context).pop();
-                      },
-                      style: const ButtonStyle(
-                          backgroundColor:
-                              MaterialStatePropertyAll(AppColor.swatchColor)),
-                      child: const Text(
-                        "Attach",
-                        style: TextStyle(color: Colors.white),
+                  Positioned(
+                      bottom: 20,
+                      right: 30,
+                      child: Text(
+                        '${textController.text.length}/300',
+                        style: const TextStyle(color: Colors.grey),
                       )),
-                ),
-              ],
+                  Positioned(
+                    bottom: 10,
+                    right: 110,
+                    left: 110,
+                    child: ElevatedButton(
+                        onPressed: () {
+                          // post
+                          DateTime postedTime = DateTime.now();
+                          // TODO: id변경
+                          Future<int> id = PostApiService.postPost(
+                              4,
+                              7,
+                              textController.text,
+                              postedTime.year,
+                              postedTime.month,
+                              postedTime.day,
+                              postedTime.hour,
+                              postedTime.minute);
+                          id.then(
+                            (value) {
+                              updatePostList();
+                            },
+                          );
+                          Navigator.of(context).pop();
+                        },
+                        style: const ButtonStyle(
+                            backgroundColor:
+                                MaterialStatePropertyAll(AppColor.swatchColor)),
+                        child: const Text(
+                          "Attach",
+                          style: TextStyle(color: Colors.white),
+                        )),
+                  ),
+                ],
+              ),
             ),
-          ),
-        );
+          );
+        });
       },
     );
   }
