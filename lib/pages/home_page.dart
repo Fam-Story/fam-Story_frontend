@@ -3,6 +3,7 @@ import 'package:fam_story_frontend/style.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'setting_page.dart';
+import 'alarm_page.dart';
 import 'package:fam_story_frontend/models/family_model.dart';
 import 'package:fam_story_frontend/models/user_model.dart';
 
@@ -144,7 +145,12 @@ class _HomePageState extends State<HomePage> {
                 Row(
                   children: [
                     IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => AlarmPage()),
+                          );
+                        },
                         icon: const Icon(Icons.alarm_on),
                         color: AppColor.swatchColor,
                         iconSize: 35),
