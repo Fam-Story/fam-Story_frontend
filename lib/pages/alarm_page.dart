@@ -16,8 +16,66 @@ class _AlarmPageState extends State<AlarmPage> with TickerProviderStateMixin {
 
   String buttonText = 'Clear';
 
-  List<FamilyInteractionModel> interactions = [];
+  List<FamilyInteractionModel> interactions = [
+    FamilyInteractionModel(
+      interactionId: 1,
+      srcMemberId: 101,
+      dstMemberId: 102,
+      isChecked: false,
+      interactionType: 1,
+    ),
+    FamilyInteractionModel(
+      interactionId: 2,
+      srcMemberId: 102,
+      dstMemberId: 103,
+      isChecked: false,
+      interactionType: 2,
+    ),
+    FamilyInteractionModel(
+      interactionId: 3,
+      srcMemberId: 103,
+      dstMemberId: 101,
+      isChecked: false,
+      interactionType: 3,
+    ),
+    FamilyInteractionModel(
+      interactionId: 4,
+      srcMemberId: 103,
+      dstMemberId: 101,
+      isChecked: false,
+      interactionType: 4,
+    ),
+    FamilyInteractionModel(
+      interactionId: 1,
+      srcMemberId: 103,
+      dstMemberId: 101,
+      isChecked: true,
+      interactionType: 4,
+    ),
+    FamilyInteractionModel(
+      interactionId: 2,
+      srcMemberId: 103,
+      dstMemberId: 101,
+      isChecked: true,
+      interactionType: 3,
+    ),
+    FamilyInteractionModel(
+      interactionId: 3,
+      srcMemberId: 103,
+      dstMemberId: 101,
+      isChecked: true,
+      interactionType: 2,
+    ),
+    FamilyInteractionModel(
+      interactionId: 4,
+      srcMemberId: 103,
+      dstMemberId: 101,
+      isChecked: true,
+      interactionType: 1,
+    ),
+  ];
 
+  List<UserModel> user = [];
 
 
   @override
@@ -74,7 +132,7 @@ class _AlarmPageState extends State<AlarmPage> with TickerProviderStateMixin {
                 margin: const EdgeInsetsDirectional.fromSTEB(20, 20, 20, 20),
                 padding: const EdgeInsets.only(top:20.0, bottom: 20, left: 15, right: 15),
                 decoration: BoxDecoration(
-                  color: AppColor.objectColor,
+                  color: Colors.grey[100],
                   borderRadius: BorderRadius.circular(15.0),
                   boxShadow: [
                     BoxShadow(
@@ -97,42 +155,92 @@ class _AlarmPageState extends State<AlarmPage> with TickerProviderStateMixin {
                             itemBuilder: (BuildContext context, int index) {
                               final item = interactions[interactions.length - 1 - index];
                               bool isChecked = item.isChecked ?? false;
+                              // TODO: srcMemberId로 아래 두 개의 값 불러오기
+                              final role;
+                              final nickname;
                               return Container(
                                 height: 60,
-                                color: isChecked ? Colors.white: Colors.grey[200],
+                                color: isChecked ? Colors.grey[100]: Colors.grey[300],
                                 child: Row(
                                   children: [
                                     SizedBox(width: 10),
                                     CircleAvatar(
                                       radius: 20,
                                       backgroundColor: Colors.blue, // 도형의 배경색
-                                      child: Icon(
-                                        Icons.person, // 아이콘 등을 넣어줄 수 있습니다.
-                                        color: Colors.white, // 아이콘의 색상
+                                      child: Opacity(
+                                        opacity: interactions[index].isChecked ? 0.5 : 1,
+                                        child: Icon(
+                                          Icons.person,
+                                          color: Colors.white,
+                                        ),
                                       ),
                                     ),
                                     SizedBox(width: 10),
                                     CircleAvatar(
-                                      radius: 12,
-                                      backgroundColor: Colors.blue, // 도형의 배경색
+                                      radius: 16,
                                       child: ClipOval(
-                                        child: Image.asset(
-                                          'assets/images/heart.png', // 이미지 URL로 변경
-                                          width: 24,
-                                          height: 24,
-                                          fit: BoxFit.cover,
+                                        child: Opacity(
+                                          opacity: interactions[index].isChecked ? 0.5 : 1,
+                                          child: (() {
+                                            switch (interactions[index].interactionType) {
+                                              case 1:
+                                                return Image.asset(
+                                                  'assets/images/thumbup.png',
+                                                  width: 24,
+                                                  height: 24,
+                                                  fit: BoxFit.cover,
+                                                );
+                                              case 2:
+                                                return Image.asset(
+                                                  'assets/images/thumbdown.png',
+                                                  width: 24,
+                                                  height: 24,
+                                                  fit: BoxFit.cover,
+                                                );
+                                              case 3:
+                                                return Image.asset(
+                                                  'assets/images/heart.png',
+                                                  width: 24,
+                                                  height: 24,
+                                                  fit: BoxFit.cover,
+                                                );
+                                              case 4:
+                                                return Image.asset(
+                                                  'assets/images/poke.png',
+                                                  width: 30,
+                                                  height: 30,
+                                                  fit: BoxFit.cover,
+                                                );
+                                              default:
+                                                return Container(); // 예외 처리
+                                            }
+                                          })(),
                                         ),
                                       ),
                                     ),
-                                    SizedBox(width: 10), // 도형과 텍스트 간격 조절
+                                    SizedBox(width: 10),
                                     Text(
-                                      "${item.srcMemberId}님이 당신을 ${item.interactionType}했어요.",
+                                      (() {
+                                        switch (item.interactionType) {
+                                          case 1:
+                                            return "${item.srcMemberId} sents you a thumbs up!";
+                                          case 2:
+                                            return "${item.srcMemberId} sents you a thumbs up!";
+                                          case 3:
+                                            return "${item.srcMemberId} sents you a heart!";
+                                          case 4:
+                                            return "${item.srcMemberId} sents you a poke!";
+                                          default:
+                                            return ""; // Handle unexpected interactionType
+                                        }
+                                      })(),
                                       style: TextStyle(
-                                        color: Colors.black,
+                                        color: isChecked ? Colors.black: Colors.grey[400],
                                         fontWeight: FontWeight.bold,
                                         fontSize: 14,
                                       ),
                                     ),
+
                                   ],
                                 ),
 
@@ -193,4 +301,17 @@ class _AlarmPageState extends State<AlarmPage> with TickerProviderStateMixin {
       ),
     );
   }
+}
+
+class FamilyInteractionModel {
+  final int interactionId, srcMemberId, dstMemberId, interactionType;
+  final bool isChecked;
+
+  FamilyInteractionModel({
+    required this.interactionId,
+    required this.srcMemberId,
+    required this.dstMemberId,
+    required this.isChecked,
+    required this.interactionType,
+  });
 }

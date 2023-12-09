@@ -15,7 +15,7 @@ class _FcmTestPageState extends State<FcmTestPage> {
   var messagetitle = "";
   var messagebody = "";
   void getMyDeviceToken() async {
-    final token = await FirebaseMessaging.instance.getToken();
+    final token = await FirebaseMessaging.instance.getToken(vapidKey: "BE46-NFLsOf2G-GidNDD6Bq-gz_ktXKwarsctTAFZFa0E_I081YpdqJVAakadjBDJNNWSKpPX0EIvWS_aS0j1DE");
     print("내 디바이스 토큰: $token");
   }
   @override
