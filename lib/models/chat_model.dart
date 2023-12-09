@@ -8,13 +8,15 @@ class ChatModel {
   ChatModel(
       {required this.familyId,
       required this.familyMemberId,
-      required this.message});
+      required this.message,
+      required this.nickname,
+      required this.role});
 
   // http 통신으로 받을 때
   ChatModel.fromJson(Map<String, dynamic> json)
       : nickname = json['nickname'],
         role = json['role'],
-        familyMemberId = json['familyMemberID'],
+        familyMemberId = json['familyMemberId'],
         message = json['message'],
         date = json['createdTime'];
 
@@ -23,16 +25,18 @@ class ChatModel {
       : nickname = chatDto['nickname'],
         role = int.parse(chatDto['role']),
         message = chatDto['message'],
-        familyMemberId = chatDto['familyMemberID'],
+        familyMemberId = int.parse(chatDto['familyMemberId']),
         date = chatDto['createdAt'];
 
   // 소켓으로 보낼 때
   Map<String, dynamic> toChatDto() {
+    print(nickname);
     return {
       'familyId': familyId.toString(),
       'familyMemberId': familyMemberId.toString(),
       'message': message,
       'role': role.toString(),
+      'nickname': nickname,
     };
   }
 }

@@ -47,6 +47,8 @@ class _ChatTestPageState extends State<ChatTestPage> {
         //TODO: 프로바이더 Provider로 수신
         familyId: 13,
         familyMemberId: 8,
+        nickname: '징징',
+        role: 1,
         message: _messageController.text,
       );
       _chatController.sendMessage(chat);

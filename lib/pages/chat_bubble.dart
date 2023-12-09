@@ -35,26 +35,6 @@ class ChatBubbles extends StatelessWidget {
     }
   }
 
-  String getImage(String role) {
-    //TODO: role 값 확인
-    switch (role) {
-      case 'son':
-        return 'assets/images/son.png';
-      case 'daughter':
-        return 'assets/images/daughter.png';
-      case 'mom':
-        return 'assets/images/mom.png';
-      case 'dad':
-        return 'assets/images/dad.png';
-      case 'grandfather':
-        return 'assets/images/grandfather.png';
-      case 'grandmother':
-        return 'assets/images/grandmother.png';
-      default:
-        return 'assets/images/son.png';
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Stack(children: [
@@ -80,7 +60,7 @@ class ChatBubbles extends StatelessWidget {
                   ),
                   ChatBubble(
                     clipper: ChatBubbleClipper8(type: BubbleType.sendBubble),
-                    backGroundColor: AppColor.objectColor, //TODO: 색상 고민
+                    backGroundColor: AppColor.subColor,
                     alignment: Alignment.topRight,
                     margin: const EdgeInsets.only(top: 20, bottom: 3),
                     child: Container(
