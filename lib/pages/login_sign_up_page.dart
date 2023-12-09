@@ -557,8 +557,7 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
       context: context,
       builder: (BuildContext context) {
         return Dialog(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
           child: Container(
             width: 330,
             height: 180,
@@ -607,14 +606,13 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
     );
   }
 
-  Future<dynamic> _showSignUpFailDialog(
-      BuildContext context, String errorDescription) {
+
+  Future<dynamic> _showSignUpFailDialog(BuildContext context, String errorDescription) {
     return showDialog(
       context: context,
       builder: (BuildContext context) {
         return Dialog(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
           child: Container(
             width: 330,
             height: 200,
@@ -637,23 +635,18 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
                 children: [
                   const Text(
                     "Fail to create account!",
-                    style: TextStyle(
-                        fontSize: 25,
-                        color: AppColor.swatchColor,
-                        fontWeight: FontWeight.bold),
+
+                    style: TextStyle(fontSize: 25, color: AppColor.swatchColor, fontWeight: FontWeight.bold),
                   ),
                   Text(
                     errorDescription,
-                    style: const TextStyle(
-                        fontSize: 20, color: AppColor.textColor),
+                    style: const TextStyle(fontSize: 20, color: AppColor.textColor),
                   ),
                   ElevatedButton(
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
-                      style: const ButtonStyle(
-                          backgroundColor:
-                              MaterialStatePropertyAll(AppColor.swatchColor)),
+                      style: const ButtonStyle(backgroundColor: MaterialStatePropertyAll(AppColor.swatchColor)),
                       child: const Text(
                         "Try again",
                         style: TextStyle(color: Colors.white),

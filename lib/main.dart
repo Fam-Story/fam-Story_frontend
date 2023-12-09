@@ -1,3 +1,4 @@
+import 'package:fam_story_frontend/pages/chat_test_page.dart';
 import 'package:fam_story_frontend/pages/family_create_page.dart';
 import 'package:fam_story_frontend/pages/family_join_page.dart';
 import 'package:fam_story_frontend/pages/home_page.dart';
@@ -13,8 +14,9 @@ import 'package:firebase_core/firebase_core.dart'; //firebase fcm 세팅
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'firebase_options.dart';
-
 import 'package:fam_story_frontend/pages/fcm_test_page.dart';
+import 'package:fam_story_frontend/services/family_member_api_service.dart';
+
 
 //백그라운드 메시지
 @pragma('vm:entry-point')
@@ -58,7 +60,7 @@ Future<void> main() async {
   );
   initializeNotification();
 
-  runApp(FamStory());
+  runApp(const FamStory());
 }
 
 class FamStory extends StatelessWidget {
@@ -76,14 +78,6 @@ class FamStory extends StatelessWidget {
         // TODO: 로딩에서 가족 여부 체크
 
         '/': (context) => const LoadingScreen(),
-
-        // '/': (context) => const FamilyJoinPage(),
-
-        // '/': (context) => const RootPage(),
-
-        // // 그페이지 TEST 하고 싶으면 밑처럼 그걸 메인 라우트로 지정하기~
-        // '/': (context) => const FamilyJoinCreatePage(),
-        // '/': (context) => const LoginSignUpPage(),
 
         '/rootPage': (context) => const RootPage(),
         '/loginSignUpPage': (context) => const LoginSignUpPage(),
