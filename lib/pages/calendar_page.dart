@@ -246,7 +246,7 @@ class _CalendarPageState extends State<CalendarPage> {
                               scheduleId =
                                   FamilyScheduleApiService.postFamilySchedule(
                                       textController.text,
-                                      3,
+                                      7,
                                       _currentDate.year,
                                       _currentDate.month,
                                       _currentDate.day);
@@ -392,7 +392,7 @@ class _CalendarPageState extends State<CalendarPage> {
       try {
         // TODO: familyId 변경
         scheduleList = FamilyScheduleApiService.getFamilyScheduleList(
-            3, date.year, date.month);
+            7, date.year, date.month);
         print("updateCalendar");
         scheduleList.then((value) {
           setState(() {
