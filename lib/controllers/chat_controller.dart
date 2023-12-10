@@ -9,13 +9,15 @@ import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
+import '../di/provider/id_provider.dart';
+
 class ChatController {
   late IO.Socket socket;
   final _messageStreamController = StreamController<ChatModel>.broadcast();
 
   Stream<ChatModel> get messages => _messageStreamController.stream;
 
-  Future<void> connectToServer() async {
+  Future<void> connectToServer(String id) async {
     const serverUrl = "https://famstory.thisiswandol.com/chat";
 
     // const storage = FlutterSecureStorage();
@@ -55,7 +57,7 @@ class ChatController {
 
       socket.onConnect((_) {
         print('Connected');
-        socket.emit('joinFamily', {'familyId': '8'});
+        socket.emit('joinFamily', {'familyId': id});
         print('joinFamily!!!!!');
       });
       socket.onDisconnect((_) => print('Disconnected'));
