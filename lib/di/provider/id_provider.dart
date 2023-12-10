@@ -18,23 +18,23 @@ class IdProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void setRole(int role) {
-    role = role;
+  void setRole(int ro) {
+    role = ro;
     notifyListeners();
   }
 
-  void setName(String name) {
-    name = name;
+  void setName(String nam) {
+    name = nam;
     notifyListeners();
   }
 
-  void setNicKName(String nickname) {
-    nickname = nickname;
+  void setNicKName(String nick) {
+    nickname = nick;
     notifyListeners();
   }
 
-  void setIntroMessage(String introMessage) {
-    introMessage = introMessage;
+  void setIntroMessage(String message) {
+    introMessage = message;
     notifyListeners();
   }
 }

@@ -56,6 +56,10 @@ class _RootPageState extends State<RootPage> {
         _familyId = value.familyId;
         context.read<IdProvider>().setFamilyMemberId(_familyMemberId);
         context.read<IdProvider>().setFamilyId(_familyId);
+        context.read<IdProvider>().setRole(_role);
+        context.read<IdProvider>().setName(_name);
+        context.read<IdProvider>().setNicKName(_nickname);
+        context.read<IdProvider>().setIntroMessage(_introMessage);
       });
     });
   }

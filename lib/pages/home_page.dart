@@ -1,7 +1,10 @@
+import 'package:fam_story_frontend/pages/alarm_page.dart';
 import 'package:flutter/material.dart';
 import 'package:fam_story_frontend/style.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
+import '../di/provider/id_provider.dart';
 import '../models/family_member_model.dart';
 
 import '../services/family_member_api_service.dart';
@@ -12,8 +15,19 @@ import 'package:fam_story_frontend/models/family_interaction_model.dart';
 import 'package:fam_story_frontend/services/family_interaction_api_service.dart';
 import 'package:fam_story_frontend/services/family_member_api_service.dart';
 
+enum Interaction {
+  thumbUp,
+  thumbDown,
+  heart,
+  poke;
 
-enum Interaction { thumbUp, thumbDown, heart, poke }
+  int get title => const <Interaction, int>{
+        Interaction.thumbUp: 1,
+        Interaction.thumbDown: 2,
+        Interaction.heart: 3,
+        Interaction.poke: 4,
+      }[this]!;
+}
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -26,16 +40,35 @@ class _HomePageState extends State<HomePage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _textEditingController = TextEditingController();
   String myState = '';
-
-  var myFamilyMemberId = 1;
+  late Future<List<FamilyMemberModel>> _allFamilyMember;
+  int familyId = 0;
+  int familyMemberID = 0;
+  int familyMemberNum = 0;
 
   List<FamilyMemberModel> familyMembers = [
-
     // Add more members as needed
   ];
 
+  @override
+  void initState() {
+    super.initState();
+    _initData();
+  }
 
+  Future<void> _initData() async {
+    familyId = context.read<IdProvider>().familyId;
+    familyMemberID = context.read<IdProvider>().familyMemberId;
 
+    _allFamilyMember = FamilyMemberApiService.getAllFamilyMember(familyId);
+    _allFamilyMember.then((value) {
+      setState(() {
+        familyMembers = value;
+        familyMembers
+            .removeWhere((element) => element.familyMemberId == familyMemberID);
+        familyMemberNum = familyMembers.length;
+      });
+    });
+  }
 
   void interaction(Interaction data) {
     if (data == Interaction.thumbUp) {
@@ -54,6 +87,25 @@ class _HomePageState extends State<HomePage> {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text('poke'),
       ));
+    }
+  }
+
+  String getRoleImage(int role) {
+    switch (role) {
+      case 1:
+        return 'assets/images/grandfather.png';
+      case 2:
+        return 'assets/images/dad.png';
+      case 3:
+        return 'assets/images/son.png';
+      case 4:
+        return 'assets/images/grandmother.png';
+      case 5:
+        return 'assets/images/mom.png';
+      case 6:
+        return 'assets/images/daughter.png';
+      default:
+        return 'assets/images/son.png';
     }
   }
 
@@ -132,9 +184,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    //familyId를 통해 받아온 list.length를 저장
-    int familyMember = 5;
-
     return SafeArea(
       child: Center(
         child: Column(
@@ -161,7 +210,13 @@ class _HomePageState extends State<HomePage> {
                 Row(
                   children: [
                     IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => AlarmPage()),
+                          );
+                        },
                         icon: const Icon(Icons.alarm_on),
                         color: AppColor.swatchColor,
                         iconSize: 35),
@@ -198,64 +253,69 @@ class _HomePageState extends State<HomePage> {
                     borderRadius: BorderRadius.circular(15),
                     border: Border.all(
                       color: Colors.brown[200]!, // Adjust the color as needed
-                      width: 3, // Adjust the width as needed
+                      width: 5, // Adjust the width as needed
                     ),
                   ),
                 ),
 
-
-
                 //familyId ->
                 // 0번 리스트
                 Visibility(
-                    visible: familyMember >= 2,
-                    child: Positioned(
-                      top: -120,
-                      left: 30,
-                      child: DragTarget<Interaction>(
-                        builder: (context, candidateData, rejectedData) {
-                          return FamilyMemberButton(
-                            buttonSize: 0.28,
-                            imageSize: 50,
-                            memberImage: 'assets/images/dad.png',
-                            onTap: () async {
-                              int check = await FamilyInteractionApiService.postFamilyInteraction(familyMembers[0].familyMemberId,myFamilyMemberId,1);
-                            },
-                          );
-                        },
-                        onAccept: (data) {
-                          interaction(data);
-                        },
-                      ),
+                  visible: familyMemberNum >= 1,
+                  child: Positioned(
+                    top: -120,
+                    left: 30,
+                    child: DragTarget<Interaction>(
+                      builder: (context, candidateData, rejectedData) {
+                        return FamilyMemberButton(
+                          buttonSize: 0.28,
+                          imageSize: 50,
+                          memberImage: getRoleImage(familyMembers[0].role),
+                          onTap: () async {
+                            int check = await FamilyInteractionApiService
+                                .postFamilyInteraction(
+                                    familyMembers[0].familyMemberId,
+                                    familyMemberID,
+                                    1);
+                          },
+                        );
+                      },
+                      onAccept: (data) {
+                        interaction(data);
+                      },
                     ),
                   ),
+                ),
                 // 1번 리스트
                 Visibility(
-                  visible: familyMember >= 3,
-                    child: Positioned(
-                      top: 10,
-                      left: -40,
-                      child: DragTarget<Interaction>(
-                        builder: (context, candidateData, rejectedData) {
-                          return FamilyMemberButton(
-                            buttonSize: 0.28,
-                            imageSize: 50,
-                            memberImage: 'assets/images/grandmother.png',
-                            onTap: () async {
-                            },
-                          );
-                        },
-                        onAccept: (data) async {
-                          interaction(data);
-                          int check = await FamilyInteractionApiService.postFamilyInteraction(familyMembers[1].familyMemberId,myFamilyMemberId,1);
-                          print('ho');
-                          },
-                      ),
+                  visible: familyMemberNum >= 2,
+                  child: Positioned(
+                    top: 10,
+                    left: -40,
+                    child: DragTarget<Interaction>(
+                      builder: (context, candidateData, rejectedData) {
+                        return FamilyMemberButton(
+                          buttonSize: 0.28,
+                          imageSize: 50,
+                          memberImage: getRoleImage(familyMembers[1].role),
+                          onTap: () async {},
+                        );
+                      },
+                      onAccept: (data) async {
+                        interaction(data);
+                        int check = await FamilyInteractionApiService
+                            .postFamilyInteraction(
+                                familyMembers[1].familyMemberId,
+                                familyMemberID,
+                                1);
+                        print('ho');
+                      },
                     ),
                   ),
+                ),
                 // 2번 리스트
                 Visibility(
-                  visible: familyMember >= 4,
+                  visible: familyMemberNum >= 3,
                   child: Positioned(
                     top: -120,
                     left: 170,
@@ -264,9 +324,13 @@ class _HomePageState extends State<HomePage> {
                         return FamilyMemberButton(
                           buttonSize: 0.28,
                           imageSize: 50,
-                          memberImage: 'assets/images/mom.png',
+                          memberImage: getRoleImage(familyMembers[2].role),
                           onTap: () async {
-                            int check = await FamilyInteractionApiService.postFamilyInteraction(familyMembers[2].familyMemberId,myFamilyMemberId,1);
+                            int check = await FamilyInteractionApiService
+                                .postFamilyInteraction(
+                                    familyMembers[2].familyMemberId,
+                                    familyMemberID,
+                                    1);
 
                             //FamilyMemberApi 테스트
                             /*
@@ -297,29 +361,33 @@ class _HomePageState extends State<HomePage> {
                 ),
                 // 3번 리스트
                 Visibility(
-                  visible: familyMember >= 5,
-                    child: Positioned(
-                      top: 150,
-                      left: -40,
-                      child: DragTarget<Interaction>(
-                        builder: (context, candidateData, rejectedData) {
-                          return FamilyMemberButton(
-                            buttonSize: 0.28,
-                            imageSize: 50,
-                            memberImage: 'assets/images/daughter.png',
-                            onTap: () async {
-                              int check = await FamilyInteractionApiService.postFamilyInteraction(familyMembers[3].familyMemberId,myFamilyMemberId,1);
-                              print(familyMembers[3].familyMemberId);
-                              print(myFamilyMemberId);
-                            },
-                          );
-                        },
-                        onAccept: (data) {
-                          interaction(data);
-                        },
-                      ),
+                  visible: familyMemberNum >= 4,
+                  child: Positioned(
+                    top: 150,
+                    left: -40,
+                    child: DragTarget<Interaction>(
+                      builder: (context, candidateData, rejectedData) {
+                        return FamilyMemberButton(
+                          buttonSize: 0.28,
+                          imageSize: 50,
+                          memberImage: getRoleImage(familyMembers[3].role),
+                          onTap: () async {
+                            int check = await FamilyInteractionApiService
+                                .postFamilyInteraction(
+                                    familyMembers[3].familyMemberId,
+                                    familyMemberID,
+                                    1);
+                            print(familyMembers[3].familyMemberId);
+                            print(familyMemberID);
+                          },
+                        );
+                      },
+                      onAccept: (data) {
+                        interaction(data);
+                      },
                     ),
                   ),
+                ),
 
                 Positioned(
                   top: 100,
@@ -327,10 +395,9 @@ class _HomePageState extends State<HomePage> {
                   child: FamilyMemberButton(
                     buttonSize: 0.4,
                     imageSize: 90,
-                    memberImage: 'assets/images/mom.png',
+                    memberImage: getRoleImage(context.read<IdProvider>().role),
                     onTap: () {
                       myStateDialog(context);
-
                     },
                   ),
                 ),
