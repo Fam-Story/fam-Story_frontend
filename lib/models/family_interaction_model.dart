@@ -1,6 +1,5 @@
 class FamilyInteractionModel {
-  final int interactionId, srcMemberId, dstMemberId, interactionType;
-  final bool isChecked;
+  final int interactionId, srcMemberId, dstMemberId, interactionType, isChecked;
 
   FamilyInteractionModel.fromJson(Map<String, dynamic> json)
       : interactionId = json['interactionId'],

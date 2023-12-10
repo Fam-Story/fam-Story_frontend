@@ -110,11 +110,12 @@ class _AlarmPageState extends State<AlarmPage> with TickerProviderStateMixin {
                             itemBuilder: (BuildContext context, int index) {
                               final item =
                                   interactions[interactions.length - 1 - index];
-                              bool isChecked = item.isChecked ?? false;
+                              int isChecked = item.isChecked ?? 0;
                               return Container(
                                 height: 60,
-                                color:
-                                    isChecked ? Colors.white : Colors.grey[200],
+                                color: isChecked == 1
+                                    ? Colors.white
+                                    : Colors.grey[200],
                                 child: Row(
                                   children: [
                                     SizedBox(width: 10),

@@ -7,6 +7,7 @@ import 'package:fam_story_frontend/pages/home_page.dart';
 import 'package:fam_story_frontend/pages/post_page.dart';
 import 'package:fam_story_frontend/services/family_member_api_service.dart';
 import 'package:fam_story_frontend/style.dart';
+import 'package:fam_story_frontend/widgets/loading_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'style.dart';
@@ -39,8 +40,8 @@ class _RootPageState extends State<RootPage> {
   @override
   void initState() {
     super.initState();
-    // Future.microtask(() => _initData());
-    _initData();
+    //Future.microtask(() => _initData());
+    _initData().then((_) {});
   }
 
   Future<void> _initData() async {
@@ -64,40 +65,64 @@ class _RootPageState extends State<RootPage> {
     });
   }
 
+  bool flag = false;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(40.0),
-        child: AppBar(
-          backgroundColor: AppColor.backgroudColor,
-        ),
-      ),
-      backgroundColor: AppColor.backgroudColor,
-      body: _pages[_selectedIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        backgroundColor: AppColor.objectColor,
-        selectedItemColor: AppColor.swatchColor,
-        unselectedItemColor: Colors.grey.withOpacity(0.7),
-        selectedLabelStyle: const TextStyle(color: AppColor.textColor),
-        currentIndex: _selectedIndex,
-        items: const [
-          BottomNavigationBarItem(
-              icon: Icon(Icons.home_rounded), label: 'Home'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.question_answer_outlined), label: 'Chat'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.sticky_note_2_outlined), label: 'Post'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.calendar_today_rounded), label: 'Calendar'),
-        ],
-        onTap: (index) {
-          setState(() {
-            _selectedIndex = index;
-          });
-        },
-      ),
+    return FutureBuilder(
+      future: Future.delayed(
+          Duration(seconds: flag ? 0 : 1), () => _pages[_selectedIndex]),
+      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+        switch (snapshot.connectionState) {
+          case ConnectionState.none:
+          case ConnectionState.active:
+          case ConnectionState.waiting:
+            // 처음 한 번만 1초 텀 주는 부분
+            return Scaffold(
+              backgroundColor: AppColor.backgroudColor,
+              body: Center(
+                child: LoadingIndicator(),
+              ),
+            );
+          case ConnectionState.done:
+            if (snapshot.hasError) return Text('Error: ${snapshot.error}');
+            return Scaffold(
+              appBar: PreferredSize(
+                preferredSize: const Size.fromHeight(40.0),
+                child: AppBar(
+                  backgroundColor: AppColor.backgroudColor,
+                ),
+              ),
+              backgroundColor: AppColor.backgroudColor,
+              body: snapshot.data,
+              bottomNavigationBar: BottomNavigationBar(
+                type: BottomNavigationBarType.fixed,
+                backgroundColor: AppColor.objectColor,
+                selectedItemColor: AppColor.swatchColor,
+                unselectedItemColor: Colors.grey.withOpacity(0.7),
+                selectedLabelStyle: const TextStyle(color: AppColor.textColor),
+                currentIndex: _selectedIndex,
+                items: const [
+                  BottomNavigationBarItem(
+                      icon: Icon(Icons.home_rounded), label: 'Home'),
+                  BottomNavigationBarItem(
+                      icon: Icon(Icons.question_answer_outlined),
+                      label: 'Chat'),
+                  BottomNavigationBarItem(
+                      icon: Icon(Icons.sticky_note_2_outlined), label: 'Post'),
+                  BottomNavigationBarItem(
+                      icon: Icon(Icons.calendar_today_rounded),
+                      label: 'Calendar'),
+                ],
+                onTap: (index) {
+                  setState(() {
+                    flag = true;
+                    _selectedIndex = index;
+                  });
+                },
+              ),
+            );
+        }
+      },
     );
   }
 }

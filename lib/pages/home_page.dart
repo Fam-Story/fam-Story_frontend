@@ -70,23 +70,30 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  void interaction(Interaction data) {
-    if (data == Interaction.thumbUp) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('thumb up'),
-      ));
-    } else if (data == Interaction.thumbDown) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('thumb down'),
-      ));
-    } else if (data == Interaction.heart) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('heart'),
-      ));
-    } else if (data == Interaction.poke) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('poke'),
-      ));
+  Future<void> interaction(Interaction data, int familyMemberIDNum) async {
+    await FamilyInteractionApiService.postFamilyInteraction(
+        familyMemberID, familyMemberIDNum, data.title);
+    switch (data.title) {
+      case 1:
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text('thumb up'),
+        ));
+      case 2:
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text('thumb down'),
+        ));
+      case 3:
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text('heart'),
+        ));
+      case 4:
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text('poke'),
+        ));
+      default:
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text('NO'),
+        ));
     }
   }
 
@@ -273,17 +280,11 @@ class _HomePageState extends State<HomePage> {
                           buttonSize: 0.28,
                           imageSize: 50,
                           memberImage: getRoleImage(familyMembers[0].role),
-                          onTap: () async {
-                            int check = await FamilyInteractionApiService
-                                .postFamilyInteraction(
-                                    familyMembers[0].familyMemberId,
-                                    familyMemberID,
-                                    1);
-                          },
+                          onTap: () async {},
                         );
                       },
                       onAccept: (data) {
-                        interaction(data);
+                        interaction(data, familyMembers[0].familyMemberId);
                       },
                     ),
                   ),
@@ -304,13 +305,7 @@ class _HomePageState extends State<HomePage> {
                         );
                       },
                       onAccept: (data) async {
-                        interaction(data);
-                        int check = await FamilyInteractionApiService
-                            .postFamilyInteraction(
-                                familyMembers[1].familyMemberId,
-                                familyMemberID,
-                                1);
-                        print('ho');
+                        interaction(data, familyMembers[1].familyMemberId);
                       },
                     ),
                   ),
@@ -327,36 +322,11 @@ class _HomePageState extends State<HomePage> {
                           buttonSize: 0.28,
                           imageSize: 50,
                           memberImage: getRoleImage(familyMembers[2].role),
-                          onTap: () async {
-                            int check = await FamilyInteractionApiService
-                                .postFamilyInteraction(
-                                    familyMembers[2].familyMemberId,
-                                    familyMemberID,
-                                    1);
-
-                            //FamilyMemberApi 테스트
-                            /*
-                            print(await FamilyMemberApiService.putFamilyMember(
-                                15, 1, "하잉"));
-                            List<FamilyMemberModel> x =
-                                await FamilyMemberApiService.getAllFamilyMember(
-                                    13);
-                            for (var member in x) {
-                              print(member.familyMemberId);
-                              print(member.talkCount);
-                              print(member.pokeCount);
-                              print(member.name);
-                              print(member.nickname);
-                              print(member.role);
-                              print(member.introMessage);
-                            }
-
-                             */
-                          },
+                          onTap: () async {},
                         );
                       },
                       onAccept: (data) {
-                        interaction(data);
+                        interaction(data, familyMembers[2].familyMemberId);
                       },
                     ),
                   ),
@@ -373,19 +343,11 @@ class _HomePageState extends State<HomePage> {
                           buttonSize: 0.28,
                           imageSize: 50,
                           memberImage: getRoleImage(familyMembers[3].role),
-                          onTap: () async {
-                            int check = await FamilyInteractionApiService
-                                .postFamilyInteraction(
-                                    familyMembers[3].familyMemberId,
-                                    familyMemberID,
-                                    1);
-                            print(familyMembers[3].familyMemberId);
-                            print(familyMemberID);
-                          },
+                          onTap: () async {},
                         );
                       },
                       onAccept: (data) {
-                        interaction(data);
+                        interaction(data, familyMembers[3].familyMemberId);
                       },
                     ),
                   ),

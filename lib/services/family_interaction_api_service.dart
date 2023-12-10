@@ -43,7 +43,7 @@ class FamilyInteractionApiService {
     );
 
     // 상호작용 전송 완료
-    if (response.statusCode == 200) {
+    if (response.statusCode == 201) {
       print(jsonDecode(response.body)['message']);
       int interactionId = jsonDecode(response.body)['data'];
       return interactionId;
