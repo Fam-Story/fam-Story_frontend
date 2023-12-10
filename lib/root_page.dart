@@ -9,6 +9,8 @@ import 'package:fam_story_frontend/services/family_member_api_service.dart';
 import 'package:fam_story_frontend/style.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'style.dart';
 
 class RootPage extends StatefulWidget {
@@ -36,11 +38,43 @@ class _RootPageState extends State<RootPage> {
     const CalendarPage()
   ];
 
+  var messagetitle = "";
+  var messagebody = "";
+  void getMyDeviceToken() async {
+    final token = await FirebaseMessaging.instance.getToken();
+    print("내 디바이스 토큰: $token");
+  }
+
   @override
   void initState() {
     super.initState();
     // Future.microtask(() => _initData());
     _initData();
+
+    getMyDeviceToken();
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
+      RemoteNotification? notification = message.notification;
+      if (notification != null) {
+        FlutterLocalNotificationsPlugin().show(
+          notification.hashCode,
+          notification.title,
+          notification.body,
+          const NotificationDetails(
+            android: AndroidNotificationDetails(
+              'high_importance_channel',
+              'high_importance_notification',
+              importance: Importance.max,
+            ),
+          ),
+        );
+        setState(() {
+          messagetitle = message.notification!.title!;
+          messagebody = message.notification!.body!;
+          print("Foreground 메시지 제목: $messagetitle");
+          print("Foreground 메시지 내용: $messagebody");
+        });
+      }
+    });
   }
 
   Future<void> _initData() async {
