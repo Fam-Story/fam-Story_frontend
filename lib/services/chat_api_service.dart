@@ -15,7 +15,8 @@ class ChatApiService {
     String? userInfoString = await storage.read(key: 'login');
 
     if (userInfoString == null) {
-      throw ErrorDescription('Your login token has expired. Please Login Again.');
+      throw ErrorDescription(
+          'Your login token has expired. Please Login Again.');
     }
     Map<String, dynamic> userInfo = json.decode(userInfoString);
     String loginToken = userInfo['token'];
@@ -31,7 +32,7 @@ class ChatApiService {
 
     // 이전 채팅 정보 받기
     // String errorMessage = 'ERROR';
-    if (response.statusCode == 201) {
+    if (response.statusCode == 200) {
       List<ChatModel> chatHistory = [];
 
       List<dynamic> chatData = jsonDecode(response.body)['data'];

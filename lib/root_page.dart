@@ -24,6 +24,10 @@ class _RootPageState extends State<RootPage> {
   late Future<FamilyModel> _family;
   int _familyMemberId = 0;
   int _familyId = 0;
+  int _role = 0;
+  String _name = '';
+  String _nickname = '';
+  String _introMessage = '';
 
   final List<Widget> _pages = [
     const HomePage(),
@@ -35,16 +39,29 @@ class _RootPageState extends State<RootPage> {
   @override
   void initState() {
     super.initState();
+    // Future.microtask(() => _initData());
+    _initData();
+  }
+
+  Future<void> _initData() async {
+    _familyMember = FamilyMemberApiService.getFamilyMember();
+    _familyMember.then((value) {
+      _role = value.role;
+      _name = value.name;
+      _nickname = value.nickname;
+      _introMessage = value.introMessage;
+      _familyMemberId = value.familyMemberId;
+      _family = FamilyMemberApiService.postAndGetFamily(_familyMemberId);
+      _family.then((value) {
+        _familyId = value.familyId;
+        context.read<IdProvider>().setFamilyMemberId(_familyMemberId);
+        context.read<IdProvider>().setFamilyId(_familyId);
+      });
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    _familyMember = FamilyMemberApiService.getFamilyMember();
-    _familyMember.then((value) => _familyMemberId = value.familyMemberId);
-    _family = FamilyMemberApiService.postAndGetFamily(_familyMemberId);
-    _family.then((value) => _familyId = value.familyId);
-    context.read<IdProvider>().setFamilyMemberId(_familyMemberId);
-    context.read<IdProvider>().setFamilyId(_familyId);
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(40.0),

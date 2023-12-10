@@ -10,27 +10,26 @@ class ChatBubbles extends StatelessWidget {
       {Key? key})
       : super(key: key);
 
-  final String role;
+  final int role;
   final String nickname;
   final String message;
   final String date;
   final bool isMe;
 
-  String getImage(String role) {
-    //TODO: role 값 확인
+  String getRoleImage(int role) {
     switch (role) {
-      case 'son':
-        return 'assets/images/son.png';
-      case 'daughter':
-        return 'assets/images/daughter.png';
-      case 'mom':
-        return 'assets/images/mom.png';
-      case 'dad':
-        return 'assets/images/dad.png';
-      case 'grandfather':
+      case 1:
         return 'assets/images/grandfather.png';
-      case 'grandmother':
+      case 2:
+        return 'assets/images/dad.png';
+      case 3:
+        return 'assets/images/son.png';
+      case 4:
         return 'assets/images/grandmother.png';
+      case 5:
+        return 'assets/images/mom.png';
+      case 6:
+        return 'assets/images/daughter.png';
       default:
         return 'assets/images/son.png';
     }
@@ -61,7 +60,7 @@ class ChatBubbles extends StatelessWidget {
                   ),
                   ChatBubble(
                     clipper: ChatBubbleClipper8(type: BubbleType.sendBubble),
-                    backGroundColor: AppColor.objectColor, //TODO: 색상 고민
+                    backGroundColor: AppColor.subColor,
                     alignment: Alignment.topRight,
                     margin: const EdgeInsets.only(top: 20, bottom: 3),
                     child: Container(
@@ -125,7 +124,7 @@ class ChatBubbles extends StatelessWidget {
           child: FamilyMemberButton(
             buttonSize: 0.1,
             imageSize: 25,
-            memberImage: getImage(role),
+            memberImage: getRoleImage(role),
           ),
         ),
       if (!isMe)
