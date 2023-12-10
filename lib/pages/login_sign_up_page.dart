@@ -522,11 +522,7 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
                               Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => ChangeNotifierProvider(
-                                    create: (context) =>
-                                        IdProvider(), // 아니면 value: IdProvider() 로도 가능
-                                    child: const RootPage(),
-                                  ),
+                                  builder: (context) => const RootPage(),
                                 ),
                               );
                             }

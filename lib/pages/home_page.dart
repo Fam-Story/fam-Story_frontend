@@ -184,6 +184,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    print(familyId);
     return SafeArea(
       child: Center(
         child: Column(
@@ -214,7 +215,8 @@ class _HomePageState extends State<HomePage> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => AlarmPage()),
+                              builder: (context) => const AlarmPage(),
+                            ),
                           );
                         },
                         icon: const Icon(Icons.alarm_on),
@@ -225,7 +227,7 @@ class _HomePageState extends State<HomePage> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => SettingPage()),
+                                builder: (context) => const SettingPage()),
                           );
                         },
                         icon: const Icon(Icons.settings),

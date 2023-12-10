@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:fam_story_frontend/style.dart';
 import 'package:fam_story_frontend/models/user_model.dart';
 import 'package:fam_story_frontend/models/family_interaction_model.dart';
+import 'package:provider/provider.dart';
+
+import '../di/provider/id_provider.dart';
 
 class AlarmPage extends StatefulWidget {
   const AlarmPage({Key? key}) : super(key: key);
@@ -13,15 +16,18 @@ class AlarmPage extends StatefulWidget {
 }
 
 class _AlarmPageState extends State<AlarmPage> with TickerProviderStateMixin {
-
   String buttonText = 'Clear';
 
   List<FamilyInteractionModel> interactions = [];
-
-
+  int familyIDs = 0;
 
   @override
   Widget build(BuildContext context) {
+    //int familyIDs = Provider.of<IdProvider>(context, listen: false).familyId;
+    IdProvider x = Provider.of<IdProvider>(context);
+    //int familyIDs = context.read<IdProvider>().familyMemberId;
+    familyIDs = x.familyId;
+    print(familyIDs);
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(50.0),
@@ -55,11 +61,17 @@ class _AlarmPageState extends State<AlarmPage> with TickerProviderStateMixin {
               children: [
                 Text(
                   "Recognize",
-                  style: TextStyle(color: AppColor.textColor, fontSize: 40, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      color: AppColor.textColor,
+                      fontSize: 40,
+                      fontWeight: FontWeight.bold),
                 ),
                 Text(
                   "Hear Family's Reactions",
-                  style: TextStyle(color: AppColor.textColor, fontSize: 20, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      color: AppColor.textColor,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold),
                 )
               ],
             ),
@@ -72,7 +84,8 @@ class _AlarmPageState extends State<AlarmPage> with TickerProviderStateMixin {
               child: Container(
                 constraints: BoxConstraints(maxHeight: 480),
                 margin: const EdgeInsetsDirectional.fromSTEB(20, 20, 20, 20),
-                padding: const EdgeInsets.only(top:20.0, bottom: 20, left: 15, right: 15),
+                padding: const EdgeInsets.only(
+                    top: 20.0, bottom: 20, left: 15, right: 15),
                 decoration: BoxDecoration(
                   color: AppColor.objectColor,
                   borderRadius: BorderRadius.circular(15.0),
@@ -95,11 +108,13 @@ class _AlarmPageState extends State<AlarmPage> with TickerProviderStateMixin {
                             physics: NeverScrollableScrollPhysics(),
                             itemCount: interactions.length,
                             itemBuilder: (BuildContext context, int index) {
-                              final item = interactions[interactions.length - 1 - index];
+                              final item =
+                                  interactions[interactions.length - 1 - index];
                               bool isChecked = item.isChecked ?? false;
                               return Container(
                                 height: 60,
-                                color: isChecked ? Colors.white: Colors.grey[200],
+                                color:
+                                    isChecked ? Colors.white : Colors.grey[200],
                                 child: Row(
                                   children: [
                                     SizedBox(width: 10),
@@ -135,7 +150,6 @@ class _AlarmPageState extends State<AlarmPage> with TickerProviderStateMixin {
                                     ),
                                   ],
                                 ),
-
                               );
                             },
                           ),
@@ -147,9 +161,6 @@ class _AlarmPageState extends State<AlarmPage> with TickerProviderStateMixin {
               ),
             ),
           ),
-
-
-
           Positioned(
             left: 0,
             right: 0,
@@ -166,10 +177,8 @@ class _AlarmPageState extends State<AlarmPage> with TickerProviderStateMixin {
                     } catch (e) {
                       print(e.toString());
                     }
-                    setState(() {
-                    });
+                    setState(() {});
                   },
-
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(35),

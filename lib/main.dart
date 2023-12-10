@@ -65,7 +65,12 @@ Future<void> main() async {
   );
   initializeNotification();
 
-  runApp(const FamStory());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => IdProvider(),
+      child: const FamStory(),
+    ),
+  );
 }
 
 class FamStory extends StatelessWidget {
