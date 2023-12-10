@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import '../di/provider/id_provider.dart';
 import '../models/family_member_model.dart';
 
+import '../root_page.dart';
 import '../services/family_member_api_service.dart';
 import 'setting_page.dart';
 import 'package:fam_story_frontend/models/family_model.dart';
@@ -38,12 +39,13 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _textEditingController = TextEditingController();
+  late TextEditingController _textEditingController = TextEditingController();
   String myState = '';
   late Future<List<FamilyMemberModel>> _allFamilyMember;
   int familyId = 0;
   int familyMemberID = 0;
   int familyMemberNum = 0;
+  String? message;
 
   List<FamilyMemberModel> familyMembers = [
     // Add more members as needed
@@ -53,12 +55,16 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     _initData();
+    setState(() {
+      _textEditingController.text = context.read<IdProvider>().introMessage;
+    });
   }
 
   Future<void> _initData() async {
     familyId = context.read<IdProvider>().familyId;
     familyMemberID = context.read<IdProvider>().familyMemberId;
 
+    message = context.read<IdProvider>().introMessage;
     _allFamilyMember = FamilyMemberApiService.getAllFamilyMember(familyId);
     _allFamilyMember.then((value) {
       setState(() {
@@ -117,6 +123,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   void myStateDialog(BuildContext context) async {
+    TextEditingController newController =
+        TextEditingController(text: _textEditingController.text);
+
     await showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -138,39 +147,46 @@ class _HomePageState extends State<HomePage> {
           content: Form(
             key: _formKey,
             child: TextFormField(
-              controller: _textEditingController,
+              controller: newController,
               maxLength: 11,
-              decoration: InputDecoration(
-                  labelText: _textEditingController.text,
-                  suffixIcon: IconButton(
-                      onPressed: () => _textEditingController.clear(),
-                      icon: const Icon(
-                        Icons.cancel,
-                        size: 20,
-                      )),
-                  focusedErrorBorder: const UnderlineInputBorder(
+              decoration: const InputDecoration(
+                  labelText: 'Enter your state!',
+                  focusedErrorBorder: UnderlineInputBorder(
                       borderSide: BorderSide(
                     color: AppColor.objectColor,
                     width: 2,
                   ))),
-              inputFormatters: [
-                FilteringTextInputFormatter(
-                  RegExp('[a-z A-Z |0-9]'),
-                  allow: true,
-                )
-              ],
               onSaved: (value) {
-                myState = value!;
+                setState(() {
+                  newController.text = value!;
+                });
               },
             ),
           ),
           actions: [
             TextButton(
-              onPressed: () {
-                final formKeyState = _formKey.currentState!;
-                if (formKeyState.validate()) {
-                  formKeyState.save();
-                  Navigator.of(context).pop();
+              onPressed: () async {
+                try {
+                  await FamilyMemberApiService.putFamilyMember(
+                    familyMemberID,
+                    context.read<IdProvider>().role,
+                    newController.text,
+                  ).then((value) {
+                    context
+                        .read<IdProvider>()
+                        .setIntroMessage(newController.text);
+                    _formKey.currentState!.save();
+                    //TODO: 다른 방안?
+                    Navigator.pop(context);
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const RootPage(),
+                      ),
+                    );
+                  });
+                } catch (e) {
+                  print('Error during API call: $e');
                 }
               },
               child: const Text('Ok',
@@ -187,6 +203,9 @@ class _HomePageState extends State<HomePage> {
         );
       },
     );
+    setState(() {
+      _textEditingController = newController;
+    });
   }
 
   @override
@@ -431,13 +450,17 @@ class _HomePageState extends State<HomePage> {
                 Positioned(
                   top: 310,
                   left: 190,
-                  child: CustomPaint(
-                    painter: SpeechBubble(color: AppColor.textColor),
-                    child: Container(
-                      margin: const EdgeInsets.all(30),
-                      child: const Text("I'm hungry.."),
-                    ),
-                  ),
+                  child: message != null
+                      ? Center(
+                          child: CustomPaint(
+                            painter: SpeechBubble(color: AppColor.textColor),
+                            child: Container(
+                              margin: const EdgeInsets.all(30),
+                              child: Text(message!),
+                            ),
+                          ),
+                        )
+                      : Container(), // message가 null일 때는 빈 Container 반환
                 ),
               ],
             ),
@@ -551,7 +574,7 @@ class SpeechBubble extends CustomPainter {
           ..color = color
           ..style = PaintingStyle.fill);
     var path = Path();
-    path.moveTo(size.width / 2, 0.0);
+    path.moveTo(size.width / 1.5, .0);
     path.lineTo(size.width / 2 - _x / 1.5, _x);
     path.lineTo(size.width / 2 + _x / 1.5, _x);
     canvas.clipPath(path);
