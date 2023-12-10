@@ -2,10 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:fam_story_frontend/style.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import '../models/family_member_model.dart';
 import 'setting_page.dart';
 import 'alarm_page.dart';
 import 'package:fam_story_frontend/models/family_model.dart';
 import 'package:fam_story_frontend/models/user_model.dart';
+import 'package:fam_story_frontend/models/family_interaction_model.dart';
+import 'package:fam_story_frontend/services/family_interaction_api_service.dart';
+import 'package:fam_story_frontend/services/family_member_api_service.dart';
+
 
 enum Interaction { thumbUp, thumbDown, heart, poke }
 
@@ -20,6 +25,47 @@ class _HomePageState extends State<HomePage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _textEditingController = TextEditingController();
   String myState = '';
+
+  var myFamilyMemberId = 1;
+
+  List<FamilyMemberModel> familyMembers = [
+    FamilyMemberModel(
+      familyMemberId: 2,
+      name: 'Jane Doe',
+      nickname: 'Janie',
+      role: 1,
+      pokeCount: 3,
+      talkCount: 8,
+    ),
+    FamilyMemberModel(
+      familyMemberId: 3,
+      name: 'Alice Doe',
+      nickname: 'Ally',
+      role: 2,
+      pokeCount: 2,
+      talkCount: 5,
+    ),
+    FamilyMemberModel(
+      familyMemberId: 4,
+      name: 'Bob Doe',
+      nickname: 'Bobby',
+      role: 3,
+      pokeCount: 4,
+      talkCount: 7,
+    ),
+    FamilyMemberModel(
+      familyMemberId: 4,
+      name: 'Bob Doe',
+      nickname: 'Bobby',
+      role: 4,
+      pokeCount: 4,
+      talkCount: 7,
+    ),
+    // Add more members as needed
+  ];
+
+
+
 
   void interaction(Interaction data) {
     if (data == Interaction.thumbUp) {
@@ -116,7 +162,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // family 수를 여기에 저장
+    //familyId를 통해 받아온 list.length를 저장
     int familyMember = 5;
 
     return SafeArea(
@@ -181,12 +227,70 @@ class _HomePageState extends State<HomePage> {
                 Container(
                   width: 300,
                   height: 300,
-                  color: AppColor.swatchColor,
+                  decoration: BoxDecoration(
+                    color: AppColor.swatchColor,
+                    borderRadius: BorderRadius.circular(15),
+                    border: Border.all(
+                      color: Colors.brown[200]!, // Adjust the color as needed
+                      width: 3, // Adjust the width as needed
+                    ),
+                  ),
                 ),
 
-                //FamilyMember round
-                if (familyMember == 5) ...[
-                  Positioned(
+
+
+                //familyId ->
+                // 0번 리스트
+                Visibility(
+                    visible: familyMember >= 2,
+                    child: Positioned(
+                      top: -120,
+                      left: 30,
+                      child: DragTarget<Interaction>(
+                        builder: (context, candidateData, rejectedData) {
+                          return FamilyMemberButton(
+                            buttonSize: 0.28,
+                            imageSize: 50,
+                            memberImage: 'assets/images/dad.png',
+                            onTap: () async {
+                              int check = await FamilyInteractionApiService.postFamilyInteraction(familyMembers[0].familyMemberId,myFamilyMemberId,1);
+                            },
+                          );
+                        },
+                        onAccept: (data) {
+                          interaction(data);
+                        },
+                      ),
+                    ),
+                  ),
+                // 1번 리스트
+                Visibility(
+                  visible: familyMember >= 3,
+                    child: Positioned(
+                      top: 10,
+                      left: -40,
+                      child: DragTarget<Interaction>(
+                        builder: (context, candidateData, rejectedData) {
+                          return FamilyMemberButton(
+                            buttonSize: 0.28,
+                            imageSize: 50,
+                            memberImage: 'assets/images/grandmother.png',
+                            onTap: () async {
+                            },
+                          );
+                        },
+                        onAccept: (data) async {
+                          interaction(data);
+                          int check = await FamilyInteractionApiService.postFamilyInteraction(familyMembers[1].familyMemberId,myFamilyMemberId,1);
+                          print('ho');
+                          },
+                      ),
+                    ),
+                  ),
+                // 2번 리스트
+                Visibility(
+                  visible: familyMember >= 4,
+                  child: Positioned(
                     top: -120,
                     left: 170,
                     child: DragTarget<Interaction>(
@@ -195,7 +299,9 @@ class _HomePageState extends State<HomePage> {
                           buttonSize: 0.28,
                           imageSize: 50,
                           memberImage: 'assets/images/mom.png',
-                          onTap: () {},
+                          onTap: () async {
+                            int check = await FamilyInteractionApiService.postFamilyInteraction(familyMembers[2].familyMemberId,myFamilyMemberId,1);
+                          },
                         );
                       },
                       onAccept: (data) {
@@ -203,133 +309,43 @@ class _HomePageState extends State<HomePage> {
                       },
                     ),
                   ),
-                  Positioned(
-                    top: -120,
-                    left: 30,
-                    child: DragTarget<Interaction>(
-                      builder: (context, candidateData, rejectedData) {
-                        return FamilyMemberButton(
-                          buttonSize: 0.28,
-                          imageSize: 50,
-                          memberImage: 'assets/images/dad.png',
-                          onTap: () {},
-                        );
-                      },
-                      onAccept: (data) {
-                        interaction(data);
-                      },
+                ),
+                // 3번 리스트
+                Visibility(
+                  visible: familyMember >= 5,
+                    child: Positioned(
+                      top: 150,
+                      left: -40,
+                      child: DragTarget<Interaction>(
+                        builder: (context, candidateData, rejectedData) {
+                          return FamilyMemberButton(
+                            buttonSize: 0.28,
+                            imageSize: 50,
+                            memberImage: 'assets/images/daughter.png',
+                            onTap: () async {
+                              int check = await FamilyInteractionApiService.postFamilyInteraction(familyMembers[3].familyMemberId,myFamilyMemberId,1);
+                              print(familyMembers[3].familyMemberId);
+                              print(myFamilyMemberId);
+                            },
+                          );
+                        },
+                        onAccept: (data) {
+                          interaction(data);
+                        },
+                      ),
                     ),
                   ),
-                  Positioned(
-                    top: 10,
-                    left: -40,
-                    child: DragTarget<Interaction>(
-                      builder: (context, candidateData, rejectedData) {
-                        return FamilyMemberButton(
-                          buttonSize: 0.28,
-                          imageSize: 50,
-                          memberImage: 'assets/images/grandmother.png',
-                          onTap: () {},
-                        );
-                      },
-                      onAccept: (data) {
-                        interaction(data);
-                      },
-                    ),
-                  ),
-                  Positioned(
-                    top: 150,
-                    left: -40,
-                    child: DragTarget<Interaction>(
-                      builder: (context, candidateData, rejectedData) {
-                        return FamilyMemberButton(
-                          buttonSize: 0.28,
-                          imageSize: 50,
-                          memberImage: 'assets/images/daughter.png',
-                          onTap: () {},
-                        );
-                      },
-                      onAccept: (data) {
-                        interaction(data);
-                      },
-                    ),
-                  ),
-                ] else if (familyMember == 4) ...[
-                  Positioned(
-                    top: -120,
-                    left: 170,
-                    child: FamilyMemberButton(
-                      buttonSize: 0.36,
-                      imageSize: 90,
-                      memberImage: 'assets/images/son.png',
-                      onTap: () {},
-                    ),
-                  ),
-                  Positioned(
-                    top: -120,
-                    left: 20,
-                    child: FamilyMemberButton(
-                      buttonSize: 0.36,
-                      imageSize: 90,
-                      memberImage: 'assets/images/son.png',
-                      onTap: () {},
-                    ),
-                  ),
-                  Positioned(
-                    top: 40,
-                    left: -40,
-                    child: FamilyMemberButton(
-                      buttonSize: 0.32,
-                      imageSize: 90,
-                      memberImage: 'assets/images/son.png',
-                      onTap: () {},
-                    ),
-                  ),
-                ] else if (familyMember == 3) ...[
-                  Positioned(
-                    top: -120,
-                    left: 100,
-                    child: FamilyMemberButton(
-                      buttonSize: 0.36,
-                      imageSize: 90,
-                      memberImage: 'assets/images/son.png',
-                      onTap: () {},
-                    ),
-                  ),
-                  Positioned(
-                    top: 10,
-                    left: -40,
-                    child: FamilyMemberButton(
-                      buttonSize: 0.36,
-                      imageSize: 90,
-                      memberImage: 'assets/images/son.png',
-                      onTap: () {},
-                    ),
-                  ),
-                ] else if (familyMember == 2) ...[
-                  Positioned(
-                    top: -120,
-                    left: -20,
-                    child: FamilyMemberButton(
-                      buttonSize: 0.4,
-                      imageSize: 90,
-                      memberImage: 'assets/images/son.png',
-                      onTap: () {},
-                    ),
-                  ),
-                ] else
-                  ...[],
 
-                //Me round
                 Positioned(
                   top: 100,
                   left: 180,
                   child: FamilyMemberButton(
                     buttonSize: 0.4,
                     imageSize: 90,
-                    memberImage: 'assets/images/son.png',
+                    memberImage: 'assets/images/mom.png',
                     onTap: () {
                       myStateDialog(context);
+
                     },
                   ),
                 ),
@@ -540,4 +556,22 @@ class SpeechBubble extends CustomPainter {
   bool shouldRepaint(CustomPainter oldDelegate) {
     return true;
   }
+}
+
+class FamilyMemberModel {
+  int familyMemberId;
+  String name;
+  String nickname;
+  int role;
+  int pokeCount;
+  int talkCount;
+
+  FamilyMemberModel({
+    required this.familyMemberId,
+    required this.name,
+    required this.nickname,
+    required this.role,
+    required this.pokeCount,
+    required this.talkCount,
+  });
 }
