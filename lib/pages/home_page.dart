@@ -3,8 +3,9 @@ import 'package:fam_story_frontend/style.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../models/family_member_model.dart';
+
+import '../services/family_member_api_service.dart';
 import 'setting_page.dart';
-import 'alarm_page.dart';
 import 'package:fam_story_frontend/models/family_model.dart';
 import 'package:fam_story_frontend/models/user_model.dart';
 import 'package:fam_story_frontend/models/family_interaction_model.dart';
@@ -29,38 +30,7 @@ class _HomePageState extends State<HomePage> {
   var myFamilyMemberId = 1;
 
   List<FamilyMemberModel> familyMembers = [
-    FamilyMemberModel(
-      familyMemberId: 2,
-      name: 'Jane Doe',
-      nickname: 'Janie',
-      role: 1,
-      pokeCount: 3,
-      talkCount: 8,
-    ),
-    FamilyMemberModel(
-      familyMemberId: 3,
-      name: 'Alice Doe',
-      nickname: 'Ally',
-      role: 2,
-      pokeCount: 2,
-      talkCount: 5,
-    ),
-    FamilyMemberModel(
-      familyMemberId: 4,
-      name: 'Bob Doe',
-      nickname: 'Bobby',
-      role: 3,
-      pokeCount: 4,
-      talkCount: 7,
-    ),
-    FamilyMemberModel(
-      familyMemberId: 4,
-      name: 'Bob Doe',
-      nickname: 'Bobby',
-      role: 4,
-      pokeCount: 4,
-      talkCount: 7,
-    ),
+
     // Add more members as needed
   ];
 
@@ -191,12 +161,7 @@ class _HomePageState extends State<HomePage> {
                 Row(
                   children: [
                     IconButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => AlarmPage()),
-                          );
-                        },
+                        onPressed: () {},
                         icon: const Icon(Icons.alarm_on),
                         color: AppColor.swatchColor,
                         iconSize: 35),
@@ -204,7 +169,8 @@ class _HomePageState extends State<HomePage> {
                         onPressed: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => SettingPage()),
+                            MaterialPageRoute(
+                                builder: (context) => SettingPage()),
                           );
                         },
                         icon: const Icon(Icons.settings),
@@ -301,6 +267,25 @@ class _HomePageState extends State<HomePage> {
                           memberImage: 'assets/images/mom.png',
                           onTap: () async {
                             int check = await FamilyInteractionApiService.postFamilyInteraction(familyMembers[2].familyMemberId,myFamilyMemberId,1);
+
+                            //FamilyMemberApi 테스트
+                            /*
+                            print(await FamilyMemberApiService.putFamilyMember(
+                                15, 1, "하잉"));
+                            List<FamilyMemberModel> x =
+                                await FamilyMemberApiService.getAllFamilyMember(
+                                    13);
+                            for (var member in x) {
+                              print(member.familyMemberId);
+                              print(member.talkCount);
+                              print(member.pokeCount);
+                              print(member.name);
+                              print(member.nickname);
+                              print(member.role);
+                              print(member.introMessage);
+                            }
+
+                             */
                           },
                         );
                       },
@@ -556,22 +541,4 @@ class SpeechBubble extends CustomPainter {
   bool shouldRepaint(CustomPainter oldDelegate) {
     return true;
   }
-}
-
-class FamilyMemberModel {
-  int familyMemberId;
-  String name;
-  String nickname;
-  int role;
-  int pokeCount;
-  int talkCount;
-
-  FamilyMemberModel({
-    required this.familyMemberId,
-    required this.name,
-    required this.nickname,
-    required this.role,
-    required this.pokeCount,
-    required this.talkCount,
-  });
 }

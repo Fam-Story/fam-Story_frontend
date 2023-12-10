@@ -6,6 +6,8 @@ import 'package:fam_story_frontend/widgets/post_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:fam_story_frontend/style.dart';
+import 'package:provider/provider.dart';
+import 'package:fam_story_frontend/di/provider/id_provider.dart';
 
 class PostPage extends StatefulWidget {
   const PostPage({super.key});
@@ -16,6 +18,7 @@ class PostPage extends StatefulWidget {
 
 class _PostPageState extends State<PostPage> {
   late Future<List<PostModel>> postList;
+  int familyId = 0, familyMemberId = 0;
   int _reloadKey = 0;
 
   @override
@@ -25,16 +28,18 @@ class _PostPageState extends State<PostPage> {
 
   void updatePostList() {
     setState(() {
-      // TODO: id 변경
-      postList = PostApiService.getPostList(7);
+      postList = PostApiService.getPostList(familyId);
       _reloadKey++;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    // TODO: id변경
-    postList = PostApiService.getPostList(7);
+    familyId = context.watch<IdProvider>().familyId;
+    familyMemberId = context.watch<IdProvider>().familyMemberId;
+    print('familyId: $familyId');
+    print('familyMemberId: $familyMemberId');
+    postList = PostApiService.getPostList(familyId);
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -282,10 +287,9 @@ class _PostPageState extends State<PostPage> {
                             Navigator.of(context).pop();
                             // post
                             DateTime postedTime = DateTime.now();
-                            // TODO: id변경
                             PostApiService.putPost(
                                     post.postId,
-                                    3,
+                                    familyMemberId,
                                     textController.text,
                                     postedTime.year,
                                     postedTime.month,
@@ -382,10 +386,9 @@ class _PostPageState extends State<PostPage> {
                         onPressed: () {
                           // post
                           DateTime postedTime = DateTime.now();
-                          // TODO: id변경
                           Future<int> id = PostApiService.postPost(
-                              4,
-                              7,
+                              familyMemberId,
+                              familyId,
                               textController.text,
                               postedTime.year,
                               postedTime.month,

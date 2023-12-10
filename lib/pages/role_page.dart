@@ -1,7 +1,9 @@
+import 'package:fam_story_frontend/di/provider/id_provider.dart';
 import 'package:fam_story_frontend/root_page.dart';
 import 'package:fam_story_frontend/services/family_member_api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:fam_story_frontend/style.dart';
+import 'package:provider/provider.dart';
 
 class RolePage extends StatefulWidget {
   // 인자로 대체
@@ -13,7 +15,8 @@ class RolePage extends StatefulWidget {
   State<RolePage> createState() => _SelectRolePageState();
 }
 
-class _SelectRolePageState extends State<RolePage> with TickerProviderStateMixin {
+class _SelectRolePageState extends State<RolePage>
+    with TickerProviderStateMixin {
   final _familyNameController = TextEditingController();
 
   int? selectedRole;
@@ -32,7 +35,8 @@ class _SelectRolePageState extends State<RolePage> with TickerProviderStateMixin
 
   @override
   Widget build(BuildContext context) {
-    final args = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
+    final args =
+        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
     final familyName = args['familyName'] as String;
     final familyId = args['familyId'] as int;
 
@@ -54,11 +58,17 @@ class _SelectRolePageState extends State<RolePage> with TickerProviderStateMixin
               children: [
                 Text(
                   "fam'Story",
-                  style: TextStyle(color: AppColor.textColor, fontSize: 40, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      color: AppColor.textColor,
+                      fontSize: 40,
+                      fontWeight: FontWeight.bold),
                 ),
                 Text(
                   "Tell Me Who You Are !",
-                  style: TextStyle(color: AppColor.textColor, fontSize: 20, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      color: AppColor.textColor,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold),
                 )
               ],
             ),
@@ -96,7 +106,8 @@ class _SelectRolePageState extends State<RolePage> with TickerProviderStateMixin
                     const SizedBox(height: 16.0),
                     GridView.builder(
                       shrinkWrap: true,
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 3,
                         crossAxisSpacing: 14.0,
                         mainAxisSpacing: 14.0,
@@ -184,7 +195,9 @@ class _SelectRolePageState extends State<RolePage> with TickerProviderStateMixin
                         // TODO: API 연결, 가족 멤버 생성, 가족 ID 가져 오기
                         print(roleDescriptions[selectedRole!]);
                         try {
-                          int familyMemberId = await FamilyMemberApiService.postFamilyMember(familyId, selectedRole!);
+                          int familyMemberId =
+                              await FamilyMemberApiService.postFamilyMember(
+                                  familyId, selectedRole!, "");
                         } catch (e) {
                           print(e.toString());
                         }
@@ -212,20 +225,29 @@ class _SelectRolePageState extends State<RolePage> with TickerProviderStateMixin
                                       onPressed: () {
                                         Navigator.of(context).pop(); // 현재 라우트 팝
                                         Navigator.of(context).pushReplacement(
-                                          MaterialPageRoute(builder: (context) => const RootPage()),
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ChangeNotifierProvider(
+                                                      create: (context) =>
+                                                          IdProvider(),
+                                                      child: const RootPage())),
                                         );
                                       },
                                       style: TextButton.styleFrom(
-                                        foregroundColor: AppColor.objectColor, // 텍스트 색상
-                                        padding: const EdgeInsets.fromLTRB(40, 10, 40, 10), // 버튼 패딩 조정
+                                        foregroundColor:
+                                            AppColor.objectColor, // 텍스트 색상
+                                        padding: const EdgeInsets.fromLTRB(
+                                            40, 10, 40, 10), // 버튼 패딩 조정
                                         minimumSize: const Size(100, 40),
-                                        backgroundColor: AppColor.textColor, // 버튼 배경색
+                                        backgroundColor:
+                                            AppColor.textColor, // 버튼 배경색
                                       ),
                                       child: const Text(
                                         'Let\'s Go Home',
                                         style: TextStyle(
                                           fontSize: 18, // 버튼 글씨 크기
-                                          color: AppColor.objectColor, // 버튼 글씨 색상
+                                          color:
+                                              AppColor.objectColor, // 버튼 글씨 색상
                                         ),
                                       ),
                                     ),
@@ -239,7 +261,8 @@ class _SelectRolePageState extends State<RolePage> with TickerProviderStateMixin
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(35),
                   ),
-                  backgroundColor: selectedRole != null ? AppColor.textColor : Colors.grey,
+                  backgroundColor:
+                      selectedRole != null ? AppColor.textColor : Colors.grey,
                   minimumSize: const Size(120, 40), // selectedRole에 따라 배경색 조절
                 ),
                 child: Text(
