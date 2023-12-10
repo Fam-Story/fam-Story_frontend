@@ -1,9 +1,11 @@
 import 'package:fam_story_frontend/di/provider/id_provider.dart';
+import 'package:fam_story_frontend/models/family_member_model.dart';
+import 'package:fam_story_frontend/models/family_model.dart';
 import 'package:fam_story_frontend/pages/calendar_page.dart';
 import 'package:fam_story_frontend/pages/chat_page.dart';
 import 'package:fam_story_frontend/pages/home_page.dart';
 import 'package:fam_story_frontend/pages/post_page.dart';
-import 'package:fam_story_frontend/services/family_api_service.dart';
+import 'package:fam_story_frontend/services/family_member_api_service.dart';
 import 'package:fam_story_frontend/style.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -18,7 +20,10 @@ class RootPage extends StatefulWidget {
 
 class _RootPageState extends State<RootPage> {
   int _selectedIndex = 0;
-  late Future<int> _familyId, _familyMemberId;
+  late Future<FamilyMemberModel> _familyMember;
+  late Future<FamilyModel> _family;
+  int _familyMemberId = 0;
+  int _familyId = 0;
 
   final List<Widget> _pages = [
     const HomePage(),
@@ -30,12 +35,16 @@ class _RootPageState extends State<RootPage> {
   @override
   void initState() {
     super.initState();
-    // _familyMemberId = FamilyApiService.
   }
 
   @override
   Widget build(BuildContext context) {
-    print(context.watch<IdProvider>().familyId);
+    _familyMember = FamilyMemberApiService.getFamilyMember();
+    _familyMember.then((value) => _familyMemberId = value.familyMemberId);
+    _family = FamilyMemberApiService.postAndGetFamily(_familyMemberId);
+    _family.then((value) => _familyId = value.familyId);
+    context.read<IdProvider>().setFamilyMemberId(_familyMemberId);
+    context.read<IdProvider>().setFamilyId(_familyId);
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(40.0),

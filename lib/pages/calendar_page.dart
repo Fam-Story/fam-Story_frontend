@@ -8,6 +8,8 @@ import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
 // import 'package:flutter_calendar_carousel/classes/event_list.dart';
 import 'package:fam_story_frontend/models/family_schedule_model.dart';
+import 'package:provider/provider.dart';
+import 'package:fam_story_frontend/di/provider/id_provider.dart';
 
 class CalendarPage extends StatefulWidget {
   const CalendarPage({super.key});
@@ -20,6 +22,7 @@ class _CalendarPageState extends State<CalendarPage> {
   DateTime _currentDate = DateTime.now();
   final EventList<Event> _markedDateMap = EventList<Event>(events: {});
   late Future<List<FamilyScheduleModel>> scheduleList;
+  int familyId = 0, familyMemberId = 0;
 
   @override
   void initState() {
@@ -29,6 +32,8 @@ class _CalendarPageState extends State<CalendarPage> {
 
   @override
   Widget build(BuildContext context) {
+    familyId = context.watch<IdProvider>().familyId;
+    familyMemberId = context.watch<IdProvider>().familyMemberId;
     return Column(
       children: [
         Column(
@@ -246,7 +251,7 @@ class _CalendarPageState extends State<CalendarPage> {
                               scheduleId =
                                   FamilyScheduleApiService.postFamilySchedule(
                                       textController.text,
-                                      7,
+                                      familyId,
                                       _currentDate.year,
                                       _currentDate.month,
                                       _currentDate.day);
@@ -390,9 +395,8 @@ class _CalendarPageState extends State<CalendarPage> {
   void _updateCalendar(DateTime date) {
     setState(() {
       try {
-        // TODO: familyId 변경
         scheduleList = FamilyScheduleApiService.getFamilyScheduleList(
-            7, date.year, date.month);
+            familyId, date.year, date.month);
         print("updateCalendar");
         scheduleList.then((value) {
           setState(() {

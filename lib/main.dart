@@ -35,7 +35,9 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
 void initializeNotification() async {
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-  String? token = await FirebaseMessaging.instance.getToken(vapidKey: "BE46-NFLsOf2G-GidNDD6Bq-gz_ktXKwarsctTAFZFa0E_I081YpdqJVAakadjBDJNNWSKpPX0EIvWS_aS0j1DE");
+  String? token = await FirebaseMessaging.instance.getToken(
+      vapidKey:
+          "BE46-NFLsOf2G-GidNDD6Bq-gz_ktXKwarsctTAFZFa0E_I081YpdqJVAakadjBDJNNWSKpPX0EIvWS_aS0j1DE");
   print('Firebase Messaging Token: $token');
   final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
   await flutterLocalNotificationsPlugin
@@ -85,6 +87,7 @@ class FamStory extends StatelessWidget {
         //       create: (context) => IdProvider(),
         //       child: const RootPage(),
         //     ),
+
         '/': (context) => const LoadingScreen(),
 
         // '/': (context) => const FamilyJoinPage(),
@@ -94,7 +97,7 @@ class FamStory extends StatelessWidget {
 
         // // 그페이지 TEST 하고 싶으면 밑처럼 그걸 메인 라우트로 지정하기~
         // '/': (context) => const FamilyJoinCreatePage(),
-        '/': (context) => const LoginSignUpPage(),
+        // '/': (context) => const LoginSignUpPage(),
 
         '/rootPage': (context) => const RootPage(),
         '/loginSignUpPage': (context) => const LoginSignUpPage(),
