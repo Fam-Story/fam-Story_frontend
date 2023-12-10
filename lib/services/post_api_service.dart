@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:fam_story_frontend/models/post_model.dart';
 
@@ -10,6 +11,21 @@ class PostApiService {
   //TODO: 변경 필
   static const token =
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUsImVtYWlsIjoiZGphY2tzZG4xQGljbG91ZC5jb20iLCJ1c2VybmFtZSI6ImVvbWNoYW53b28iLCJpYXQiOjE3MDIxMTE0MTEsImV4cCI6MTcwMjExNTAxMX0.RNCInpnqWrRXAs2Ji5E9KNMEw3Q-WQVSoTFFGzGvIOk';
+
+  static Future<String> _getToken() async {
+    const storage = FlutterSecureStorage();
+
+    // 로그인 토큰 불러오기
+    String? userInfoString = await storage.read(key: 'login');
+
+    if (userInfoString == null) {
+      throw ErrorDescription(
+          'Your login token has expired. Please Login Again.');
+    }
+    Map<String, dynamic> userInfo = json.decode(userInfoString);
+
+    return userInfo['token'];
+  }
 
   // 게시글 post
   static Future<int> postPost(
@@ -21,6 +37,8 @@ class PostApiService {
       int createdDay,
       int createdHour,
       int createdMinute) async {
+    String loginToken = await _getToken();
+
     final url = Uri.parse('$baseUrl/post');
 
     final response = await http.post(
@@ -28,7 +46,7 @@ class PostApiService {
       headers: <String, String>{
         'Content-Type': 'application/json',
         'Accept': 'application/json',
-        'Authorization': 'Bearer $token'
+        'Authorization': 'Bearer $loginToken'
       },
       body: jsonEncode({
         "srcMemberId": srcMemberId,
@@ -62,6 +80,8 @@ class PostApiService {
       int createdDay,
       int createdHour,
       int createdMinute) async {
+    String loginToken = await _getToken();
+
     final url = Uri.parse('$baseUrl/post');
 
     final response = await http.put(
@@ -69,7 +89,7 @@ class PostApiService {
       headers: <String, String>{
         'Content-Type': 'application/json',
         'Accept': 'application/json',
-        'Authorization': 'Bearer $token'
+        'Authorization': 'Bearer $loginToken'
       },
       body: jsonEncode({
         "id": id,
@@ -95,12 +115,14 @@ class PostApiService {
 
   // 게시글 삭제
   static Future<void> deletePost(int postId) async {
+    String loginToken = await _getToken();
+
     final url = Uri.parse('$baseUrl/post?postId=$postId');
 
     final response = await http.delete(url, headers: <String, String>{
       'Content-Type': 'application/json',
       'Accept': 'application/json',
-      'Authorization': 'Bearer $token'
+      'Authorization': 'Bearer $loginToken'
     });
 
     if (response.statusCode == 200) {
@@ -114,12 +136,14 @@ class PostApiService {
 
   // 가족 게시글 전부 받아오기
   static Future<List<PostModel>> getPostList(int familyId) async {
+    String loginToken = await _getToken();
+
     List<PostModel> postList = [];
     final url = Uri.parse("$baseUrl/post?familyId=$familyId");
     final response = await http.get(url, headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
-      'Authorization': 'Bearer $token'
+      'Authorization': 'Bearer $loginToken'
     });
 
     String errorMsg = 'Something wrong to get posts..';
