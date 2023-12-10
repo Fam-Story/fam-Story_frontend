@@ -163,11 +163,11 @@ class _AlarmPageState extends State<AlarmPage> with TickerProviderStateMixin {
                                         ),
                                           SizedBox(width: 10),
                                         Text(
-                                          "${_nickname} sends you a ${getInteractionTypeText(item.interactionType)}.",
+                                          "${_nickname} ${getInteractionTypeText(item.interactionType)}",
                                           style: TextStyle(
-                                            color: Colors.black,
+                                            color: item.isChecked == 0 ? Colors.black : Colors.grey[400],
                                             fontWeight: FontWeight.bold,
-                                            fontSize: 14,
+                                            fontSize: 16,
                                           ),
                                         ),
                                       ],
@@ -229,13 +229,13 @@ class _AlarmPageState extends State<AlarmPage> with TickerProviderStateMixin {
   String getInteractionTypeText(int interactionType) {
     switch (interactionType) {
       case 1:
-        return "Thumbs-Up";
+        return "gives a thumbs-up";
       case 2:
-        return "Thumbs-Down";
+        return "gives a thumbs-down";
       case 3:
-        return "Heart";
+        return "gives a full of heart";
       case 4:
-        return "Poke";
+        return "pokes you";
       default:
         return "unclassified";
     }
