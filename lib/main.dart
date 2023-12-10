@@ -34,7 +34,9 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
 void initializeNotification() async {
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-  String? token = await FirebaseMessaging.instance.getToken(vapidKey: "BE46-NFLsOf2G-GidNDD6Bq-gz_ktXKwarsctTAFZFa0E_I081YpdqJVAakadjBDJNNWSKpPX0EIvWS_aS0j1DE");
+  String? token = await FirebaseMessaging.instance.getToken(
+      vapidKey:
+          "BE46-NFLsOf2G-GidNDD6Bq-gz_ktXKwarsctTAFZFa0E_I081YpdqJVAakadjBDJNNWSKpPX0EIvWS_aS0j1DE");
   print('Firebase Messaging Token: $token');
   final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
   await flutterLocalNotificationsPlugin

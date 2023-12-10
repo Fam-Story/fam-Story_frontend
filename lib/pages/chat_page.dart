@@ -50,7 +50,7 @@ class _ChatPageState extends State<ChatPage> {
       final chat = ChatModel(
         //TODO: 프로바이더 Provider로 수신
         familyId: 13,
-        familyMemberId: 8,
+        familyMemberId: 15,
         nickname: '징징',
         role: 1,
         message: _messageController.text,
