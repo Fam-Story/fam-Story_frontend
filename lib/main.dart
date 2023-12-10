@@ -14,8 +14,9 @@ import 'package:firebase_core/firebase_core.dart'; //firebase fcm 세팅
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'firebase_options.dart';
-
 import 'package:fam_story_frontend/pages/fcm_test_page.dart';
+import 'package:fam_story_frontend/services/family_member_api_service.dart';
+import 'package:fam_story_frontend/pages/alarm_page.dart';
 
 //백그라운드 메시지
 @pragma('vm:entry-point')
@@ -24,6 +25,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   String? token = await FirebaseMessaging.instance.getToken(
       vapidKey:
           "BE46-NFLsOf2G-GidNDD6Bq-gz_ktXKwarsctTAFZFa0E_I081YpdqJVAakadjBDJNNWSKpPX0EIvWS_aS0j1DE");
+  print("/////////////////////////////////////////");
   print('Firebase Messaging Token: $token');
   print('Handling a background message ${message.messageId}');
   print('Message data: ${message.data}');
@@ -32,7 +34,8 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
 void initializeNotification() async {
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-
+  String? token = await FirebaseMessaging.instance.getToken(vapidKey: "BE46-NFLsOf2G-GidNDD6Bq-gz_ktXKwarsctTAFZFa0E_I081YpdqJVAakadjBDJNNWSKpPX0EIvWS_aS0j1DE");
+  print('Firebase Messaging Token: $token');
   final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
   await flutterLocalNotificationsPlugin
       .resolvePlatformSpecificImplementation<
@@ -69,6 +72,7 @@ class FamStory extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'FamStory',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: true,
       ),

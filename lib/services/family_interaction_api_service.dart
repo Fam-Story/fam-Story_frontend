@@ -36,9 +36,9 @@ class FamilyInteractionApiService {
         'Authorization': 'Bearer $loginToken',
       },
       body: jsonEncode({
-        "familyId": srcMemberId,
-        "role": dstMemberId,
-        "fcmToken": interactionType
+        "srcMemberId": srcMemberId,
+        "dstMemberId": dstMemberId,
+        "interactionType": interactionType
       }),
     );
 
@@ -52,9 +52,10 @@ class FamilyInteractionApiService {
   }
 
   /// GET: /interaction [상호작용] 상호작용 수신함 확인
-  static Future<FamilyInteractionModel> getFamilyInteraction(
-      int familyId) async {
-    final url = Uri.parse('$baseUrl/interaction?familyId=$familyId');
+  static Future<List<FamilyInteractionModel>> getFamilyInteraction(
+      int familyMemberId) async {
+    final url =
+        Uri.parse('$baseUrl/interaction?familyMemberId=$familyMemberId');
     const storage = FlutterSecureStorage();
 
     // 로그인 토큰 불러오기
@@ -79,16 +80,19 @@ class FamilyInteractionApiService {
     // 상호작용 정보 받기
     if (response.statusCode == 200) {
       print(jsonDecode(response.body)['message']);
-      FamilyInteractionModel familyInteraction =
-          FamilyInteractionModel.fromJson(jsonDecode(response.body)['data']);
+      List<dynamic> jsonDataList = jsonDecode(response.body)['data'];
+      List<FamilyInteractionModel> familyInteraction =
+          List<FamilyInteractionModel>.from(jsonDataList
+              .map((item) => FamilyInteractionModel.fromJson(item)));
       return familyInteraction;
     }
     throw ErrorDescription('Something wrong to get family interaction');
   }
 
   /// DELETE: /interaction [상호작용] 모든 상호작용들 삭제
-  static Future<bool> deleteFamilyInteraction(int familyId) async {
-    final url = Uri.parse('$baseUrl/interaction');
+  static Future<bool> deleteFamilyInteraction(int familyMemberId) async {
+    final url =
+        Uri.parse('$baseUrl/interaction?familyMemberId=$familyMemberId');
     const storage = FlutterSecureStorage();
 
     // 로그인 토큰 불러오기
@@ -101,7 +105,7 @@ class FamilyInteractionApiService {
     Map<String, dynamic> userInfo = json.decode(userInfoString);
     String loginToken = userInfo['token'];
 
-    final response = await http.get(
+    final response = await http.delete(
       url,
       headers: <String, String>{
         'Content-Type': 'application/json',
