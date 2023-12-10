@@ -1,7 +1,9 @@
+import 'package:fam_story_frontend/di/provider/id_provider.dart';
 import 'package:fam_story_frontend/root_page.dart';
 import 'package:fam_story_frontend/services/family_member_api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:fam_story_frontend/style.dart';
+import 'package:provider/provider.dart';
 
 class RolePage extends StatefulWidget {
   // 인자로 대체
@@ -225,7 +227,10 @@ class _SelectRolePageState extends State<RolePage>
                                         Navigator.of(context).pushReplacement(
                                           MaterialPageRoute(
                                               builder: (context) =>
-                                                  const RootPage()),
+                                                  ChangeNotifierProvider(
+                                                      create: (context) =>
+                                                          IdProvider(),
+                                                      child: const RootPage())),
                                         );
                                       },
                                       style: TextButton.styleFrom(
