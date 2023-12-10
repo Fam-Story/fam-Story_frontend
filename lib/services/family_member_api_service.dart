@@ -231,7 +231,7 @@ class FamilyMemberApiService {
 
   /// Post : /family-member/family [가족 구성원] 가족 구성원이 속한 가족의 정보 조회
   static Future<FamilyModel> postAndGetFamily(
-      int familyMemberId, String fcmToken) async {
+      int familyMemberId) async {
     final url = Uri.parse('$baseUrl/family-member/family');
     const storage = FlutterSecureStorage();
 
