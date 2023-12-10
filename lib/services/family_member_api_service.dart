@@ -9,7 +9,6 @@ import 'package:http/http.dart' as http;
 import '../models/family_member_model.dart';
 import '../models/family_model.dart';
 
-// TODO: 에러 코드 추가
 class FamilyMemberApiService {
   static const String baseUrl = 'https://famstory.thisiswandol.com/api';
 
@@ -49,7 +48,8 @@ class FamilyMemberApiService {
   }
 
   /// POST: /family-member [가족 구성원] 가족 구성원 생성
-  static Future<int> postFamilyMember(int familyId, int role) async {
+  static Future<int> postFamilyMember(
+      int familyId, int role, String introMessage) async {
     final url = Uri.parse('$baseUrl/family-member');
     const storage = FlutterSecureStorage();
 
@@ -71,8 +71,12 @@ class FamilyMemberApiService {
         'Accept': 'application/json',
         'Authorization': 'Bearer $loginToken',
       },
-      body: jsonEncode(
-          {"familyId": familyId, "role": role, "fcmToken": fcmToken}),
+      body: jsonEncode({
+        "familyId": familyId,
+        "role": role,
+        "fcmToken": fcmToken,
+        "introMessage": introMessage
+      }),
     );
 
     // 가족 생성 완료
@@ -85,7 +89,8 @@ class FamilyMemberApiService {
   }
 
   /// PUT: /family-member [가족 구성원] 가족 구성원 역할 수정
-  static Future<bool> putFamilyMember(int familyMemberId, int role) async {
+  static Future<bool> putFamilyMember(
+      int familyMemberId, int role, String introMessage) async {
     final url = Uri.parse('$baseUrl/family-member');
     const storage = FlutterSecureStorage();
 
@@ -98,12 +103,6 @@ class FamilyMemberApiService {
     Map<String, dynamic> userInfo = json.decode(userInfoString);
     String loginToken = userInfo['token'];
 
-    // TODO: 가족 멤버 정보 수정 창에서 null 체크 하기
-    // 가족 이름만 수정 가능
-    Map<String, dynamic> data = {};
-    data.putIfAbsent("familyMemberId", () => familyMemberId);
-    data.putIfAbsent("role", () => role);
-
     final response = await http.put(
       url,
       headers: <String, String>{
@@ -111,7 +110,8 @@ class FamilyMemberApiService {
         'Accept': 'application/json',
         'Authorization': 'Bearer $loginToken',
       },
-      body: jsonEncode(data),
+      body: jsonEncode(
+          {"id": familyMemberId, "role": role, "introMessage": introMessage}),
     );
 
     if (response.statusCode == 200) {
@@ -126,7 +126,7 @@ class FamilyMemberApiService {
   /// DELETE: /family-member [가족 구성원] 가족 구성원 삭제
   static Future<bool> deleteFamilyMember(int familyMemberId) async {
     final url =
-        Uri.parse('$baseUrl/family-member?family-memberId=$familyMemberId');
+        Uri.parse('$baseUrl/family-member?familyMemberId=$familyMemberId');
     const storage = FlutterSecureStorage();
 
     String? userInfoString = await storage.read(key: 'login');
@@ -157,7 +157,7 @@ class FamilyMemberApiService {
   }
 
   /// Get: /family-member [가족 구성원] 구성원 ID를 통한 가족 구성원 정보 반환
-  static Future<FamilyMemberModel> getFamilyMember(int familyMemberId) async {
+  static Future<FamilyMemberModel> getFamilyMemberID(int familyMemberId) async {
     final url =
         Uri.parse('$baseUrl/family-member?family-memberId=$familyMemberId');
     const storage = FlutterSecureStorage();
@@ -194,7 +194,7 @@ class FamilyMemberApiService {
   }
 
   /// Get: /family-member/user [가족 구성원] 회원이 속한 가족 구성원 정보 반환
-  static Future<FamilyMemberModel> getUser() async {
+  static Future<FamilyMemberModel> getFamilyMember() async {
     final url = Uri.parse('$baseUrl/family-member/user');
     const storage = FlutterSecureStorage();
 
@@ -207,7 +207,7 @@ class FamilyMemberApiService {
     Map<String, dynamic> userInfo = json.decode(userInfoString);
     String loginToken = userInfo['token'];
 
-    final response = await http.delete(
+    final response = await http.get(
       url,
       headers: <String, String>{
         'Content-Type': 'application/json',
@@ -230,7 +230,7 @@ class FamilyMemberApiService {
   }
 
   /// Post : /family-member/family [가족 구성원] 가족 구성원이 속한 가족의 정보 조회
-  static Future<FamilyModel> postUser(
+  static Future<FamilyModel> postAndGetFamily(
       int familyMemberId, String fcmToken) async {
     final url = Uri.parse('$baseUrl/family-member/family');
     const storage = FlutterSecureStorage();
@@ -297,9 +297,11 @@ class FamilyMemberApiService {
       print(jsonDecode(response.body)['message']);
       List<dynamic> jsonDataList = jsonDecode(response.body)['data'];
       List<FamilyMemberModel> familyMemberList = List<FamilyMemberModel>.from(
-          jsonDataList.map((item) => FamilyModel.fromJson(item)));
+          jsonDataList.map((item) => FamilyMemberModel.fromJson(item)));
       return familyMemberList;
     }
+    FamilyModel familyInfo =
+        FamilyModel.fromJson(jsonDecode(response.body)['data']);
     // 예외 처리; 메시지를 포함한 예외를 던짐
     String errorMessage = jsonDecode(response.body)['message'] ?? 'Error';
     print(errorMessage);
