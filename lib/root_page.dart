@@ -40,7 +40,6 @@ class _RootPageState extends State<RootPage> {
   String _createdDate = '';
   String _familyKeyCode = '';
 
-
   int _userId = 0;
   int _age = 0;
   int _gender = 0;
@@ -95,9 +94,6 @@ class _RootPageState extends State<RootPage> {
     });
   }
 
-
-
-
   Future<void> _initData() async {
     _familyMember = FamilyMemberApiService.getFamilyMember();
     _user = UserApiService.getUser();
@@ -112,15 +108,13 @@ class _RootPageState extends State<RootPage> {
       context.read<IdProvider>().setGender(_gender);
       context.read<IdProvider>().setEmail(_email);
       context.read<IdProvider>().setUsername(_name);
-      }
-    );
+    });
     _familyMember.then((value) {
       _role = value.role;
       _name = value.name;
       _nickname = value.nickname;
       _introMessage = value.introMessage;
       _familyMemberId = value.familyMemberId;
-
 
       _family = FamilyMemberApiService.postAndGetFamily(_familyMemberId);
       _family.then((value) {
@@ -142,8 +136,6 @@ class _RootPageState extends State<RootPage> {
         context.read<IdProvider>().setFamilyName(_familyName);
         context.read<IdProvider>().setCreatedDate(_createdDate);
         context.read<IdProvider>().setKeyCode(_familyKeyCode);
-
-
       });
     });
   }

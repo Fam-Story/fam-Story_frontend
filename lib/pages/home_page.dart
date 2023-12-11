@@ -292,14 +292,13 @@ class _HomePageState extends State<HomePage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Row(
+                    Row(
                       children: [
                         SizedBox(
                           width: 30,
                         ),
                         Text(
-                          //TODO: 패밀리 이름으로 변경
-                          "Living Room",
+                          context.read<IdProvider>().familyName,
                           style: TextStyle(
                               fontFamily: 'AppleSDGothicNeo',
                               fontWeight: FontWeight.bold,
@@ -373,16 +372,16 @@ class _HomePageState extends State<HomePage> {
                             DragTarget<Interaction>(
                               builder: (context, candidateData, rejectedData) {
                                 return FamilyMemberButton(
-                                  buttonSize: 110,
-                                  imageSize: 50,
-                                  memberImage:
-                                      getRoleImage(familyMembers[3].role),
-                                  onTap: () {
-                                    setState(() {
-                                      click4 = !click4;
-                                    });
-                                  },
-                                );
+                                    buttonSize: 110,
+                                    imageSize: 50,
+                                    memberImage:
+                                        getRoleImage(familyMembers[3].role),
+                                    onTap: () {
+                                      setState(() {
+                                        click4 = !click4;
+                                      });
+                                    },
+                                    name: familyMembers[3].nickname);
                               },
                               onAccept: (data) {
                                 interaction(data, 3);
@@ -425,16 +424,16 @@ class _HomePageState extends State<HomePage> {
                             DragTarget<Interaction>(
                               builder: (context, candidateData, rejectedData) {
                                 return FamilyMemberButton(
-                                  buttonSize: 110,
-                                  imageSize: 50,
-                                  memberImage:
-                                      getRoleImage(familyMembers[2].role),
-                                  onTap: () {
-                                    setState(() {
-                                      click3 = !click3;
-                                    });
-                                  },
-                                );
+                                    buttonSize: 110,
+                                    imageSize: 50,
+                                    memberImage:
+                                        getRoleImage(familyMembers[2].role),
+                                    onTap: () {
+                                      setState(() {
+                                        click3 = !click3;
+                                      });
+                                    },
+                                    name: familyMembers[2].nickname);
                               },
                               onAccept: (data) {
                                 interaction(data, 2);
@@ -477,16 +476,16 @@ class _HomePageState extends State<HomePage> {
                             DragTarget<Interaction>(
                               builder: (context, candidateData, rejectedData) {
                                 return FamilyMemberButton(
-                                  buttonSize: 110,
-                                  imageSize: 50,
-                                  memberImage:
-                                      getRoleImage(familyMembers[1].role),
-                                  onTap: () {
-                                    setState(() {
-                                      click2 = !click2;
-                                    });
-                                  },
-                                );
+                                    buttonSize: 110,
+                                    imageSize: 50,
+                                    memberImage:
+                                        getRoleImage(familyMembers[1].role),
+                                    onTap: () {
+                                      setState(() {
+                                        click2 = !click2;
+                                      });
+                                    },
+                                    name: familyMembers[1].nickname);
                               },
                               onAccept: (data) {
                                 interaction(data, 1);
@@ -529,16 +528,16 @@ class _HomePageState extends State<HomePage> {
                             DragTarget<Interaction>(
                               builder: (context, candidateData, rejectedData) {
                                 return FamilyMemberButton(
-                                  buttonSize: 110,
-                                  imageSize: 50,
-                                  memberImage:
-                                      getRoleImage(familyMembers[0].role),
-                                  onTap: () {
-                                    setState(() {
-                                      click1 = !click1;
-                                    });
-                                  },
-                                );
+                                    buttonSize: 110,
+                                    imageSize: 50,
+                                    memberImage:
+                                        getRoleImage(familyMembers[0].role),
+                                    onTap: () {
+                                      setState(() {
+                                        click1 = !click1;
+                                      });
+                                    },
+                                    name: familyMembers[0].nickname);
                               },
                               onAccept: (data) {
                                 interaction(data, 0);
@@ -578,14 +577,14 @@ class _HomePageState extends State<HomePage> {
                       child: Column(
                         children: [
                           FamilyMemberButton(
-                            buttonSize: 155,
-                            imageSize: 90,
-                            memberImage:
-                                getRoleImage(context.read<IdProvider>().role),
-                            onTap: () {
-                              myStateDialog(context);
-                            },
-                          ),
+                              buttonSize: 155,
+                              imageSize: 90,
+                              memberImage:
+                                  getRoleImage(context.read<IdProvider>().role),
+                              onTap: () {
+                                myStateDialog(context);
+                              },
+                              name: context.read<IdProvider>().nickname),
 
                           ///SpeechBubble
                           Visibility(
@@ -688,14 +687,15 @@ class FamilyMemberButton extends StatelessWidget {
   final double imageSize;
   final String memberImage;
   final void Function() onTap;
+  final String name;
 
-  const FamilyMemberButton({
-    super.key,
-    required this.buttonSize,
-    required this.imageSize,
-    required this.memberImage,
-    required this.onTap,
-  });
+  const FamilyMemberButton(
+      {super.key,
+      required this.buttonSize,
+      required this.imageSize,
+      required this.memberImage,
+      required this.onTap,
+      required this.name});
 
   @override
   Widget build(BuildContext context) {
@@ -712,13 +712,28 @@ class FamilyMemberButton extends StatelessWidget {
           decoration: const BoxDecoration(
             color: AppColor.objectColor,
           ),
-          child: Center(
-            child: Image.asset(
-              memberImage,
-              fit: BoxFit.fill,
-              width: imageSize, // 원하는 너비로 조절
-              height: imageSize, // 원하는 높이로 조절
-            ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Image.asset(
+                memberImage,
+                fit: BoxFit.fill,
+                width: imageSize, // 원하는 너비로 조절
+                height: imageSize, // 원하는 높이로 조절
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              Text(
+                name,
+                style: TextStyle(
+                    fontFamily: 'AppleSDGothicNeo',
+                    fontWeight: FontWeight.bold,
+                    color: AppColor.swatchColor,
+                    fontSize: 12),
+              ),
+            ],
           ),
         ),
       ),
