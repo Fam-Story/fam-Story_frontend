@@ -363,6 +363,27 @@ class _SettingPageState extends State<SettingPage>
                                     Divider(
                                       color: AppColor.swatchColor,
                                     )
+                                    const SizedBox(width: 20),
+                                    // Gender
+                                 
+                                      SizedBox(
+                                        width: 150,
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text("Gender"),
+                                            const SizedBox(height: 20),
+                                            Text(
+                                              context.read<IdProvider>().gender == 0 ? "Male" : "Female",
+                                              // TODO: 수정해야됨
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                              ),
+                                            ),
+                                            Divider(color: AppColor.swatchColor,)
+                                          ],
+                                        ),
+                                      ),
                                   ],
                                 ),
                               ),
@@ -377,7 +398,7 @@ class _SettingPageState extends State<SettingPage>
             ),
           ),
           Positioned(
-            left: 300,
+            left: 320,
             right: 0,
             top: 110,
             child: Row(
@@ -531,6 +552,33 @@ class _SettingPageState extends State<SettingPage>
                                 fontWeight: FontWeight.bold,
                                 color: AppColor.swatchColor,
                               ),
+          ),
+
+          if(!isEditMode)
+          Positioned(
+            left: 0,
+            right: 0,
+            top: 620,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      buttonText = 'Log Out';
+                    });
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext buildContext) {
+                        return AlertDialog(
+                          backgroundColor: AppColor.objectColor,
+                          content: const Text(
+                            'Do you wanna leave?',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: AppColor.swatchColor,
                             ),
                             actions: [
                               Center(
