@@ -24,13 +24,10 @@ class _AlarmPageState extends State<AlarmPage> with TickerProviderStateMixin {
   late Future<FamilyMemberModel> _familyMember;
   int familyMemberId = 0;
 
-
   @override
   void initState() {
     super.initState();
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -110,61 +107,79 @@ class _AlarmPageState extends State<AlarmPage> with TickerProviderStateMixin {
                     children: <Widget>[
                       Container(
                         child: FutureBuilder<List<FamilyInteractionModel>>(
-                          future: FamilyInteractionApiService.getFamilyInteraction(familyMemberId), // Replace with your actual data-fetching method
+                          future: FamilyInteractionApiService.getFamilyInteraction(
+                              familyMemberId), // Replace with your actual data-fetching method
                           builder: (context, snapshot) {
-                            if (snapshot.connectionState == ConnectionState.waiting) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
                               // While data is being fetched, show a loading indicator
                               return CircularProgressIndicator();
                             } else if (snapshot.hasError) {
                               // If there's an error, display an error message
                               return Text('Error: ${snapshot.error}');
-                            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                            } else if (!snapshot.hasData ||
+                                snapshot.data!.isEmpty) {
                               // If no data is available, display a message indicating no interactions
                               return Container(
                                   height: 450,
-                                  child: Center(child: Text('No reactions yet.')));
+                                  child:
+                                      Center(child: Text('No reactions yet.')));
                             } else {
                               // Data has been successfully fetched, display the interactions
-                              List<FamilyInteractionModel> interactions = snapshot.data!;
+                              List<FamilyInteractionModel> interactions =
+                                  snapshot.data!;
 
                               return ListView.builder(
                                 shrinkWrap: true,
                                 physics: NeverScrollableScrollPhysics(),
                                 itemCount: interactions.length,
                                 itemBuilder: (BuildContext context, int index) {
-                                  final item = interactions[interactions.length - 1 - index];
+                                  final item = interactions[
+                                      interactions.length - 1 - index];
                                   bool isChecked = item.isChecked == 0;
                                   return Container(
                                     height: 60,
-                                    color: isChecked ? Colors.white : Colors.grey[200],
+                                    color: isChecked
+                                        ? Colors.white
+                                        : Colors.grey[200],
                                     child: Row(
                                       children: [
                                         SizedBox(width: 10),
-                                        CircleAvatar(
-                                          radius: 20,
-                                          child: ClipOval(
-                                            child: Center(
-                                              child: Image.asset(
-                                                getRoleImage(item.srcMemberRole),
-                                                fit: BoxFit.fill,
-                                                width: 40, // 원하는 너비로 조절
-                                                height: 40, // 원하는 높이로 조절
+                                        Opacity(
+                                          opacity: isChecked ? 1.0 : 0.3,
+                                          child: CircleAvatar(
+                                            radius: 20,
+                                            child: ClipOval(
+                                              child: Center(
+                                                child: Image.asset(
+                                                  getRoleImage(
+                                                      item.srcMemberRole),
+                                                  fit: BoxFit.fill,
+                                                  width: 40, // 원하는 너비로 조절
+                                                  height: 40, // 원하는 높이로 조절
+                                                ),
                                               ),
                                             ),
                                           ),
                                         ),
                                         SizedBox(width: 10),
-                                        CircleAvatar(
-                                          radius: 12,
-                                          child: ClipOval(
-                                            child: getImageForInteractionType(item.interactionType),
+                                        Opacity(
+                                          opacity: isChecked ? 1.0 : 0.3,
+                                          child: CircleAvatar(
+                                            radius: 12,
+                                            child: ClipOval(
+                                              child: getImageForInteractionType(
+                                                  item.interactionType),
+                                            ),
                                           ),
                                         ),
-                                          SizedBox(width: 10),
+                                        SizedBox(width: 10),
                                         Text(
                                           "${item.srcMemberNickname} ${getInteractionTypeText(item.interactionType)}",
                                           style: TextStyle(
-                                            color: item.isChecked == 0 ? Colors.black : Colors.grey[400],
+                                            color: item.isChecked == 0
+                                                ? Colors.black
+                                                : Colors.grey[400],
                                             fontWeight: FontWeight.bold,
                                             fontSize: 16,
                                           ),
@@ -178,7 +193,6 @@ class _AlarmPageState extends State<AlarmPage> with TickerProviderStateMixin {
                           },
                         ),
                       )
-
                     ],
                   ),
                 ),
@@ -195,7 +209,8 @@ class _AlarmPageState extends State<AlarmPage> with TickerProviderStateMixin {
                 ElevatedButton(
                   onPressed: () async {
                     try {
-                      FamilyInteractionApiService.deleteFamilyInteraction(familyMemberId);
+                      FamilyInteractionApiService.deleteFamilyInteraction(
+                          familyMemberId);
                       Navigator.pop(context);
                     } catch (e) {
                       print(e.toString());
@@ -225,6 +240,7 @@ class _AlarmPageState extends State<AlarmPage> with TickerProviderStateMixin {
       ),
     );
   }
+
   String getInteractionTypeText(int interactionType) {
     switch (interactionType) {
       case 4:
