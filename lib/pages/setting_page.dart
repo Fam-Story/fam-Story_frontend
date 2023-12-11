@@ -448,7 +448,7 @@ class _SettingPageState extends State<SettingPage> with TickerProviderStateMixin
                                 onPressed: () {
                                   Navigator.pop(context);
                                   Navigator.pop(context);
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginSignUpPage()));
+                                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LoginSignUpPage()));
                                 },
                                 style: TextButton.styleFrom(
                                   foregroundColor: AppColor.objectColor,

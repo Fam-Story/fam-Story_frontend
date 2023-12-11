@@ -23,21 +23,14 @@ class _AlarmPageState extends State<AlarmPage> with TickerProviderStateMixin {
   late Future<List<FamilyInteractionModel>> interactions;
   late Future<FamilyMemberModel> _familyMember;
   int familyMemberId = 0;
-  int _role = 0;
-  String _nickname = '';
+
 
   @override
   void initState() {
     super.initState();
   }
 
-  Future<void> _updateInteractions(int id) async {
-    _familyMember = FamilyMemberApiService.getFamilyMemberID(id);
-    _familyMember.then((value) {
-      _role  = value.role;
-      _nickname = value.nickname;}
-    );
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -129,10 +122,11 @@ class _AlarmPageState extends State<AlarmPage> with TickerProviderStateMixin {
                               // If no data is available, display a message indicating no interactions
                               return Container(
                                   height: 450,
-                                  child: Center(child: Text('No Reactions yet.')));
+                                  child: Center(child: Text('No reactions yet.')));
                             } else {
                               // Data has been successfully fetched, display the interactions
                               List<FamilyInteractionModel> interactions = snapshot.data!;
+
                               return ListView.builder(
                                 shrinkWrap: true,
                                 physics: NeverScrollableScrollPhysics(),
@@ -140,9 +134,6 @@ class _AlarmPageState extends State<AlarmPage> with TickerProviderStateMixin {
                                 itemBuilder: (BuildContext context, int index) {
                                   final item = interactions[interactions.length - 1 - index];
                                   bool isChecked = item.isChecked == 0;
-
-                                  _updateInteractions(item.srcMemberId);
-
                                   return Container(
                                     height: 60,
                                     color: isChecked ? Colors.white : Colors.grey[200],
@@ -151,19 +142,27 @@ class _AlarmPageState extends State<AlarmPage> with TickerProviderStateMixin {
                                         SizedBox(width: 10),
                                         CircleAvatar(
                                           radius: 20,
-                                          backgroundColor: Colors.blue,
+                                          child: ClipOval(
+                                            child: Center(
+                                              child: Image.asset(
+                                                getRoleImage(item.srcMemberRole),
+                                                fit: BoxFit.fill,
+                                                width: 40, // 원하는 너비로 조절
+                                                height: 40, // 원하는 높이로 조절
+                                              ),
+                                            ),
+                                          ),
                                         ),
                                         SizedBox(width: 10),
                                         CircleAvatar(
                                           radius: 12,
-                                          backgroundColor: Colors.blue,
                                           child: ClipOval(
                                             child: getImageForInteractionType(item.interactionType),
                                           ),
                                         ),
                                           SizedBox(width: 10),
                                         Text(
-                                          "${_nickname} ${getInteractionTypeText(item.interactionType)}",
+                                          "${item.srcMemberNickname} ${getInteractionTypeText(item.interactionType)}",
                                           style: TextStyle(
                                             color: item.isChecked == 0 ? Colors.black : Colors.grey[400],
                                             fontWeight: FontWeight.bold,
@@ -276,4 +275,22 @@ class _AlarmPageState extends State<AlarmPage> with TickerProviderStateMixin {
     }
   }
 
+  String getRoleImage(int role) {
+    switch (role) {
+      case 1:
+        return 'assets/images/grandfather.png';
+      case 2:
+        return 'assets/images/dad.png';
+      case 3:
+        return 'assets/images/son.png';
+      case 4:
+        return 'assets/images/grandmother.png';
+      case 5:
+        return 'assets/images/mom.png';
+      case 6:
+        return 'assets/images/daughter.png';
+      default:
+        return 'assets/images/son.png';
+    }
+  }
 }
