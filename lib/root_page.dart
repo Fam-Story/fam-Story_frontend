@@ -160,12 +160,18 @@ class _RootPageState extends State<RootPage> {
           case ConnectionState.active:
           case ConnectionState.waiting:
             // 처음 한 번만 1초 텀 주는 부분
-            return Scaffold(
-              backgroundColor: AppColor.backgroudColor,
-              body: Center(
-                child: LoadingIndicator(),
-              ),
-            );
+            if (flag == 0) {
+              return Scaffold(
+                backgroundColor: AppColor.backgroudColor,
+                body: Center(
+                  child: LoadingIndicator(),
+                ),
+              );
+            } else {
+              return Scaffold(
+                backgroundColor: AppColor.backgroudColor,
+              );
+            }
           case ConnectionState.done:
             if (snapshot.hasError) return Text('Error: ${snapshot.error}');
             return Scaffold(
