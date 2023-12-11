@@ -132,8 +132,7 @@ class UserApiService {
   }
 
   /// GET: /user [프로필] 회원 정보 조회
-  static Future<UserModel> getUser(String email, String username,
-      String password, String? nickname, int age, int gender) async {
+  static Future<UserModel> getUser() async {
     final url = Uri.parse('$baseUrl/user');
     const storage = FlutterSecureStorage();
 

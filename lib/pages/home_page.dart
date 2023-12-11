@@ -323,7 +323,7 @@ class _HomePageState extends State<HomePage> {
                           onTap: () async {},
                         );
                       },
-                      onAccept: (data) async {
+                      onAccept: (data) {
                         interaction(data, familyMembers[1].familyMemberId);
                       },
                     ),

@@ -8,6 +8,11 @@ class IdProvider with ChangeNotifier {
   String nickname = '';
   String introMessage = '';
 
+  int memberNumber = 0;
+  String familyName = '';
+  String createdDate = '';
+  String familyKeyCode = '';
+
   void setFamilyId(int id) {
     familyId = id;
     notifyListeners();
@@ -35,6 +40,23 @@ class IdProvider with ChangeNotifier {
 
   void setIntroMessage(String message) {
     introMessage = message;
+    notifyListeners();
+  }
+
+  void setMemberNumber(int memNum) {
+    memberNumber = memNum;
+    notifyListeners();
+  }
+  void setFamilyName(String fam) {
+    familyName = fam;
+    notifyListeners();
+  }
+  void setCreatedDate(String date) {
+    createdDate = date;
+    notifyListeners();
+  }
+  void setKeyCode(String keycode) {
+    familyKeyCode = keycode;
     notifyListeners();
   }
 }

@@ -1,9 +1,21 @@
+import 'dart:async';
+
+import 'package:fam_story_frontend/models/family_model.dart';
+import 'package:fam_story_frontend/models/family_model.dart';
 import 'package:fam_story_frontend/pages/login_sign_up_page.dart';
 import 'package:fam_story_frontend/root_page.dart';
 import 'package:fam_story_frontend/services/family_member_api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:fam_story_frontend/style.dart';
 import 'package:fam_story_frontend/models/user_model.dart';
+import 'package:provider/provider.dart';
+import 'package:fam_story_frontend/models/family_model.dart';
+
+import '../di/provider/id_provider.dart';
+import '../models/family_member_model.dart';
+import '../models/family_model.dart';
+import '../models/family_model.dart';
+import '../models/family_model.dart';
 
 class SettingPage extends StatefulWidget {
   const SettingPage({Key? key}) : super(key: key);
@@ -14,13 +26,13 @@ class SettingPage extends StatefulWidget {
 
 class _SettingPageState extends State<SettingPage> with TickerProviderStateMixin {
   final _familyNameController = TextEditingController();
+  late Future<List<FamilyModel>> _familyInfo; // Future<List<FamilyModel>> 타입으로 변경
+  int familyId = 0, familyMemberId = 0;
+
 
   String buttonText = 'Go Out';
   String buttonText2 = 'Edit';
 
-  bool _isEditing = false;
-
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String email = '';
   String username = '';
   String nickname = '';
@@ -28,6 +40,30 @@ class _SettingPageState extends State<SettingPage> with TickerProviderStateMixin
   int age = -1;
   int gender = -1;
   bool isEditMode = false; // Track the edit mode
+
+  int familyMemberID = 0;
+
+  final _formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    super.initState();
+      _initData();
+  }
+
+  Future<void> _initData() async {
+    familyId = context.watch<IdProvider>().familyId;
+    familyMemberId = context.watch<IdProvider>().familyMemberId;
+    print('familyId: $familyId');
+    print('familyMemberId: $familyMemberId');
+
+    var familyInfo = await FamilyMemberApiService.postAndGetFamily(familyMemberId);
+
+    setState(() {
+      _familyInfo = Future.value(familyInfo as FutureOr<List<FamilyModel>>?);
+    });
+  }
+
 
   String? _selectedGender;
   final List<String> _genders = ['Male', 'Female'];
@@ -49,7 +85,7 @@ class _SettingPageState extends State<SettingPage> with TickerProviderStateMixin
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Setting",
+                  "My Room",
                   style: TextStyle(color: AppColor.textColor, fontSize: 40, fontWeight: FontWeight.bold),
                 ),
                 Text(
@@ -347,7 +383,7 @@ class _SettingPageState extends State<SettingPage> with TickerProviderStateMixin
                     Align(
                       alignment: Alignment.center,
                       child: Text(
-                        'Code 주르륵',
+                        'da',
                         style: TextStyle(
                           fontSize: 20,
                           color: Colors.black,
@@ -368,15 +404,7 @@ class _SettingPageState extends State<SettingPage> with TickerProviderStateMixin
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ElevatedButton(
-                  onPressed: () async {
-
-                    try {
-                      // Access user input values
-
-                      // TODO: API 연결, 가족 멤버 생성, 가족 ID 가져오기
-                    } catch (e) {
-                      print(e.toString());
-                    }
+                  onPressed: () {
                     setState(() {
                       // Toggle the edit mode when the button is pressed
                       isEditMode = !isEditMode;
