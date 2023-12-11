@@ -58,6 +58,9 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     _initData().then((_) {});
+    setState(() {
+      context.read<IdProvider>().nickname;
+    });
   }
 
   Future<void> _initData() async {

@@ -171,6 +171,7 @@ class _RootPageState extends State<RootPage> {
                 preferredSize: const Size.fromHeight(40.0),
                 child: AppBar(
                   backgroundColor: AppColor.backgroudColor,
+                  automaticallyImplyLeading: false,
                 ),
               ),
               backgroundColor: AppColor.backgroudColor,

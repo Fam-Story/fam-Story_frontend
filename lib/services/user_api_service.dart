@@ -89,7 +89,7 @@ class UserApiService {
       body: jsonEncode(data),
     );
 
-    if (response.statusCode == 201) {
+    if (response.statusCode == 200) {
       return true;
     }
     // 예외 처리; 메시지를 포함한 예외를 던짐
