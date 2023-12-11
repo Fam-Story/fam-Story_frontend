@@ -271,7 +271,7 @@ class _SettingPageState extends State<SettingPage> with TickerProviderStateMixin
                                               crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
                                                 const SizedBox(height: 20),
-                                                //Text(context.read<IdProvider>().age), // TODO
+                                                Text(context.read<IdProvider>().age.toString()), // TODO
                                                 Divider(color: AppColor.swatchColor,),
                                               ],
                                             )
@@ -426,7 +426,7 @@ class _SettingPageState extends State<SettingPage> with TickerProviderStateMixin
                 ElevatedButton(
                   onPressed: () {
                     setState(() {
-                      buttonText = 'Go Out';
+                      buttonText = 'Log Out';
                     });
                     showDialog(
                       context: context,
@@ -457,7 +457,7 @@ class _SettingPageState extends State<SettingPage> with TickerProviderStateMixin
                                   backgroundColor: AppColor.textColor,
                                 ),
                                 child: const Text(
-                                  'Go Out',
+                                  'Log Out',
                                   style: TextStyle(
                                     fontSize: 18,
                                     color: AppColor.objectColor,
