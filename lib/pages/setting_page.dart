@@ -326,7 +326,7 @@ class _SettingPageState extends State<SettingPage> with TickerProviderStateMixin
                                             Text("Gender"),
                                             const SizedBox(height: 20),
                                             Text(
-                                              context.read<IdProvider>().gender == 0 ? "남자" : "여자",
+                                              context.read<IdProvider>().gender == 0 ? "Male" : "Female",
                                               // TODO: 수정해야됨
                                               style: TextStyle(
                                                 fontSize: 16,
@@ -347,7 +347,7 @@ class _SettingPageState extends State<SettingPage> with TickerProviderStateMixin
             ),
           ),
           Positioned(
-            left: 300,
+            left: 320,
             right: 0,
             top: 110,
             child: Row(
@@ -416,6 +416,26 @@ class _SettingPageState extends State<SettingPage> with TickerProviderStateMixin
               ),
             ),
           ),
+          if(!isEditMode)
+          Positioned(
+            left: 320,
+            right: 0,
+            top: 480,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                IconButton(
+                    onPressed: () {
+                      setState(() {
+                        // Toggle the edit mode when the button is pressed
+                        isEditMode = !isEditMode;
+                      });
+                    },
+                    icon: const Icon(CupertinoIcons.pen)),
+              ],
+            ),
+          ),
+          if(!isEditMode)
           Positioned(
             left: 0,
             right: 0,
