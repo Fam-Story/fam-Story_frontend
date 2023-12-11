@@ -23,6 +23,7 @@ class _CalendarPageState extends State<CalendarPage> {
   final EventList<Event> _markedDateMap = EventList<Event>(events: {});
   late Future<List<FamilyScheduleModel>> scheduleList;
   int familyId = 0, familyMemberId = 0;
+  bool flag = false;
 
   @override
   void initState() {
@@ -34,7 +35,10 @@ class _CalendarPageState extends State<CalendarPage> {
   Widget build(BuildContext context) {
     familyId = context.watch<IdProvider>().familyId;
     familyMemberId = context.watch<IdProvider>().familyMemberId;
-    _updateCalendar(DateTime.now());
+    if (!flag) {
+      _updateCalendar(DateTime.now());
+      flag = true;
+    }
     return Column(
       children: [
         Column(
