@@ -5,6 +5,7 @@ import 'package:fam_story_frontend/models/family_model.dart';
 import 'package:fam_story_frontend/pages/login_sign_up_page.dart';
 import 'package:fam_story_frontend/root_page.dart';
 import 'package:fam_story_frontend/services/family_member_api_service.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fam_story_frontend/style.dart';
 import 'package:fam_story_frontend/models/user_model.dart';
@@ -26,14 +27,14 @@ class SettingPage extends StatefulWidget {
 
 class _SettingPageState extends State<SettingPage> with TickerProviderStateMixin {
   final _familyNameController = TextEditingController();
-  late Future<List<FamilyModel>> _familyInfo; // Future<List<FamilyModel>> 타입으로 변경
+  late Future<List<FamilyModel>> _familyInfo;
   int familyId = 0, familyMemberId = 0;
 
 
   String buttonText = 'Go Out';
   String buttonText2 = 'Edit';
 
-  String email = '';
+
   String username = '';
   String nickname = '';
   String password = '';
@@ -57,11 +58,6 @@ class _SettingPageState extends State<SettingPage> with TickerProviderStateMixin
     print('familyId: $familyId');
     print('familyMemberId: $familyMemberId');
 
-    var familyInfo = await FamilyMemberApiService.postAndGetFamily(familyMemberId);
-
-    setState(() {
-      _familyInfo = Future.value(familyInfo as FutureOr<List<FamilyModel>>?);
-    });
   }
 
 
@@ -129,7 +125,7 @@ class _SettingPageState extends State<SettingPage> with TickerProviderStateMixin
                                   children: [
                                     Text("E-mail"),
                                     const SizedBox(height: 10),
-                                    Text("이 부분에 이메일 고정"), // TODO: 수정해야됨
+                                    Text(context.read<IdProvider>().email,), // TODO: 수정해야됨
                                     Divider(color: AppColor.swatchColor,),
                                   ],
                                 ),
@@ -172,7 +168,7 @@ class _SettingPageState extends State<SettingPage> with TickerProviderStateMixin
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           const SizedBox(height: 16),
-                                          Text("username"), // TODO: 수정해야됨
+                                          Text(context.read<IdProvider>().username,),
                                           const SizedBox(height: 4),
                                           Divider(color: AppColor.swatchColor,),
                                         ],
@@ -219,7 +215,7 @@ class _SettingPageState extends State<SettingPage> with TickerProviderStateMixin
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           const SizedBox(height: 16),
-                                          Text("nickname"), // TODO: 수정해야됨
+                                          Text(context.read<IdProvider>().nickname,),
                                           const SizedBox(height: 4),
                                           Divider(color: AppColor.swatchColor,),
                                         ],
@@ -275,7 +271,7 @@ class _SettingPageState extends State<SettingPage> with TickerProviderStateMixin
                                               crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
                                                 const SizedBox(height: 20),
-                                                Text("10"), // TODO: 수정해야됨
+                                                //Text(context.read<IdProvider>().age), // TODO
                                                 Divider(color: AppColor.swatchColor,),
                                               ],
                                             )
@@ -329,7 +325,13 @@ class _SettingPageState extends State<SettingPage> with TickerProviderStateMixin
                                           children: [
                                             Text("Gender"),
                                             const SizedBox(height: 20),
-                                            Text("10"), // TODO: 수정해야됨
+                                            Text(
+                                              context.read<IdProvider>().gender == 0 ? "남자" : "여자",
+                                              // TODO: 수정해야됨
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                              ),
+                                            ),
                                             Divider(color: AppColor.swatchColor,)
                                           ],
                                         ),
@@ -342,6 +344,24 @@ class _SettingPageState extends State<SettingPage> with TickerProviderStateMixin
                   ],
                 ),
               ),
+            ),
+          ),
+          Positioned(
+            left: 300,
+            right: 0,
+            top: 110,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                IconButton(
+                    onPressed: () {
+                      setState(() {
+                        // Toggle the edit mode when the button is pressed
+                        isEditMode = !isEditMode;
+                      });
+                    },
+                    icon: const Icon(CupertinoIcons.pen)),
+              ],
             ),
           ),
           if(!isEditMode)
@@ -383,7 +403,7 @@ class _SettingPageState extends State<SettingPage> with TickerProviderStateMixin
                     Align(
                       alignment: Alignment.center,
                       child: Text(
-                        'da',
+                        context.read<IdProvider>().familyKeyCode,
                         style: TextStyle(
                           fontSize: 20,
                           color: Colors.black,
@@ -403,31 +423,6 @@ class _SettingPageState extends State<SettingPage> with TickerProviderStateMixin
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      // Toggle the edit mode when the button is pressed
-                      isEditMode = !isEditMode;
-                    });
-                  },
-
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(35),
-                    ),
-                    backgroundColor: AppColor.textColor, // 항상 활성화된 색상
-                    minimumSize: const Size(120, 40),
-                  ),
-                  child: Text(
-                    isEditMode ? "Save" : "Edit",
-                    style: const TextStyle(
-                      color: AppColor.objectColor,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
-                  ),
-                ),
-                SizedBox(width: 32),
                 ElevatedButton(
                   onPressed: () {
                     setState(() {

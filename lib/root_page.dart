@@ -1,11 +1,13 @@
 import 'package:fam_story_frontend/di/provider/id_provider.dart';
 import 'package:fam_story_frontend/models/family_member_model.dart';
 import 'package:fam_story_frontend/models/family_model.dart';
+import 'package:fam_story_frontend/models/user_model.dart';
 import 'package:fam_story_frontend/pages/calendar_page.dart';
 import 'package:fam_story_frontend/pages/chat_page.dart';
 import 'package:fam_story_frontend/pages/home_page.dart';
 import 'package:fam_story_frontend/pages/post_page.dart';
 import 'package:fam_story_frontend/services/family_member_api_service.dart';
+import 'package:fam_story_frontend/services/user_api_service.dart';
 import 'package:fam_story_frontend/style.dart';
 import 'package:fam_story_frontend/widgets/loading_indicator.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +27,7 @@ class _RootPageState extends State<RootPage> {
   int _selectedIndex = 0;
   late Future<FamilyMemberModel> _familyMember;
   late Future<FamilyModel> _family;
+  late Future<UserModel> _user;
   int _familyMemberId = 0;
   int _familyId = 0;
   int _role = 0;
@@ -38,6 +41,11 @@ class _RootPageState extends State<RootPage> {
   String _familyKeyCode = '';
 
 
+  int _userId = 0;
+  int _age = 0;
+  int _gender = 0;
+  String _email = '';
+  String _nusername = '';
 
   final List<Widget> _pages = [
     const HomePage(),
@@ -60,7 +68,6 @@ class _RootPageState extends State<RootPage> {
     //_initData().then((_) {});
     // Future.microtask(() => _initData());
     _initData();
-    _initData2();
 
     getMyDeviceToken();
     FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
@@ -93,40 +100,50 @@ class _RootPageState extends State<RootPage> {
 
   Future<void> _initData() async {
     _familyMember = FamilyMemberApiService.getFamilyMember();
+    _user = UserApiService.getUser();
+
+    _user.then((value) {
+      _age = value.age;
+      _gender = value.gender;
+      _email = value.email;
+      _name = value.username;
+
+      context.read<IdProvider>().setAge(_age);
+      context.read<IdProvider>().setGender(_gender);
+      context.read<IdProvider>().setEmail(_email);
+      context.read<IdProvider>().setUsername(_name);
+      }
+    );
     _familyMember.then((value) {
       _role = value.role;
       _name = value.name;
       _nickname = value.nickname;
       _introMessage = value.introMessage;
       _familyMemberId = value.familyMemberId;
+
+
       _family = FamilyMemberApiService.postAndGetFamily(_familyMemberId);
       _family.then((value) {
         _familyId = value.familyId;
+        _memberNumber = value.memberNumber;
+        _familyName = value.familyName;
+        _createdDate = value.createdDate;
+        _familyKeyCode = value.familyKeyCode;
+
         context.read<IdProvider>().setFamilyMemberId(_familyMemberId);
-        context.read<IdProvider>().setFamilyId(_familyId);
+
         context.read<IdProvider>().setRole(_role);
         context.read<IdProvider>().setName(_name);
         context.read<IdProvider>().setNicKName(_nickname);
         context.read<IdProvider>().setIntroMessage(_introMessage);
-      });
-    });
-  }
 
-
-  Future<void> _initData2() async {
-    _family = FamilyMemberApiService.postAndGetFamily(_familyMemberId);
-    _family.then((value) {
-      _memberNumber = value.memberNumber;
-      _familyName = value.familyName;
-      _createdDate = value.createdDate;
-      _familyKeyCode = value.familyKeyCode;
-      _family = FamilyMemberApiService.postAndGetFamily(_familyMemberId);
-      _family.then((value) {
-        _familyId = value.familyId;
+        context.read<IdProvider>().setFamilyId(_familyId);
         context.read<IdProvider>().setMemberNumber(_memberNumber);
         context.read<IdProvider>().setFamilyName(_familyName);
         context.read<IdProvider>().setCreatedDate(_createdDate);
         context.read<IdProvider>().setKeyCode(_familyKeyCode);
+
+
       });
     });
   }

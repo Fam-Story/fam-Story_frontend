@@ -13,6 +13,11 @@ class IdProvider with ChangeNotifier {
   String createdDate = '';
   String familyKeyCode = '';
 
+  int age = 0;
+  int gender = 0;
+  String email = '';
+  String username = '';
+
   void setFamilyId(int id) {
     familyId = id;
     notifyListeners();
@@ -59,4 +64,22 @@ class IdProvider with ChangeNotifier {
     familyKeyCode = keycode;
     notifyListeners();
   }
+
+  void setAge(int ageage) {
+    age = ageage;
+    notifyListeners();
+  }
+  void setGender(int gen) {
+    gender = gen;
+    notifyListeners();
+  }
+  void setEmail(String emailemail) {
+    email = emailemail;
+    notifyListeners();
+  }
+  void setUsername(String usernamename) {
+    username = usernamename;
+    notifyListeners();
+  }
+
 }
