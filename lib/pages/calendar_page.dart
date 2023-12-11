@@ -34,6 +34,7 @@ class _CalendarPageState extends State<CalendarPage> {
   Widget build(BuildContext context) {
     familyId = context.watch<IdProvider>().familyId;
     familyMemberId = context.watch<IdProvider>().familyMemberId;
+    _updateCalendar(DateTime.now());
     return Column(
       children: [
         Column(
