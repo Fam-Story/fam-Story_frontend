@@ -416,25 +416,7 @@ class _SettingPageState extends State<SettingPage> with TickerProviderStateMixin
               ),
             ),
           ),
-          if(!isEditMode)
-          Positioned(
-            left: 320,
-            right: 0,
-            top: 480,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                IconButton(
-                    onPressed: () {
-                      setState(() {
-                        // Toggle the edit mode when the button is pressed
-                        isEditMode = !isEditMode;
-                      });
-                    },
-                    icon: const Icon(CupertinoIcons.pen)),
-              ],
-            ),
-          ),
+
           if(!isEditMode)
           Positioned(
             left: 0,
