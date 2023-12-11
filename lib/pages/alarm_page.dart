@@ -4,6 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:fam_story_frontend/style.dart';
 import 'package:fam_story_frontend/models/user_model.dart';
 import 'package:fam_story_frontend/models/family_interaction_model.dart';
+import 'package:provider/provider.dart';
+
+import '../di/provider/id_provider.dart';
+import '../models/family_member_model.dart';
+import '../services/family_interaction_api_service.dart';
 
 class AlarmPage extends StatefulWidget {
   const AlarmPage({Key? key}) : super(key: key);
@@ -13,15 +18,30 @@ class AlarmPage extends StatefulWidget {
 }
 
 class _AlarmPageState extends State<AlarmPage> with TickerProviderStateMixin {
-
   String buttonText = 'Clear';
 
-  List<FamilyInteractionModel> interactions = [];
+  late Future<List<FamilyInteractionModel>> interactions;
+  late Future<FamilyMemberModel> _familyMember;
+  int familyMemberId = 0;
+  int _role = 0;
+  String _nickname = '';
 
+  @override
+  void initState() {
+    super.initState();
+  }
 
+  Future<void> _updateInteractions(int id) async {
+    _familyMember = FamilyMemberApiService.getFamilyMemberID(id);
+    _familyMember.then((value) {
+      _role  = value.role;
+      _nickname = value.nickname;}
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
+    familyMemberId = context.watch<IdProvider>().familyMemberId;
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(50.0),
@@ -55,11 +75,17 @@ class _AlarmPageState extends State<AlarmPage> with TickerProviderStateMixin {
               children: [
                 Text(
                   "Recognize",
-                  style: TextStyle(color: AppColor.textColor, fontSize: 40, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      color: AppColor.textColor,
+                      fontSize: 40,
+                      fontWeight: FontWeight.bold),
                 ),
                 Text(
                   "Hear Family's Reactions",
-                  style: TextStyle(color: AppColor.textColor, fontSize: 20, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      color: AppColor.textColor,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold),
                 )
               ],
             ),
@@ -72,7 +98,8 @@ class _AlarmPageState extends State<AlarmPage> with TickerProviderStateMixin {
               child: Container(
                 constraints: BoxConstraints(maxHeight: 480),
                 margin: const EdgeInsetsDirectional.fromSTEB(20, 20, 20, 20),
-                padding: const EdgeInsets.only(top:20.0, bottom: 20, left: 15, right: 15),
+                padding: const EdgeInsets.only(
+                    top: 20.0, bottom: 20, left: 15, right: 15),
                 decoration: BoxDecoration(
                   color: AppColor.objectColor,
                   borderRadius: BorderRadius.circular(15.0),
@@ -89,67 +116,76 @@ class _AlarmPageState extends State<AlarmPage> with TickerProviderStateMixin {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Container(
-                        child: Form(
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
-                            itemCount: interactions.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              final item = interactions[interactions.length - 1 - index];
-                              bool isChecked = item.isChecked ?? false;
+                        child: FutureBuilder<List<FamilyInteractionModel>>(
+                          future: FamilyInteractionApiService.getFamilyInteraction(familyMemberId), // Replace with your actual data-fetching method
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState == ConnectionState.waiting) {
+                              // While data is being fetched, show a loading indicator
+                              return CircularProgressIndicator();
+                            } else if (snapshot.hasError) {
+                              // If there's an error, display an error message
+                              return Text('Error: ${snapshot.error}');
+                            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                              // If no data is available, display a message indicating no interactions
                               return Container(
-                                height: 60,
-                                color: isChecked ? Colors.white: Colors.grey[200],
-                                child: Row(
-                                  children: [
-                                    SizedBox(width: 10),
-                                    CircleAvatar(
-                                      radius: 20,
-                                      backgroundColor: Colors.blue, // 도형의 배경색
-                                      child: Icon(
-                                        Icons.person, // 아이콘 등을 넣어줄 수 있습니다.
-                                        color: Colors.white, // 아이콘의 색상
-                                      ),
-                                    ),
-                                    SizedBox(width: 10),
-                                    CircleAvatar(
-                                      radius: 12,
-                                      backgroundColor: Colors.blue, // 도형의 배경색
-                                      child: ClipOval(
-                                        child: Image.asset(
-                                          'assets/images/heart.png', // 이미지 URL로 변경
-                                          width: 24,
-                                          height: 24,
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(width: 10), // 도형과 텍스트 간격 조절
-                                    Text(
-                                      "${item.srcMemberId}님이 당신을 ${item.interactionType}했어요.",
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 14,
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                                  height: 450,
+                                  child: Center(child: Text('No Reactions yet.')));
+                            } else {
+                              // Data has been successfully fetched, display the interactions
+                              List<FamilyInteractionModel> interactions = snapshot.data!;
+                              return ListView.builder(
+                                shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
+                                itemCount: interactions.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  final item = interactions[interactions.length - 1 - index];
+                                  bool isChecked = item.isChecked == 0;
 
+                                  _updateInteractions(item.srcMemberId);
+
+                                  return Container(
+                                    height: 60,
+                                    color: isChecked ? Colors.white : Colors.grey[200],
+                                    child: Row(
+                                      children: [
+                                        SizedBox(width: 10),
+                                        CircleAvatar(
+                                          radius: 20,
+                                          backgroundColor: Colors.blue,
+                                        ),
+                                        SizedBox(width: 10),
+                                        CircleAvatar(
+                                          radius: 12,
+                                          backgroundColor: Colors.blue,
+                                          child: ClipOval(
+                                            child: getImageForInteractionType(item.interactionType),
+                                          ),
+                                        ),
+                                          SizedBox(width: 10),
+                                        Text(
+                                          "${_nickname} ${getInteractionTypeText(item.interactionType)}",
+                                          style: TextStyle(
+                                            color: item.isChecked == 0 ? Colors.black : Colors.grey[400],
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
                               );
-                            },
-                          ),
+                            }
+                          },
                         ),
-                      ),
+                      )
+
                     ],
                   ),
                 ),
               ),
             ),
           ),
-
-
-
           Positioned(
             left: 0,
             right: 0,
@@ -160,16 +196,13 @@ class _AlarmPageState extends State<AlarmPage> with TickerProviderStateMixin {
                 ElevatedButton(
                   onPressed: () async {
                     try {
-                      // Access user input values
-
-                      // TODO: API 연결, 가족 멤버 생성, 가족 ID 가져오기
+                      FamilyInteractionApiService.deleteFamilyInteraction(familyMemberId);
+                      Navigator.pop(context);
                     } catch (e) {
                       print(e.toString());
                     }
-                    setState(() {
-                    });
+                    setState(() {});
                   },
-
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(35),
@@ -193,4 +226,54 @@ class _AlarmPageState extends State<AlarmPage> with TickerProviderStateMixin {
       ),
     );
   }
+  String getInteractionTypeText(int interactionType) {
+    switch (interactionType) {
+      case 4:
+        return "complimented you";
+      case 3:
+        return "booed you";
+      case 2:
+        return "sent heart to you";
+      case 1:
+        return "poked you";
+      default:
+        return "unclassified";
+    }
+  }
+
+  Widget getImageForInteractionType(int interactionType) {
+    switch (interactionType) {
+      case 4:
+        return Image.asset(
+          'assets/images/thumbup.png',
+          width: 24,
+          height: 24,
+          fit: BoxFit.cover,
+        );
+      case 3:
+        return Image.asset(
+          'assets/images/thumbdown.png', // 싫어요 이미지에 대한 경로
+          width: 24,
+          height: 24,
+          fit: BoxFit.cover,
+        );
+      case 2:
+        return Image.asset(
+          'assets/images/heart.png', // 훈훈해요 이미지에 대한 경로
+          width: 24,
+          height: 24,
+          fit: BoxFit.cover,
+        );
+      case 1:
+        return Image.asset(
+          'assets/images/poke.png', // 슬퍼요 이미지에 대한 경로
+          width: 24,
+          height: 24,
+          fit: BoxFit.cover,
+        );
+      default:
+        return Container(); // 기본적으로 빈 컨테이너를 반환하거나 다른 기본 이미지를 설정할 수 있습니다.
+    }
+  }
+
 }

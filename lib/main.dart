@@ -3,6 +3,7 @@ import 'package:fam_story_frontend/pages/family_create_page.dart';
 import 'package:fam_story_frontend/pages/family_join_page.dart';
 import 'package:fam_story_frontend/pages/home_page.dart';
 import 'package:fam_story_frontend/pages/role_page.dart';
+import 'package:fam_story_frontend/pages/setting_page.dart';
 import 'package:flutter/material.dart';
 import 'package:fam_story_frontend/screens/loading_screen.dart';
 import 'package:fam_story_frontend/pages/family_join_create_page.dart';
@@ -64,7 +65,12 @@ Future<void> main() async {
   );
   initializeNotification();
 
-  runApp(const FamStory());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => IdProvider(),
+      child: const FamStory(),
+    ),
+  );
 }
 
 class FamStory extends StatelessWidget {
@@ -81,11 +87,6 @@ class FamStory extends StatelessWidget {
       initialRoute: '/',
       routes: {
         // TODO: 로딩에서 가족 여부 체크
-
-        // '/': (context) => ChangeNotifierProvider(
-        //       create: (context) => IdProvider(),
-        //       child: const RootPage(),
-        //     ),
 
         '/': (context) => const LoadingScreen(),
 

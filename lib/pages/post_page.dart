@@ -39,6 +39,7 @@ class _PostPageState extends State<PostPage> {
     familyMemberId = context.watch<IdProvider>().familyMemberId;
     print('familyId: $familyId');
     print('familyMemberId: $familyMemberId');
+    print(context.watch<IdProvider>().nickname);
     postList = PostApiService.getPostList(familyId);
     return SingleChildScrollView(
       child: Column(

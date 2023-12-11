@@ -520,13 +520,11 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
                                           const FamilyJoinCreatePage()));
                             } else {
                               Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          ChangeNotifierProvider(
-                                            create: (context) => IdProvider(),
-                                            child: const RootPage(),
-                                          )));
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const RootPage(),
+                                ),
+                              );
                             }
                           } catch (e) {
                             // TODO: 에러 내용 알려주기

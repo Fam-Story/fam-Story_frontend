@@ -8,6 +8,16 @@ class IdProvider with ChangeNotifier {
   String nickname = '';
   String introMessage = '';
 
+  int memberNumber = 0;
+  String familyName = '';
+  String createdDate = '';
+  String familyKeyCode = '';
+
+  int age = 0;
+  int gender = 0;
+  String email = '';
+  String username = '';
+
   void setFamilyId(int id) {
     familyId = id;
     notifyListeners();
@@ -18,23 +28,58 @@ class IdProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void setRole(int role) {
-    role = role;
+  void setRole(int ro) {
+    role = ro;
     notifyListeners();
   }
 
-  void setName(String name) {
-    name = name;
+  void setName(String nam) {
+    name = nam;
     notifyListeners();
   }
 
-  void setNicKName(String nickname) {
-    nickname = nickname;
+  void setNicKName(String nick) {
+    nickname = nick;
     notifyListeners();
   }
 
-  void setIntroMessage(String introMessage) {
-    introMessage = introMessage;
+  void setIntroMessage(String message) {
+    introMessage = message;
     notifyListeners();
   }
+
+  void setMemberNumber(int memNum) {
+    memberNumber = memNum;
+    notifyListeners();
+  }
+  void setFamilyName(String fam) {
+    familyName = fam;
+    notifyListeners();
+  }
+  void setCreatedDate(String date) {
+    createdDate = date;
+    notifyListeners();
+  }
+  void setKeyCode(String keycode) {
+    familyKeyCode = keycode;
+    notifyListeners();
+  }
+
+  void setAge(int ageage) {
+    age = ageage;
+    notifyListeners();
+  }
+  void setGender(int gen) {
+    gender = gen;
+    notifyListeners();
+  }
+  void setEmail(String emailemail) {
+    email = emailemail;
+    notifyListeners();
+  }
+  void setUsername(String usernamename) {
+    username = usernamename;
+    notifyListeners();
+  }
+
 }
