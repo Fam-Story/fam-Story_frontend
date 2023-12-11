@@ -45,7 +45,6 @@ class _HomePageState extends State<HomePage> {
   int familyId = 0;
   int familyMemberID = 0;
   int familyMemberNum = 0;
-  String? message;
   bool click1 = false;
   bool click2 = false;
   bool click3 = false;
@@ -64,7 +63,6 @@ class _HomePageState extends State<HomePage> {
   Future<void> _initData() async {
     familyId = context.read<IdProvider>().familyId;
     familyMemberID = context.read<IdProvider>().familyMemberId;
-    message = context.read<IdProvider>().introMessage;
     _allFamilyMember = FamilyMemberApiService.getAllFamilyMember(familyId);
     _allFamilyMember.then((value) {
       setState(() {
