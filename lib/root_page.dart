@@ -32,6 +32,13 @@ class _RootPageState extends State<RootPage> {
   String _nickname = '';
   String _introMessage = '';
 
+  int _memberNumber = 0;
+  String _familyName = '';
+  String _createdDate = '';
+  String _familyKeyCode = '';
+
+
+
   final List<Widget> _pages = [
     const HomePage(),
     const ChatPage(),
@@ -53,6 +60,7 @@ class _RootPageState extends State<RootPage> {
     //_initData().then((_) {});
     // Future.microtask(() => _initData());
     _initData();
+    _initData2();
 
     getMyDeviceToken();
     FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
@@ -80,6 +88,9 @@ class _RootPageState extends State<RootPage> {
     });
   }
 
+
+
+
   Future<void> _initData() async {
     _familyMember = FamilyMemberApiService.getFamilyMember();
     _familyMember.then((value) {
@@ -97,6 +108,25 @@ class _RootPageState extends State<RootPage> {
         context.read<IdProvider>().setName(_name);
         context.read<IdProvider>().setNicKName(_nickname);
         context.read<IdProvider>().setIntroMessage(_introMessage);
+      });
+    });
+  }
+
+
+  Future<void> _initData2() async {
+    _family = FamilyMemberApiService.postAndGetFamily(_familyMemberId);
+    _family.then((value) {
+      _memberNumber = value.memberNumber;
+      _familyName = value.familyName;
+      _createdDate = value.createdDate;
+      _familyKeyCode = value.familyKeyCode;
+      _family = FamilyMemberApiService.postAndGetFamily(_familyMemberId);
+      _family.then((value) {
+        _familyId = value.familyId;
+        context.read<IdProvider>().setMemberNumber(_memberNumber);
+        context.read<IdProvider>().setFamilyName(_familyName);
+        context.read<IdProvider>().setCreatedDate(_createdDate);
+        context.read<IdProvider>().setKeyCode(_familyKeyCode);
       });
     });
   }

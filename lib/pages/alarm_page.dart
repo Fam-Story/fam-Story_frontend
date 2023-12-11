@@ -228,14 +228,14 @@ class _AlarmPageState extends State<AlarmPage> with TickerProviderStateMixin {
   }
   String getInteractionTypeText(int interactionType) {
     switch (interactionType) {
-      case 1:
-        return "gives a thumbs-up";
-      case 2:
-        return "gives a thumbs-down";
-      case 3:
-        return "gives a full of heart";
       case 4:
-        return "pokes you";
+        return "complimented you";
+      case 3:
+        return "booed you";
+      case 2:
+        return "sent heart to you";
+      case 1:
+        return "poked you";
       default:
         return "unclassified";
     }
@@ -243,28 +243,28 @@ class _AlarmPageState extends State<AlarmPage> with TickerProviderStateMixin {
 
   Widget getImageForInteractionType(int interactionType) {
     switch (interactionType) {
-      case 1:
+      case 4:
         return Image.asset(
           'assets/images/thumbup.png',
           width: 24,
           height: 24,
           fit: BoxFit.cover,
         );
-      case 2:
+      case 3:
         return Image.asset(
           'assets/images/thumbdown.png', // 싫어요 이미지에 대한 경로
           width: 24,
           height: 24,
           fit: BoxFit.cover,
         );
-      case 3:
+      case 2:
         return Image.asset(
           'assets/images/heart.png', // 훈훈해요 이미지에 대한 경로
           width: 24,
           height: 24,
           fit: BoxFit.cover,
         );
-      case 4:
+      case 1:
         return Image.asset(
           'assets/images/poke.png', // 슬퍼요 이미지에 대한 경로
           width: 24,

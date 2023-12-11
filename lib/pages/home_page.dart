@@ -58,11 +58,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    _initData().then((_) {
-      setState(() {
-        _textEditingController.text = context.read<IdProvider>().introMessage;
-      });
-    });
+    _initData().then((_) {});
   }
 
   Future<void> _initData() async {
@@ -76,6 +72,7 @@ class _HomePageState extends State<HomePage> {
         familyMembers
             .removeWhere((element) => element.familyMemberId == familyMemberID);
         familyMemberNum = familyMembers.length;
+        _textEditingController.text = context.read<IdProvider>().introMessage;
       });
     });
   }
