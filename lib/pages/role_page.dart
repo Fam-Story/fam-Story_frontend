@@ -224,13 +224,12 @@ class _SelectRolePageState extends State<RolePage>
                                     child: TextButton(
                                       onPressed: () {
                                         Navigator.of(context).pop(); // 현재 라우트 팝
-                                        Navigator.of(context).pushReplacement(
+                                        Navigator.pushReplacement(
+                                          context,
                                           MaterialPageRoute(
-                                              builder: (context) =>
-                                                  ChangeNotifierProvider(
-                                                      create: (context) =>
-                                                          IdProvider(),
-                                                      child: const RootPage())),
+                                            builder: (context) =>
+                                                const RootPage(),
+                                          ),
                                         );
                                       },
                                       style: TextButton.styleFrom(
