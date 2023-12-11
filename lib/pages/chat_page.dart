@@ -125,19 +125,6 @@ class _ChatPageState extends State<ChatPage> {
                   ),
                 ],
               ),
-              Row(
-                children: [
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.more_horiz),
-                    color: AppColor.swatchColor,
-                    iconSize: 35,
-                  ),
-                  const SizedBox(
-                    width: 20,
-                  ),
-                ],
-              )
             ],
           ),
           Expanded(
