@@ -164,12 +164,12 @@ class _SettingPageState extends State<SettingPage>
                                       style: TextStyle(fontSize: 14),
                                       decoration: InputDecoration(
                                         focusedBorder:
-                                            const UnderlineInputBorder(
+                                        const UnderlineInputBorder(
                                           borderSide: BorderSide(
                                               color: AppColor.swatchColor),
                                         ),
                                         enabledBorder:
-                                            const UnderlineInputBorder(
+                                        const UnderlineInputBorder(
                                           borderSide: BorderSide(
                                               color: AppColor.swatchColor),
                                         ),
@@ -195,7 +195,7 @@ class _SettingPageState extends State<SettingPage>
                                 if (!isEditMode)
                                   Column(
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    CrossAxisAlignment.start,
                                     children: [
                                       const SizedBox(height: 16),
                                       Text(
@@ -224,12 +224,12 @@ class _SettingPageState extends State<SettingPage>
                                       controller: _nickNameController,
                                       decoration: InputDecoration(
                                         focusedBorder:
-                                            const UnderlineInputBorder(
+                                        const UnderlineInputBorder(
                                           borderSide: BorderSide(
                                               color: AppColor.swatchColor),
                                         ),
                                         enabledBorder:
-                                            const UnderlineInputBorder(
+                                        const UnderlineInputBorder(
                                           borderSide: BorderSide(
                                               color: AppColor.swatchColor),
                                         ),
@@ -255,7 +255,7 @@ class _SettingPageState extends State<SettingPage>
                                 if (!isEditMode)
                                   Column(
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    CrossAxisAlignment.start,
                                     children: [
                                       const SizedBox(height: 16),
                                       Text(
@@ -290,13 +290,13 @@ class _SettingPageState extends State<SettingPage>
                                           keyboardType: TextInputType.number,
                                           decoration: InputDecoration(
                                             focusedBorder:
-                                                const UnderlineInputBorder(
+                                            const UnderlineInputBorder(
                                               // 선택 시 하단 밑줄 색상 변경
                                               borderSide: BorderSide(
                                                   color: AppColor.swatchColor),
                                             ),
                                             enabledBorder:
-                                                const UnderlineInputBorder(
+                                            const UnderlineInputBorder(
                                               // 비활성 시 하단 밑줄 색상
                                               borderSide: BorderSide(
                                                   color: AppColor.swatchColor),
@@ -305,7 +305,7 @@ class _SettingPageState extends State<SettingPage>
                                             hintStyle: TextStyle(
                                               fontSize: 14,
                                               color:
-                                                  Colors.grey.withOpacity(0.7),
+                                              Colors.grey.withOpacity(0.7),
                                             ),
                                           ),
                                           validator: (value) {
@@ -328,7 +328,7 @@ class _SettingPageState extends State<SettingPage>
                                     if (!isEditMode)
                                       Column(
                                         crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                         children: [
                                           const SizedBox(height: 20),
                                           Text(context
@@ -363,27 +363,6 @@ class _SettingPageState extends State<SettingPage>
                                     Divider(
                                       color: AppColor.swatchColor,
                                     )
-                                    const SizedBox(width: 20),
-                                    // Gender
-                                 
-                                      SizedBox(
-                                        width: 150,
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Text("Gender"),
-                                            const SizedBox(height: 20),
-                                            Text(
-                                              context.read<IdProvider>().gender == 0 ? "Male" : "Female",
-                                              // TODO: 수정해야됨
-                                              style: TextStyle(
-                                                fontSize: 16,
-                                              ),
-                                            ),
-                                            Divider(color: AppColor.swatchColor,)
-                                          ],
-                                        ),
-                                      ),
                                   ],
                                 ),
                               ),
@@ -398,7 +377,7 @@ class _SettingPageState extends State<SettingPage>
             ),
           ),
           Positioned(
-            left: 320,
+            left: 300,
             right: 0,
             top: 110,
             child: Row(
@@ -552,33 +531,6 @@ class _SettingPageState extends State<SettingPage>
                                 fontWeight: FontWeight.bold,
                                 color: AppColor.swatchColor,
                               ),
-          ),
-
-          if(!isEditMode)
-          Positioned(
-            left: 0,
-            right: 0,
-            top: 620,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      buttonText = 'Log Out';
-                    });
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext buildContext) {
-                        return AlertDialog(
-                          backgroundColor: AppColor.objectColor,
-                          content: const Text(
-                            'Do you wanna leave?',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: AppColor.swatchColor,
                             ),
                             actions: [
                               Center(
@@ -590,7 +542,7 @@ class _SettingPageState extends State<SettingPage>
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                const LoginSignUpPage()));
+                                            const LoginSignUpPage()));
                                   },
                                   style: TextButton.styleFrom(
                                     foregroundColor: AppColor.objectColor,
